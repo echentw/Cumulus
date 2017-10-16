@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 import PropTypes from 'prop-types';
 
-const App = (props) => (
+const Main = (props) => (
   <View style={styles.container}>
     <TouchableHighlight onPress={props.onPressPlayPauseButton} underlayColor="white">
       <Text>Play/Pause</Text>
@@ -22,8 +22,8 @@ const styles = StyleSheet.create({
   }
 });
 
-App.propTypes = {
+Main.propTypes = {
   onPressPlayPauseButton: PropTypes.func.isRequired,
 };
 
-export default App;
+export default Main;

@@ -21,7 +21,7 @@ function configureStore(initialState) {
   return createStore(reducer, initialState, enhancer);
 }
 
-const store = configureStore({});
+const store = configureStore({user: false});
 
 const App = () => (
   <Provider store={store}>

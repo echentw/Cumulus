@@ -5,14 +5,25 @@ import { google } from './config';
 
 // Transform Google profile into user object
 const transformGoogleProfile = (profile) => ({
+  id: profile.id,
   name: profile.displayName,
   avatar: profile.image.url,
 });
 
+const tokenStore = {};
+
+const stripIdFromProfileAndAddToken = (profile) => {
+  const clone = Object.assign({}, profile, {token: tokenStore[profile.id]});
+  delete clone.id;
+  return clone;
+};
+
 // Register Google Passport strategy
 passport.use(new GoogleStrategy(google,
-  async (accessToken, refreshToken, profile, done)
-    => done(null, transformGoogleProfile(profile._json))
+  (accessToken, refreshToken, profile, done) => {
+    tokenStore[profile.id] = accessToken;
+    done(null, transformGoogleProfile(profile._json))
+  }
 ));
 
 // Serialize user into the sessions
@@ -33,7 +44,11 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
 
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/google' }),
-  (req, res) => res.redirect('Cumulus://login?user=' + JSON.stringify(req.user)));
+  (req, res) => {
+    const user = stripIdFromProfileAndAddToken(req.user);
+    res.redirect('Cumulus://login?user=' + JSON.stringify(user))
+  }
+);
 
 // Launch the server on the port 3000
 const server = app.listen(3000, () => {
