@@ -53,13 +53,15 @@ class MainContainer extends Component {
 
   render() {
     return (
-      <Main onPressPlayPauseButton={this._onPressPlayPauseButton}/>
+      <Main {...this.props} onPressPlayPauseButton={this._onPressPlayPauseButton}/>
     );
   }
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    user: state.user,
+  };
 }
 
 function mapDispatchToProps(dispatch) {

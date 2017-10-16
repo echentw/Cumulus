@@ -2,39 +2,25 @@ import React from 'react';
 import {
   StyleSheet,
   Text,
-  Image,
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PropTypes from 'prop-types';
 
-const user = null;
 const Login = (props) => (
   <View style={styles.container}>
-    { user
-      ? // Show user info if already logged in
-        <View style={styles.content}>
-          <Text style={styles.header}>
-            Welcome {user.name}!
-          </Text>
-          <View style={styles.avatar}>
-            <Image source={{ uri: user.avatar }} style={styles.avatarImage} />
-          </View>
-        </View>
-      : // Show Please log in message if not
-        <View style={styles.content}>
-          <Text style={styles.header}>
-            Welcome Stranger!
-          </Text>
-          <View style={styles.avatar}>
-            <Icon name="user-circle" size={100} color="rgba(0,0,0,.09)" />
-          </View>
-          <Text style={styles.text}>
-            Please log in to continue {'\n'}
-            to the awesomness
-          </Text>
-        </View>
-    }
+    <View style={styles.content}>
+      <Text style={styles.header}>
+        Welcome Stranger!
+      </Text>
+      <View style={styles.avatar}>
+        <Icon name="user-circle" size={100} color="rgba(0,0,0,.09)" />
+      </View>
+      <Text style={styles.text}>
+        Please log in to continue {'\n'}
+        to the awesomness
+      </Text>
+    </View>
     {/* Login buttons */}
     <View style={styles.buttons}>
       <Icon.Button
@@ -66,11 +52,6 @@ const styles = StyleSheet.create({
   },
   avatar: {
     margin: 20,
-  },
-  avatarImage: {
-    borderRadius: 50,
-    height: 100,
-    width: 100,
   },
   header: {
     fontSize: 20,
