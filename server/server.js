@@ -3,6 +3,14 @@ import passport from 'passport';
 import GoogleStrategy from 'passport-google-oauth20';
 import { google } from './config';
 
+import googleapi from 'googleapis';
+
+// Configure google api client.
+const OAuth2 = googleapi.auth.OAuth2;
+const oauth2Client = new OAuth2(google.clientID, google.clientSecret, google.callbackURL);
+
+const youtubeClient = googleapi.youtube('v3');
+
 // Transform Google profile into user object
 const transformGoogleProfile = (profile) => ({
   id: profile.id,
@@ -22,6 +30,23 @@ const stripIdFromProfileAndAddToken = (profile) => {
 passport.use(new GoogleStrategy(google,
   (accessToken, refreshToken, profile, done) => {
     tokenStore[profile.id] = accessToken;
+
+    oauth2Client.setCredentials({
+      access_token: accessToken,
+    });
+
+    const params = {
+      q: 'just a dream',
+      part: 'snippet',
+      maxResults: 5,
+      auth: oauth2Client,
+    };
+
+    youtubeClient.search.list(params, [], (a, b) => {
+      console.log(a);
+      console.log(b);
+    });
+
     done(null, transformGoogleProfile(profile._json))
   }
 ));
@@ -40,7 +65,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Set up Google auth routes
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'https://www.googleapis.com/auth/youtube'] }));
+// https://www.googleapis.com/auth/youtube
 
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/auth/google' }),
