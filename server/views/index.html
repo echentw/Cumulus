@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script>
+      function googleApiClientReady() {
+        gapi.client.load('youtube', 'v3', function() {
+          gapi.client.setToken({
+            'access_token': 'TOKEN',
+          });
+          var request = gapi.client.youtube.search.list({
+            q: 'hello',
+            type: 'video',
+            part: 'snippet',
+            maxResults: 5
+          });
+          request.execute(function(response) {
+            console.log(response);
+          });
+        });
+      }
+    </script>
+    <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
+  </head>
+  <body>
+    <h1>hi</h1>
+  </body>
+</html>
