@@ -3,26 +3,29 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 
-import { View, TextInput } from 'react-native';
+import { View, TextInput, Text, FlatList } from 'react-native';
 
 import { SearchBar } from 'react-native-elements';
 
 class SearchContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {text: ''};
+    this.state = {
+      query: '',
+      searchResults: [],
+    };
 
     this._onChangeText = this._onChangeText.bind(this);
     this._onSubmitEditing = this._onSubmitEditing.bind(this);
   }
 
   _onChangeText(text) {
-    this.setState({text: text});
+    this.setState({query: text});
     console.log(text);
   }
 
   _onSubmitEditing() {
-    const query = this.state.text;
+    const query = this.state.query;
     const maxResults = 5;
 
     const url = [
@@ -43,21 +46,44 @@ class SearchContainer extends Component {
       },
     })
     .then((response) => {
-      console.log(JSON.parse(response._bodyText));
+      const blob = JSON.parse(response._bodyText);
+      const results = blob.items.map((result) => ({
+        key: result.id.videoId,
+        videoId: result.id.videoId,
+        title: result.snippet.title,
+        thumbnail: {
+          url: result.snippet.thumbnails.high.url,
+          height: result.snippet.thumbnails.high.height,
+          width: result.snippet.thumbnails.high.width,
+        },
+      }));
+      this.setState({ searchResults: results });
     })
     .catch((error) => {
       console.error(error);
     });
   }
 
+  _renderItem({ item }) {
+    return (
+      <Text>{item.title}</Text>
+    );
+  }
+
   render() {
     return (
-      <SearchBar
-        onChangeText={this._onChangeText}
-        onSubmitEditing={this._onSubmitEditing}
-        enablesReturnKeyAutomatically={true}
-        placeholder='Search'
-      />
+      <View>
+        <SearchBar
+          onChangeText={this._onChangeText}
+          onSubmitEditing={this._onSubmitEditing}
+          enablesReturnKeyAutomatically={true}
+          placeholder='Search'
+        />
+        <FlatList
+          data={this.state.searchResults}
+          renderItem={this._renderItem}
+        />
+      </View>
     );
   }
 }
