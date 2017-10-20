@@ -6,6 +6,7 @@ import { ActionCreators } from '../actions';
 import { Text } from 'react-native';
 
 import PlayerContainer from './PlayerContainer';
+import SearchContainer from './SearchContainer';
 
 class MainContainer extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class MainContainer extends Component {
 
   render() {
     return (
-      <PlayerContainer/>
+      <SearchContainer/>
     );
   }
 }
