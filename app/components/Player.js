@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Image, Text, TouchableHighlight } from 'react-native';
 import PropTypes from 'prop-types';
 
-const Main = (props) => {
+const Player = (props) => {
   const { user } = props;
   return (
     <View style={styles.container}>
@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
   },
 });
 
-Main.propTypes = {
+Player.propTypes = {
   onPressPlayPauseButton: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 };
 
-export default Main;
+export default Player;
