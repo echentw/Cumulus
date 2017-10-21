@@ -3,9 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 
-import { View, TextInput, Text, FlatList } from 'react-native';
-
-import { SearchBar } from 'react-native-elements';
+import Search from '../components/Search';
 
 class SearchContainer extends Component {
   constructor(props) {
@@ -21,7 +19,6 @@ class SearchContainer extends Component {
 
   _onChangeText(text) {
     this.setState({query: text});
-    console.log(text);
   }
 
   _onSubmitEditing() {
@@ -64,26 +61,14 @@ class SearchContainer extends Component {
     });
   }
 
-  _renderItem({ item }) {
-    return (
-      <Text>{item.title}</Text>
-    );
-  }
-
   render() {
+    const { searchResults } = this.state;
     return (
-      <View>
-        <SearchBar
-          onChangeText={this._onChangeText}
-          onSubmitEditing={this._onSubmitEditing}
-          enablesReturnKeyAutomatically={true}
-          placeholder='Search'
-        />
-        <FlatList
-          data={this.state.searchResults}
-          renderItem={this._renderItem}
-        />
-      </View>
+      <Search
+        onChangeText={this._onChangeText}
+        onSubmitEditing={this._onSubmitEditing}
+        searchResults={searchResults}
+      />
     );
   }
 }
