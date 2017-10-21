@@ -23,7 +23,7 @@ class SearchContainer extends Component {
 
   _onSubmitEditing() {
     const query = this.state.query;
-    const maxResults = 5;
+    const maxResults = 10;
 
     const url = [
       'https://content.googleapis.com/youtube/v3/search?maxResults=' + maxResults,
