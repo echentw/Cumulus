@@ -61,6 +61,10 @@ class SearchContainer extends Component {
     });
   }
 
+  _onPressMoreInfo() {
+    console.log('you pressed the ellipsis for more info');
+  }
+
   render() {
     const { searchResults } = this.state;
     return (
@@ -68,6 +72,7 @@ class SearchContainer extends Component {
         onChangeText={this._onChangeText}
         onSubmitEditing={this._onSubmitEditing}
         searchResults={searchResults}
+        onPressMoreInfo={this._onPressMoreInfo}
       />
     );
   }
