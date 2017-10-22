@@ -5,6 +5,9 @@ import { ActionCreators } from '../actions';
 
 import Search from '../components/Search';
 
+import Sound from 'react-native-sound';
+Sound.setCategory('Playback');
+
 class SearchContainer extends Component {
   constructor(props) {
     super(props);
@@ -63,6 +66,7 @@ class SearchContainer extends Component {
 
   _onPressPlay(videoId) {
     fetch('http://localhost:3000/play', {
+      // TODO: authenticate this post request
       method: 'POST',
       headers: {
         'accept': 'application/json',
@@ -73,9 +77,22 @@ class SearchContainer extends Component {
       }),
     })
     .then((response) => {
-      console.log(response);
-
       const url = 'http://localhost:3000/downloads/' + videoId + '.mp3';
+      const sound = new Sound(url, null, (error) => {
+        if (error) {
+          console.log('failed to load sound', error);
+          return;
+        }
+        sound.setNumberOfLoops(-1);
+        sound.play((success) => {
+          if (success) {
+            console.log('successfully finished playing');
+          } else {
+            console.log('playback failed due to audio decoding errors');
+          }
+        });
+      });
+
     })
     .catch((error) => {
       console.log(error);

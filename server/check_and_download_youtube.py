@@ -5,16 +5,14 @@ import argparse
 import os.path
 
 def check_and_download(videoId):
-  outputPath = 'downloads/' + videoId + '.mp3'
-
-  if os.path.isfile(outputPath):
+  if os.path.isfile('downloads/' + videoId + '.mp3'):
     print('video already exists')
   else:
     subprocess.call([
       'youtube-dl',
-      '-x', # specify audio only
+      '--extract-audio',
       '--audio-format', 'mp3',
-      '--output', outputPath,
+      '--output', 'downloads/' + videoId + '.%(ext)s',
       'https://www.youtube.com/watch?v=' + videoId,
     ])
 

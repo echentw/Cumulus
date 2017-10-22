@@ -68,20 +68,16 @@ app.get('/auth/google/callback',
 app.use('/downloads', express.static(path.join(__dirname, 'downloads')));
 app.post('/play', (req, res) => {
   const { videoId } = req.body;
-  console.log('videoId requested: ' + videoId);
-  const child = spawn('./check_and_download_youtube.py', [
-    '--videoId', videoId,
-  ]);
+
+  const child = spawn('./check_and_download_youtube.py', ['--videoId', videoId]);
   child.on('exit', (code, signal) => {
-    console.log(`child process exited with code ${code} and signal ${signal}`);
+    const message = `child process exited with code ${code} and signal ${signal}`;
+    console.log(message);
+    res.send({message: message});
   });
-  child.stdout.on('data', (data) => {
-    console.log(`child stdout: ${data}`);
-  });
-  child.stderr.on('data', (data) => {
-    console.error(`child stderr: ${data}`);
-  });
-  res.send({hello: 'world', bye: 'bye!'})
+
+  child.stdout.on('data', (data) => console.log(`child stdout: ${data}`));
+  child.stderr.on('data', (data) => console.error(`child stderr: ${data}`));
 });
 
 // Launch the server on the port 3000
