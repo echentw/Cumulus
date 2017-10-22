@@ -61,6 +61,25 @@ class SearchContainer extends Component {
     });
   }
 
+  _onPressPlay(videoId) {
+    fetch('http://localhost:3000/play', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        videoId: videoId,
+      }),
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
   _onPressMoreInfo(videoId) {
     console.log('you pressed the ellipsis for more info for video ' + videoId);
   }
@@ -72,6 +91,7 @@ class SearchContainer extends Component {
         onChangeText={this._onChangeText}
         onSubmitEditing={this._onSubmitEditing}
         searchResults={searchResults}
+        onPressPlay={this._onPressPlay}
         onPressMoreInfo={this._onPressMoreInfo}
       />
     );

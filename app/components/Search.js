@@ -18,19 +18,14 @@ class Search extends Component {
     super(props);
 
     this._renderItem = this._renderItem.bind(this);
-    this._onPressResult = this._onPressResult.bind(this);
-  }
-
-  _onPressResult(videoId) {
-    console.log('you pressed video id ' + videoId);
   }
 
   _renderItem({ item }) {
     return (
       <TouchableHighlight
-        activeOpacity={0.5}
+        activeOpacity={0.7}
         underlayColor={'rgb(220, 220, 220)'}
-        onPress={() => this._onPressResult(item.videoId)}
+        onPress={() => this.props.onPressPlay(item.videoId)}
       >
         <View style={styles.item}>
           <Image style={styles.itemImage} source={{uri: item.thumbnail.url}}/>
@@ -99,6 +94,7 @@ Search.propTypes = {
   onChangeText: PropTypes.func.isRequired,
   onSubmitEditing: PropTypes.func.isRequired,
   searchResults: PropTypes.array.isRequired,
+  onPressPlay: PropTypes.func.isRequired,
   onPressMoreInfo: PropTypes.func.isRequired,
 };
 

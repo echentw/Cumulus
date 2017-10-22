@@ -1,17 +1,11 @@
 import express from 'express';
 import path from 'path';
+import bodyParser from 'body-parser';
 import fs from 'fs';
 import passport from 'passport';
+import { spawn } from 'child_process';
 import GoogleStrategy from 'passport-google-oauth20';
 import { google } from './config';
-
-import googleapi from 'googleapis';
-
-// Configure google api client.
-// TODO: this is not needed, but committing this in case this is useful in the future?
-const OAuth2 = googleapi.auth.OAuth2;
-const oauth2Client = new OAuth2(google.clientID, google.clientSecret, google.callbackURL);
-const youtubeClient = googleapi.youtube('v3');
 
 // Transform Google profile into user object
 const transformGoogleProfile = (profile) => ({
@@ -33,33 +27,19 @@ passport.use(new GoogleStrategy(google,
   (accessToken, refreshToken, profile, done) => {
     tokenStore[profile.id] = accessToken;
     console.log(accessToken);
-
-    // TODO: see above, this is not needed.
-    // oauth2Client.setCredentials({
-    //   access_token: accessToken,
-    // });
-    // const params = {
-    //   q: 'just a dream',
-    //   part: 'snippet',
-    //   maxResults: 5,
-    //   auth: oauth2Client,
-    // };
-    // youtubeClient.search.list(params, [], (err, response) => {
-    //   console.log('request successful!');
-    // });
-
     done(null, transformGoogleProfile(profile._json))
   }
 ));
 
-// Serialize user into the sessions
+// Serialize / deserialize the user into the sessions.
 passport.serializeUser((user, done) => done(null, user));
-
-// Deserialize user from the sessions
 passport.deserializeUser((user, done) => done(null, user));
 
 // Initialize http server
 const app = express();
+
+// Initialize middleware.
+app.use(bodyParser.json());
 
 // Initialize Passport
 app.use(passport.initialize());
@@ -81,8 +61,26 @@ app.get('/auth/google/callback',
   }
 );
 
+// Used to see what the requests to the google api look like.
 // app.use(express.static(path.join(__dirname, 'views')));
 // app.get('/loadgapi', (req, res) => res.sendFile(path.join(__dirname, 'views/index.html')));
+
+app.post('/play', (req, res) => {
+  const { videoId } = req.body;
+  const child = spawn('./check_and_download_youtube.py', [
+    '--videoId', videoId,
+  ]);
+  child.on('exit', (code, signal) => {
+    console.log(`child process exited with code ${code} and signal ${signal}`);
+  });
+  child.stdout.on('data', (data) => {
+    console.log(`child stdout: ${data}`);
+  });
+  child.stderr.on('data', (data) => {
+    console.error(`child stderr: ${data}`);
+  });
+  res.send({hello: 'world', bye: 'bye!'})
+});
 
 // Launch the server on the port 3000
 const server = app.listen(3000, () => {
