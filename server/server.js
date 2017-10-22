@@ -65,8 +65,10 @@ app.get('/auth/google/callback',
 // app.use(express.static(path.join(__dirname, 'views')));
 // app.get('/loadgapi', (req, res) => res.sendFile(path.join(__dirname, 'views/index.html')));
 
+app.use('/downloads', express.static(path.join(__dirname, 'downloads')));
 app.post('/play', (req, res) => {
   const { videoId } = req.body;
+  console.log('videoId requested: ' + videoId);
   const child = spawn('./check_and_download_youtube.py', [
     '--videoId', videoId,
   ]);

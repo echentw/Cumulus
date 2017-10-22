@@ -74,6 +74,8 @@ class SearchContainer extends Component {
     })
     .then((response) => {
       console.log(response);
+
+      const url = 'http://localhost:3000/downloads/' + videoId + '.mp3';
     })
     .catch((error) => {
       console.log(error);
