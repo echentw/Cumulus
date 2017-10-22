@@ -17,45 +17,38 @@ class Search extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      pressedIn: false,
-    };
-
     this._renderItem = this._renderItem.bind(this);
-    this._onPressIn = this._onPressIn.bind(this);
-    this._onPressOut = this._onPressOut.bind(this);
+    this._onPressResult = this._onPressResult.bind(this);
   }
 
-  _onPressIn() {
-    this.setState({pressedIn: true});
-  }
-
-  _onPressOut() {
-    this.setState({pressedIn: false});
+  _onPressResult(videoId) {
+    console.log('you pressed video id ' + videoId);
   }
 
   _renderItem({ item }) {
     return (
-      <View style={styles.item}>
-        <Image style={styles.itemImage} source={{uri: item.thumbnail.url}}/>
-        <Text style={styles.itemText} numberOfLines={1} ellipsizeMode={'tail'}>
-          {item.title}
-        </Text>
-        <TouchableHighlight
-          activeOpacity={1}
-          style={{marginLeft: 6}}
-          underlayColor={'white'}
-          onPress={this.props.onPressMoreInfo}
-          onShowUnderlay={this._onPressIn}
-          onHideUnderlay={this._onPressOut}
-        >
-          <Icon
-            style={this.state.pressedIn ? styles.ellipsisPressed : styles.ellipsis}
-            size={16}
-            name="dots-three-vertical"
-          />
-        </TouchableHighlight>
-      </View>
+      <TouchableHighlight
+        activeOpacity={0.5}
+        underlayColor={'rgb(220, 220, 220)'}
+        onPress={() => this._onPressResult(item.videoId)}
+      >
+        <View style={styles.item}>
+          <Image style={styles.itemImage} source={{uri: item.thumbnail.url}}/>
+          <Text style={styles.itemText} numberOfLines={1} ellipsizeMode={'tail'}>
+            {item.title}
+          </Text>
+          <TouchableHighlight
+            activeOpacity={0.5}
+            style={{marginLeft: 6}}
+            underlayColor={'white'}
+            onPress={() => this.props.onPressMoreInfo(item.videoId)}
+            onShowUnderlay={this._onPressIn}
+            onHideUnderlay={this._onPressOut}
+          >
+            <Icon size={16} name="dots-three-vertical"/>
+          </TouchableHighlight>
+        </View>
+      </TouchableHighlight>
     );
   }
 
@@ -99,12 +92,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 10,
     fontSize: 18,
-  },
-  ellipsis: {
-    color: 'black',
-  },
-  ellipsisPressed: {
-    color: 'grey',
   },
 });
 

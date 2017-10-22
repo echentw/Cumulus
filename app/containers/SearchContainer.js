@@ -61,8 +61,8 @@ class SearchContainer extends Component {
     });
   }
 
-  _onPressMoreInfo() {
-    console.log('you pressed the ellipsis for more info');
+  _onPressMoreInfo(videoId) {
+    console.log('you pressed the ellipsis for more info for video ' + videoId);
   }
 
   render() {
