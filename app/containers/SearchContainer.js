@@ -105,7 +105,7 @@ class SearchContainer extends Component {
       }),
     })
     .then((response) => {
-      const url = serverUrl + '/downloads/' + videoId + '.mp3';
+      const url = serverUrl + '/downloads/song_' + videoId + '.mp3';
       const sound = new Sound(url, null, (error) => {
         if (error) {
           console.log('failed to load sound', error);

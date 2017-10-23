@@ -78,7 +78,7 @@ app.use('/downloads', express.static(path.join(__dirname, 'downloads')));
 app.post('/play', (req, res) => {
   const { videoId } = req.body;
 
-  const child = spawn('./check_and_download_youtube.py', ['--videoId', videoId]);
+  const child = spawn('./check_and_download_youtube.py', ['--videoId', 'song_' + videoId]);
   child.on('exit', (code, signal) => {
     const message = `child process exited with code ${code} and signal ${signal}`;
     console.log(message);
