@@ -9,6 +9,8 @@ import SafariView from 'react-native-safari-view';
 
 import Login from '../components/Login';
 
+const serverUrl = 'http://localhost:3000';
+
 class LoginContainer extends Component {
   // Set up Linking
   componentDidMount() {
@@ -37,7 +39,7 @@ class LoginContainer extends Component {
   };
 
   // Handle Login with Google button tap
-  loginWithGoogle = () => this.openURL('http://localhost:3000/auth/google');
+  loginWithGoogle = () => this.openURL(serverUrl + '/auth/google');
 
   // Open URL in a browser
   openURL = (url) => {

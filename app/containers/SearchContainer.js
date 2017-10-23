@@ -8,6 +8,8 @@ import Search from '../components/Search';
 import Sound from 'react-native-sound';
 Sound.setCategory('Playback');
 
+const serverUrl = 'http://localhost:3000';
+
 class SearchContainer extends Component {
   constructor(props) {
     super(props);
@@ -65,7 +67,7 @@ class SearchContainer extends Component {
   }
 
   _onPressPlay(videoId) {
-    fetch('http://localhost:3000/play', {
+    fetch(serverUrl + '/play', {
       // TODO: authenticate this post request
       method: 'POST',
       headers: {
@@ -77,7 +79,7 @@ class SearchContainer extends Component {
       }),
     })
     .then((response) => {
-      const url = 'http://localhost:3000/downloads/' + videoId + '.mp3';
+      const url = serverUrl + '/downloads/' + videoId + '.mp3';
       const sound = new Sound(url, null, (error) => {
         if (error) {
           console.log('failed to load sound', error);
