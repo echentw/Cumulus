@@ -140,6 +140,7 @@ class SearchContainer extends Component {
         searchResults={searchResults}
         onPressPlay={this._onPressPlay}
         onPressMoreInfo={this._onPressMoreInfo}
+        videoIdPlaying={this.props.player.videoId}
       />
     );
   }

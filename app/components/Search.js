@@ -29,7 +29,11 @@ class Search extends Component {
       >
         <View style={styles.item}>
           <Image style={styles.itemImage} source={{uri: item.thumbnail.url}}/>
-          <Text style={styles.itemText} numberOfLines={1} ellipsizeMode={'tail'}>
+          <Text
+            style={this.props.videoIdPlaying == item.videoId ? styles.itemTextPlaying : styles.itemText}
+            numberOfLines={1}
+            ellipsizeMode={'tail'}
+          >
             {item.title}
           </Text>
           <TouchableHighlight
@@ -59,7 +63,7 @@ class Search extends Component {
         <FlatList
           data={this.props.searchResults}
           renderItem={this._renderItem}
-          extraData={this.state}
+          extraData={{...this.state, videoIdPlaying: this.props.videoIdPlaying}}
         />
       </View>
     );
@@ -88,6 +92,13 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 18,
   },
+  itemTextPlaying: {
+    flex: 1,
+    marginLeft: 10,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'blue',
+  }
 });
 
 Search.propTypes = {
@@ -96,6 +107,7 @@ Search.propTypes = {
   searchResults: PropTypes.array.isRequired,
   onPressPlay: PropTypes.func.isRequired,
   onPressMoreInfo: PropTypes.func.isRequired,
+  videoIdPlaying: PropTypes.string,
 };
 
 export default Search;
