@@ -20,6 +20,21 @@ class SearchContainer extends Component {
 
     this._onChangeText = this._onChangeText.bind(this);
     this._onSubmitEditing = this._onSubmitEditing.bind(this);
+    this._onPressPlay = this._onPressPlay.bind(this);
+    this._setPlayer = this._setPlayer.bind(this);
+  }
+
+  _setPlayer(videoId, sound) {
+    if (this.props.player.sound) {
+      this.props.player.sound.stop(() => {
+        this.props.player.sound.release();
+        this.props.setPlayer(videoId, sound);
+        this.props.playerPlay();
+      });
+    } else {
+      this.props.setPlayer(videoId, sound);
+      this.props.playerPlay();
+    }
   }
 
   _onChangeText(text) {
@@ -67,6 +82,17 @@ class SearchContainer extends Component {
   }
 
   _onPressPlay(videoId) {
+    if (videoId == this.props.player.videoId) {
+      if (this.props.playingStatus) {
+        this.props.playerPause();
+        this.props.player.sound.pause();
+      } else {
+        this.props.playerPlay();
+        this.props.player.sound.play();
+      }
+      return;
+    }
+
     fetch(serverUrl + '/play', {
       // TODO: authenticate this post request
       method: 'POST',
@@ -94,7 +120,7 @@ class SearchContainer extends Component {
           }
         });
       });
-
+      this._setPlayer(videoId, sound);
     })
     .catch((error) => {
       console.log(error);
@@ -122,6 +148,8 @@ class SearchContainer extends Component {
 function mapStateToProps(state) {
   return {
     user: state.user,
+    player: state.player,
+    playingStatus: state.playingStatus,
   };
 }
 

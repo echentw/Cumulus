@@ -21,7 +21,14 @@ function configureStore(initialState) {
   return createStore(reducer, initialState, enhancer);
 }
 
-const store = configureStore({user: false});
+const store = configureStore({
+  user: null,
+  player: {
+    videoId: null,
+    sound: null,
+  },
+  playingStatus: true,
+});
 
 const App = () => (
   <Provider store={store}>

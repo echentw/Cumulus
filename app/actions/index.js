@@ -1,7 +1,7 @@
-import * as PlayerActions from './player';
 import * as UserActions from './user';
+import * as PlayerActions from './player';
 
 export const ActionCreators = Object.assign({},
-  PlayerActions,
   UserActions,
+  PlayerActions,
 );

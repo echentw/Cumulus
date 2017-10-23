@@ -1,13 +1,21 @@
 import * as types from './types';
 
-export function playVideo() {
+export function setPlayer(videoId, sound) {
   return {
-    type: types.PLAY_VIDEO,
-  }
+    type: types.SET_PLAYER,
+    videoId: videoId,
+    sound: sound,
+  };
 }
 
-export function pauseVideo() {
+export function playerPlay() {
   return {
-    type: types.PAUSE_VIDEO,
+    type: types.PLAYER_PLAY,
+  };
+}
+
+export function playerPause() {
+  return {
+    type: types.PLAYER_PAUSE,
   }
 }
