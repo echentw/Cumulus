@@ -13,6 +13,8 @@ import PropTypes from 'prop-types';
 import { SearchBar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Entypo';
 
+import OptionsMenu from './OptionsMenu';
+
 class Search extends Component {
   constructor(props) {
     super(props);
@@ -39,7 +41,7 @@ class Search extends Component {
           <TouchableHighlight
             activeOpacity={0.5}
             style={{marginLeft: 6}}
-            underlayColor={'white'}
+            underlayColor={'lightblue'}
             onPress={() => this.props.onPressMoreInfo(item.videoId)}
             onShowUnderlay={this._onPressIn}
             onHideUnderlay={this._onPressOut}
@@ -66,6 +68,7 @@ class Search extends Component {
           renderItem={this._renderItem}
           extraData={{...this.state, videoIdPlaying: this.props.videoIdPlaying}}
         />
+        <OptionsMenu showing={this.props.optionsMenuShowing}/>
       </View>
     );
   }
@@ -80,8 +83,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 50,
-    paddingLeft: 4,
-    paddingRight: 10,
+    paddingLeft: 8,
+    paddingRight: 8,
   },
   itemImage: {
     height: 40,
@@ -99,7 +102,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'blue',
-  }
+  },
 });
 
 Search.propTypes = {
@@ -109,6 +112,7 @@ Search.propTypes = {
   onPressPlay: PropTypes.func.isRequired,
   onPressMoreInfo: PropTypes.func.isRequired,
   videoIdPlaying: PropTypes.string,
+  optionsMenuShowing: PropTypes.bool.isRequired,
 };
 
 export default Search;

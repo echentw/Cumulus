@@ -16,12 +16,14 @@ class SearchContainer extends Component {
     this.state = {
       query: '',
       searchResults: [],
+      optionsMenuShowing: false,
     };
 
     this._onChangeText = this._onChangeText.bind(this);
     this._onSubmitEditing = this._onSubmitEditing.bind(this);
     this._onPressPlay = this._onPressPlay.bind(this);
     this._setPlayer = this._setPlayer.bind(this);
+    this._onPressMoreInfo = this._onPressMoreInfo.bind(this);
   }
 
   _setPlayer(videoId, sound) {
@@ -129,6 +131,9 @@ class SearchContainer extends Component {
 
   _onPressMoreInfo(videoId) {
     console.log('you pressed the ellipsis for more info for video ' + videoId);
+    this.setState({
+      optionsMenuShowing: !this.state.optionsMenuShowing,
+    });
   }
 
   render() {
@@ -141,6 +146,7 @@ class SearchContainer extends Component {
         onPressPlay={this._onPressPlay}
         onPressMoreInfo={this._onPressMoreInfo}
         videoIdPlaying={this.props.player.videoId}
+        optionsMenuShowing={this.state.optionsMenuShowing}
       />
     );
   }
