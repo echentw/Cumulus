@@ -24,6 +24,13 @@ class SearchContainer extends Component {
     this._onPressPlay = this._onPressPlay.bind(this);
     this._setPlayer = this._setPlayer.bind(this);
     this._onPressMoreInfo = this._onPressMoreInfo.bind(this);
+    this._hideOptionsMenu = this._hideOptionsMenu.bind(this);
+  }
+
+  _hideOptionsMenu() {
+    this.setState({
+      optionsMenuShowing: false,
+    });
   }
 
   _setPlayer(videoId, sound) {
@@ -147,6 +154,7 @@ class SearchContainer extends Component {
         onPressMoreInfo={this._onPressMoreInfo}
         videoIdPlaying={this.props.player.videoId}
         optionsMenuShowing={this.state.optionsMenuShowing}
+        hideOptionsMenu={this._hideOptionsMenu}
       />
     );
   }

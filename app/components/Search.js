@@ -68,7 +68,10 @@ class Search extends Component {
           renderItem={this._renderItem}
           extraData={{...this.state, videoIdPlaying: this.props.videoIdPlaying}}
         />
-        <OptionsMenu showing={this.props.optionsMenuShowing}/>
+        <OptionsMenu
+          showing={this.props.optionsMenuShowing}
+          hide={this.props.hideOptionsMenu}
+        />
       </View>
     );
   }
@@ -113,6 +116,7 @@ Search.propTypes = {
   onPressMoreInfo: PropTypes.func.isRequired,
   videoIdPlaying: PropTypes.string,
   optionsMenuShowing: PropTypes.bool.isRequired,
+  hideOptionsMenu: PropTypes.func.isRequired,
 };
 
 export default Search;

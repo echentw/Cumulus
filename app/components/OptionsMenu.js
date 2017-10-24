@@ -58,9 +58,17 @@ class OptionsMenu extends Component {
         ]}
       >
         <FlatList
-          data={[{key: 'Download song'}, {key: 'Something else'}, {key: 'Cancel'}]}
+          data={[{key: 'Download song'}, {key: 'Something else'}]}
           renderItem={this._renderItem}
         />
+        <TouchableHighlight
+          underlayColor={'lightgrey'}
+          onPress={this.props.hide}
+        >
+          <View style={styles.item}>
+            <Text style={styles.itemText}>Cancel</Text>
+          </View>
+        </TouchableHighlight>
       </Animated.View>
     );
   }
@@ -87,6 +95,7 @@ const styles = StyleSheet.create({
 
 OptionsMenu.propTypes = {
   showing: PropTypes.bool.isRequired,
+  hide: PropTypes.func.isRequired,
 };
 
 export default OptionsMenu;
