@@ -55,6 +55,7 @@ class Search extends Component {
     return (
       <View style={styles.container}>
         <SearchBar
+          clearIcon
           onChangeText={this.props.onChangeText}
           onSubmitEditing={this.props.onSubmitEditing}
           enablesReturnKeyAutomatically={true}
