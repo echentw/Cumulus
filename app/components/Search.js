@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import { SearchBar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Entypo';
 
-import OptionsMenu from './OptionsMenu';
+import SongOptionsContainer from '../containers/SongOptionsContainer';
 
 class Search extends Component {
   constructor(props) {
@@ -68,10 +68,7 @@ class Search extends Component {
           renderItem={this._renderItem}
           extraData={{...this.state, videoIdPlaying: this.props.videoIdPlaying}}
         />
-        <OptionsMenu
-          showing={this.props.optionsMenuShowing}
-          hide={this.props.hideOptionsMenu}
-        />
+        <SongOptionsContainer/>
       </View>
     );
   }
@@ -115,8 +112,6 @@ Search.propTypes = {
   onPressPlay: PropTypes.func.isRequired,
   onPressMoreInfo: PropTypes.func.isRequired,
   videoIdPlaying: PropTypes.string,
-  optionsMenuShowing: PropTypes.bool.isRequired,
-  hideOptionsMenu: PropTypes.func.isRequired,
 };
 
 export default Search;

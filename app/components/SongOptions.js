@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-class OptionsMenu extends Component {
+class SongOptions extends Component {
   constructor(props) {
     super(props);
 
@@ -18,10 +18,11 @@ class OptionsMenu extends Component {
     };
 
     this._toggle = this._toggle.bind(this);
+    this._renderItem = this._renderItem.bind(this);
   }
 
   _toggle() {
-    const toValue = this.props.showing ? 0 : 200;
+    const toValue = this.props.songInfo ? 0 : 200;
     Animated.spring(this.state.bounceValue, {
       toValue: toValue,
       velocity: 4,
@@ -33,7 +34,7 @@ class OptionsMenu extends Component {
     return (
       <TouchableHighlight
         underlayColor={'lightgrey'}
-        onPress={() => console.log('you pressed an options menu button')}
+        onPress={() => this.props.onPress(item.key)}
       >
         <View style={styles.item}>
           <Text style={styles.itemText}>{item.key}</Text>
@@ -63,7 +64,7 @@ class OptionsMenu extends Component {
         />
         <TouchableHighlight
           underlayColor={'lightgrey'}
-          onPress={this.props.hide}
+          onPress={this.props.songInfoBlur}
         >
           <View style={styles.item}>
             <Text style={styles.itemText}>Cancel</Text>
@@ -93,9 +94,10 @@ const styles = StyleSheet.create({
   },
 });
 
-OptionsMenu.propTypes = {
-  showing: PropTypes.bool.isRequired,
-  hide: PropTypes.func.isRequired,
+SongOptions.propTypes = {
+  songInfo: PropTypes.string,
+  songInfoBlur: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
 };
 
-export default OptionsMenu;
+export default SongOptions;

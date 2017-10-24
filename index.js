@@ -28,6 +28,7 @@ const store = configureStore({
     sound: null,
   },
   playingStatus: true,
+  songInfo: null,
 });
 
 const App = () => (
