@@ -3,10 +3,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 
-import { Text } from 'react-native';
+import { View } from 'react-native';
+import SideMenu from 'react-native-side-menu';
 
 import PlayerContainer from './PlayerContainer';
 import SearchContainer from './SearchContainer';
+import MenuContainer from './MenuContainer';
 
 class MainContainer extends Component {
   constructor(props) {
@@ -14,8 +16,13 @@ class MainContainer extends Component {
   }
 
   render() {
+    const menu = <MenuContainer/>;
     return (
-      <SearchContainer/>
+      <SideMenu menu={menu}>
+        <View style={{flex: 1, backgroundColor: 'lightblue'}}>
+          <SearchContainer/>
+        </View>
+      </SideMenu>
     );
   }
 }
