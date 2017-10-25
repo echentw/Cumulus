@@ -22,7 +22,7 @@ class SongOptions extends Component {
   }
 
   _toggle() {
-    const toValue = this.props.songInfo ? 0 : 200;
+    const toValue = this.props.songInfo.videoId ? 0 : 200;
     Animated.spring(this.state.bounceValue, {
       toValue: toValue,
       velocity: 4,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
 });
 
 SongOptions.propTypes = {
-  songInfo: PropTypes.string,
+  songInfo: PropTypes.object.isRequired,
   songInfoBlur: PropTypes.func.isRequired,
   onPress: PropTypes.func.isRequired,
 };

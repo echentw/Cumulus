@@ -42,7 +42,7 @@ class Search extends Component {
             activeOpacity={0.5}
             style={{marginLeft: 6}}
             underlayColor={'lightblue'}
-            onPress={() => this.props.onPressMoreInfo(item.videoId)}
+            onPress={() => this.props.onPressMoreInfo(item.videoId, item.title)}
             onShowUnderlay={this._onPressIn}
             onHideUnderlay={this._onPressOut}
           >

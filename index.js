@@ -28,7 +28,10 @@ const store = configureStore({
     sound: null,
   },
   playingStatus: true,
-  songInfo: null,
+  songInfo: {
+    videoId: null,
+    title: null,
+  },
 });
 
 const App = () => (

@@ -32,7 +32,10 @@ class Menu extends Component {
     return (
       <View style={styles.container}>
         <FlatList
-          data={[{key: 'Your Songs'}, {key: 'Your Playlists'}]}
+          data={[
+            {key: 'Your Songs'},
+            {key: 'Your Playlists'},
+          ]}
           renderItem={this._renderItem}
         />
       </View>
