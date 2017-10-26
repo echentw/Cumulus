@@ -3,8 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 
-import SideMenu from 'react-native-side-menu';
-
 import Search from '../components/Search';
 
 import Sound from 'react-native-sound';

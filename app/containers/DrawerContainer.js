@@ -3,21 +3,19 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 
-import Menu from '../components/Menu';
+import Drawer from '../components/Drawer';
 
 import RNFS from 'react-native-fs';
 import { getSongs } from '../db/realm';
 
-class MenuContainer extends Component {
+class DrawerContainer extends Component {
   constructor(props) {
     super(props);
 
-    this._onPressMenuItem = this._onPressMenuItem.bind(this);
-
-    console.log('menu navigator', this.props.navigator);
+    this._onPressItem = this._onPressItem.bind(this);
   }
 
-  _onPressMenuItem(selection) {
+  _onPressItem(selection) {
     if (selection == 'Your Songs') {
       console.log('you wanna view your songs :)');
       RNFS.readdir(RNFS.DocumentDirectoryPath + '/songs').then((files) => {
@@ -41,7 +39,7 @@ class MenuContainer extends Component {
 
   render() {
     return (
-      <Menu onPressMenuItem={this._onPressMenuItem}/>
+      <Drawer onPressItem={this._onPressItem}/>
     );
   }
 }
@@ -54,4 +52,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MenuContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(DrawerContainer);

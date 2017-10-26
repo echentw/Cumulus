@@ -49,7 +49,7 @@ Navigation.startSingleScreenApp({
   },
   drawer: {
     left: {
-      screen: 'Cumulus.SideMenu',
+      screen: 'Cumulus.Drawer',
     },
     style: {
       drawerShadow: false,

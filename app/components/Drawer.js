@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-class Menu extends Component {
+class Drawer extends Component {
   constructor(props) {
     super(props);
 
@@ -19,7 +19,7 @@ class Menu extends Component {
     return (
       <TouchableHighlight
         underlayColor={'lightgrey'}
-        onPress={() => this.props.onPressMenuItem(item.key)}
+        onPress={() => this.props.onPressItem(item.key)}
       >
         <View style={styles.item}>
           <Text style={styles.itemText}>{item.key}</Text>
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
   },
 });
 
-Menu.propTypes = {
-  onPressMenuItem: PropTypes.func.isRequired,
+Drawer.propTypes = {
+  onPressItem: PropTypes.func.isRequired,
 };
 
-export default Menu;
+export default Drawer;
