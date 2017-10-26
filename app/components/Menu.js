@@ -33,6 +33,7 @@ class Menu extends Component {
       <View style={styles.container}>
         <FlatList
           data={[
+            {key: 'Search'},
             {key: 'Your Songs'},
             {key: 'Your Playlists'},
           ]}

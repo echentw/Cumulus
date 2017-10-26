@@ -12,6 +12,9 @@ class AppContainer extends Component {
   }
 
   render() {
+    return (
+      <MainContainer/>
+    );
     const { user } = this.props;
     if (user) {
       return (

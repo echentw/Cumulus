@@ -5,6 +5,11 @@ import PropTypes from 'prop-types';
 const Player = (props) => {
   const { user } = props;
   return (
+    <TouchableHighlight onPress={props.onPressPlayPauseButton} underlayColor="white">
+      <Text>Play/Pause</Text>
+    </TouchableHighlight>
+  );
+  return (
     <View style={styles.container}>
       <Text>Welcome {user.name}!</Text>
       <View style={styles.avatar}>
