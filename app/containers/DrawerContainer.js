@@ -16,25 +16,29 @@ class DrawerContainer extends Component {
   }
 
   _onPressItem(selection) {
-    if (selection == 'Your Songs') {
-      console.log('you wanna view your songs :)');
-      RNFS.readdir(RNFS.DocumentDirectoryPath + '/songs').then((files) => {
-        console.log(files);
-      });
-      const songs = getSongs().map((song) => song.title);
-      console.log(songs);
+    this.props.navigator.toggleDrawer({
+      side: 'left',
+      animated: true,
+      to: 'closed',
+    });
+
+    let link;
+    if (selection == 'Saved Songs') {
+      link = 'Cumulus.SavedSongs';
+      // console.log('you wanna view your songs :)');
+      // RNFS.readdir(RNFS.DocumentDirectoryPath + '/songs').then((files) => {
+      //   console.log(files);
+      // });
+      // const songs = getSongs().map((song) => song.title);
+      // console.log(songs);
     } else if (selection == 'Search') {
-      this.props.navigator.toggleDrawer({
-        side: 'left',
-        animated: true,
-        to: 'closed',
-      });
-      this.props.navigator.handleDeepLink({
-        link: 'Cumulus.Search',
-      });
+      link = 'Cumulus.Search';
+    } else if (selection == 'Playlists') {
+      link = 'Cumulus.Playlists';
     } else {
-      console.log('you pressed ' + selection);
+      console.log('unhandled button!', selection);
     }
+    this.props.navigator.handleDeepLink({ link: link });
   }
 
   render() {

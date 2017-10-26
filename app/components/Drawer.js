@@ -34,8 +34,8 @@ class Drawer extends Component {
         <FlatList
           data={[
             {key: 'Search'},
-            {key: 'Your Songs'},
-            {key: 'Your Playlists'},
+            {key: 'Saved Songs'},
+            {key: 'Playlists'},
           ]}
           renderItem={this._renderItem}
         />
