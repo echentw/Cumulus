@@ -13,10 +13,6 @@ Sound.setCategory('Playback');
 const serverUrl = 'http://localhost:3000';
 
 class SearchContainer extends Component {
-  static navigationOptions = {
-    header: null,
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +25,20 @@ class SearchContainer extends Component {
     this._onPressPlay = this._onPressPlay.bind(this);
     this._setPlayer = this._setPlayer.bind(this);
 
-    console.log('search navigator', this.props.navigator);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  onNavigatorEvent(event) {
+    if (event.type == 'DeepLink') {
+      this.props.navigator.resetTo({
+        screen: event.link,
+        animated: true,
+        animationType: 'fade',
+        navigatorStyle: {
+          navBarHidden: true,
+        },
+      });
+    }
   }
 
   _setPlayer(videoId, sound) {
@@ -67,8 +76,7 @@ class SearchContainer extends Component {
         'accept': '*/*',
         'accept-encoding': 'gzip, deflate, br',
         'accept-language': 'en-US,en;q=0.8',
-        // 'authorization': 'Bearer ' + this.props.user.token,
-        'authorization': 'Bearer ya29.GlzvBHUm6DUcE3wy0OIT3cQiK5hSbHKM23GGRrT1Zn8VbmRoJqyCmQkgyuXFjcX1m7E8G2H_VfSqRtqVbgu1-vnM3OVnJXNfoi0A7YO_eI3J4h7z_hk4KNxnblRDoQ',
+        'authorization': 'Bearer ' + this.props.user.token,
       },
     })
     .then((response) => {

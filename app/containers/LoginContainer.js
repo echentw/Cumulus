@@ -36,6 +36,14 @@ class LoginContainer extends Component {
     if (Platform.OS === 'ios') {
       SafariView.dismiss();
     }
+    this.props.navigator.resetTo({
+      screen: 'Cumulus.SearchContainer',
+      animated: true,
+      animationType: 'fade',
+      navigatorStyle: {
+        navBarHidden: true,
+      },
+    });
   };
 
   // Handle Login with Google button tap
