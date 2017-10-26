@@ -41,8 +41,8 @@ class Search extends Component {
           <TouchableHighlight
             activeOpacity={0.5}
             style={{marginLeft: 6}}
-            underlayColor={'lightblue'}
-            onPress={() => this.props.onPressMoreInfo(item.videoId, item.title)}
+            underlayColor={'white'}
+            onPress={() => this.props.onPressMoreInfo(item.videoId, item.title, item.thumbnail)}
             onShowUnderlay={this._onPressIn}
             onHideUnderlay={this._onPressOut}
           >

@@ -3,11 +3,25 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
 
+import RNFS from 'react-native-fs';
+import { getSongs } from '../db/realm';
+
 import SavedSongs from '../components/SavedSongs';
 
 class SavedSongsContainer extends Component {
   constructor(props) {
     super(props);
+
+    const songs = getSongs().map((song) => ({
+      key: song.videoId,
+      videoId: song.videoId,
+      title: song.title,
+    }));
+
+    this.state = {
+      songs: songs,
+    };
+
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
@@ -26,7 +40,7 @@ class SavedSongsContainer extends Component {
 
   render() {
     return (
-      <SavedSongs/>
+      <SavedSongs songs={this.state.songs}/>
     );
   }
 }

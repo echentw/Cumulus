@@ -34,6 +34,7 @@ const store = configureStore({
   songInfo: {
     videoId: null,
     title: null,
+    thumbnail: null,
   },
 });
 

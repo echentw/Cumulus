@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   },
 });
 
-Login.proptypes = {
+Login.propTypes = {
   loginWithGoogle: PropTypes.func.isRequired,
 };
 
