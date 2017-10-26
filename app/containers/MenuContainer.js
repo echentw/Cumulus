@@ -32,7 +32,7 @@ class MenuContainer extends Component {
         to: 'closed',
       });
       this.props.navigator.handleDeepLink({
-        link: 'Cumulus.SearchContainer',
+        link: 'Cumulus.Search',
       });
     } else {
       console.log('you pressed ' + selection);

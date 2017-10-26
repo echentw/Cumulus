@@ -41,7 +41,7 @@ registerScreens(store, Provider);
 
 Navigation.startSingleScreenApp({
   screen: {
-    screen: 'Cumulus.LoginContainer',
+    screen: 'Cumulus.Login',
     title: 'Search',
     navigatorStyle: {
       navBarHidden: true,
@@ -49,7 +49,7 @@ Navigation.startSingleScreenApp({
   },
   drawer: {
     left: {
-      screen: 'Cumulus.SideMenuContainer',
+      screen: 'Cumulus.SideMenu',
     },
     style: {
       drawerShadow: false,

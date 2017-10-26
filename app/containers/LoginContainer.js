@@ -37,7 +37,7 @@ class LoginContainer extends Component {
       SafariView.dismiss();
     }
     this.props.navigator.resetTo({
-      screen: 'Cumulus.SearchContainer',
+      screen: 'Cumulus.Search',
       animated: true,
       animationType: 'fade',
       navigatorStyle: {
