@@ -13,12 +13,12 @@ import RNFS from 'react-native-fs';
 import Icon from 'react-native-vector-icons/Entypo';
 
 class SavedSongs extends Component {
-  _renderItem({ item }) {
+  _renderItem = ({ item }) => {
     return (
       <TouchableHighlight
         activeOpacity={0.7}
         underlayColor={'rgb(220, 220, 220)'}
-        onPress={() => console.log('you wanna play this song')}
+        onPress={() => this.props.onPressPlay(item.videoId)}
       >
         <View style={styles.item}>
           <Image style={styles.itemImage} source={{uri: RNFS.DocumentDirectoryPath + '/thumbnails/thumbnail_' + item.videoId + '.jpg'}}/>
@@ -45,9 +45,6 @@ class SavedSongs extends Component {
   }
 
   render() {
-      // <View style={styles.container}>
-      //   <Text>You want to view your saved songs hmm</Text>
-      // </View>
     return (
       <View style={styles.container}>
         <FlatList
@@ -60,11 +57,6 @@ class SavedSongs extends Component {
 }
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // }
   container: {
     flex: 1,
     paddingTop: 22,
@@ -97,6 +89,7 @@ const styles = StyleSheet.create({
 
 SavedSongs.propTypes = {
   songs: PropTypes.array.isRequired,
+  onPressPlay: PropTypes.func.isRequired,
 };
 
 export default SavedSongs;

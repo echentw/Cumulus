@@ -6,6 +6,9 @@ import { ActionCreators } from '../actions';
 import RNFS from 'react-native-fs';
 import { getSongs } from '../db/realm';
 
+import Sound from 'react-native-sound';
+Sound.setCategory('Playback');
+
 import SavedSongs from '../components/SavedSongs';
 
 class SavedSongsContainer extends Component {
@@ -38,15 +41,43 @@ class SavedSongsContainer extends Component {
     }
   }
 
+  _onPressPlay = (videoId) => {
+    if (this.props.player.sound) {
+      this.props.player.sound.release();
+    }
+
+    const sound = new Sound('song_' + videoId + '.mp3', RNFS.DocumentDirectoryPath + '/songs', (error) => {
+      if (error) {
+        console.log('failed to load sound', error);
+        return;
+      }
+      sound.setNumberOfLoops(-1);
+      sound.play((success) => {
+        if (success) {
+          console.log('successfully finished playing');
+        } else {
+          console.log('playback failed due to audio decoding errors');
+        }
+      });
+      this.props.setPlayer(videoId, sound);
+    });
+  }
+
   render() {
     return (
-      <SavedSongs songs={this.state.songs}/>
+      <SavedSongs
+        songs={this.state.songs}
+        onPressPlay={this._onPressPlay}
+      />
     );
   }
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    player: state.player,
+    playingStatus: state.playingStatus,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
