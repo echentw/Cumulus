@@ -13,11 +13,6 @@ const serverUrl = 'http://localhost:3000';
 class SearchContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      query: '',
-      searchResults: [],
-    };
-
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
@@ -48,17 +43,16 @@ class SearchContainer extends Component {
   }
 
   _onChangeText = (text) => {
-    this.setState({query: text});
+    this.props.updateSearchQuery(text);
   }
 
   _onSubmitEditing = () => {
-    const query = this.state.query;
     const maxResults = 10;
 
     const url = [
       'https://content.googleapis.com/youtube/v3/search?maxResults=' + maxResults,
       'part=snippet',
-      'q=' + query,
+      'q=' + this.props.searchQuery,
       'type=video'
     ].join('&');
 
@@ -84,7 +78,7 @@ class SearchContainer extends Component {
           width: result.snippet.thumbnails.high.width,
         },
       }));
-      this.setState({ searchResults: results });
+      this.props.updateSearchResults(results);
     })
     .catch((error) => {
       console.error(error);
@@ -138,12 +132,11 @@ class SearchContainer extends Component {
   }
 
   render() {
-    const { searchResults } = this.state;
     return (
       <Search
         onChangeText={this._onChangeText}
         onSubmitEditing={this._onSubmitEditing}
-        searchResults={searchResults}
+        searchResults={this.props.searchResults}
         onPressPlay={this._onPressPlay}
         videoIdPlaying={this.props.player.videoId}
         onPressMoreInfo={this.props.songInfoFocus}
@@ -157,6 +150,8 @@ function mapStateToProps(state) {
     user: state.user,
     player: state.player,
     playingStatus: state.playingStatus,
+    searchQuery: state.searchQuery,
+    searchResults: state.searchResults,
   };
 }
 

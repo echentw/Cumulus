@@ -36,6 +36,8 @@ const store = configureStore({
     title: null,
     thumbnail: null,
   },
+  searchQuery: '',
+  searchResults: [],
 });
 
 registerScreens(store, Provider);
