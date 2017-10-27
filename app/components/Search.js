@@ -56,6 +56,7 @@ class Search extends Component {
           onSubmitEditing={this.props.onSubmitEditing}
           enablesReturnKeyAutomatically={true}
           placeholder='Search'
+          defaultValue={this.props.defaultSearchQuery}
         />
         <FlatList
           data={this.props.searchResults}
@@ -106,6 +107,7 @@ Search.propTypes = {
   onPressPlay: PropTypes.func.isRequired,
   onPressMoreInfo: PropTypes.func.isRequired,
   videoIdPlaying: PropTypes.string,
+  defaultSearchQuery: PropTypes.string.isRequired,
 };
 
 export default Search;

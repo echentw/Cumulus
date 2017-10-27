@@ -134,6 +134,7 @@ class SearchContainer extends Component {
   render() {
     return (
       <Search
+        defaultSearchQuery={this.props.searchQuery}
         onChangeText={this._onChangeText}
         onSubmitEditing={this._onSubmitEditing}
         searchResults={this.props.searchResults}
