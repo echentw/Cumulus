@@ -16,13 +16,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import SongOptionsContainer from '../containers/SongOptionsContainer';
 
 class Search extends Component {
-  constructor(props) {
-    super(props);
-
-    this._renderItem = this._renderItem.bind(this);
-  }
-
-  _renderItem({ item }) {
+  _renderItem = ({ item }) => {
     return (
       <TouchableHighlight
         activeOpacity={0.7}

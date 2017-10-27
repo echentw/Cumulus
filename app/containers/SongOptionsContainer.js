@@ -12,13 +12,7 @@ import SongOptions from '../components/SongOptions';
 import { saveSong } from '../db/realm';
 
 class SongOptionsContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    this._onPress = this._onPress.bind(this);
-  }
-
-  async _onPress(value) {
+  _onPress = (value) => {
     if (value == 'Download song') {
       console.log('you want to download song with id ' + this.props.songInfo.videoId);
       const songsDirPromise = RNFS.mkdir(RNFS.DocumentDirectoryPath + '/songs');
@@ -29,7 +23,7 @@ class SongOptionsContainer extends Component {
           fromUrl: 'http://localhost:3000/downloads/song_' + this.props.songInfo.videoId + '.mp3',
           toFile: RNFS.DocumentDirectoryPath + '/songs/song_' + this.props.songInfo.videoId + '.mp3',
           begin: (res) => console.log('download song has begun', res),
-          // progress: (res) => console.log('download progress', res),
+          progress: (res) => console.log('download progress', res),
         }).promise;
 
         const thumbnailDownloadPromise = RNFS.downloadFile({

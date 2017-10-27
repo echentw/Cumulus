@@ -16,12 +16,9 @@ class SongOptions extends Component {
     this.state = {
       bounceValue: new Animated.Value(200),
     };
-
-    this._toggle = this._toggle.bind(this);
-    this._renderItem = this._renderItem.bind(this);
   }
 
-  _toggle() {
+  _toggle = () => {
     const toValue = this.props.songInfo.videoId ? 0 : 200;
     Animated.spring(this.state.bounceValue, {
       toValue: toValue,
@@ -30,7 +27,7 @@ class SongOptions extends Component {
     }).start();
   }
 
-  _renderItem({ item }) {
+  _renderItem = ({ item }) => {
     return (
       <TouchableHighlight
         underlayColor={'lightgrey'}

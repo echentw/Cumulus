@@ -9,13 +9,7 @@ import {
 import PropTypes from 'prop-types';
 
 class Drawer extends Component {
-  constructor(props) {
-    super(props);
-
-    this._renderItem = this._renderItem.bind(this);
-  }
-
-  _renderItem({ item }) {
+  _renderItem = ({ item }) => {
     return (
       <TouchableHighlight
         underlayColor={'lightgrey'}

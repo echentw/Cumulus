@@ -18,11 +18,6 @@ class SearchContainer extends Component {
       searchResults: [],
     };
 
-    this._onChangeText = this._onChangeText.bind(this);
-    this._onSubmitEditing = this._onSubmitEditing.bind(this);
-    this._onPressPlay = this._onPressPlay.bind(this);
-    this._setPlayer = this._setPlayer.bind(this);
-
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
@@ -39,7 +34,7 @@ class SearchContainer extends Component {
     }
   }
 
-  _setPlayer(videoId, sound) {
+  _setPlayer = (videoId, sound) => {
     if (this.props.player.sound) {
       this.props.player.sound.stop(() => {
         this.props.player.sound.release();
@@ -52,11 +47,11 @@ class SearchContainer extends Component {
     }
   }
 
-  _onChangeText(text) {
+  _onChangeText = (text) => {
     this.setState({query: text});
   }
 
-  _onSubmitEditing() {
+  _onSubmitEditing = () => {
     const query = this.state.query;
     const maxResults = 10;
 
@@ -96,7 +91,7 @@ class SearchContainer extends Component {
     });
   }
 
-  _onPressPlay(videoId) {
+  _onPressPlay = (videoId) => {
     if (videoId == this.props.player.videoId) {
       if (this.props.playingStatus) {
         this.props.playerPause();
