@@ -70,15 +70,14 @@ app.get('/auth/google/callback',
   }
 );
 
-// Used to see what the requests to the google api look like.
-// app.use(express.static(path.join(__dirname, 'views')));
-// app.get('/loadgapi', (req, res) => res.sendFile(path.join(__dirname, 'views/index.html')));
-
 app.use('/downloads', express.static(path.join(__dirname, 'downloads')));
 app.post('/play', (req, res) => {
   const { videoId } = req.body;
 
-  const child = spawn('./check_and_download_youtube.py', ['--videoId', 'song_' + videoId]);
+  // Escape all non-alphanumeric characters.
+  const escapedVideoId = videoId.replace(/([^a-zA-Z0-9_-])/g, '\\$1');
+
+  const child = spawn('./check_and_download_youtube.py', ['--videoId', 'song_' + escapedVideoId]);
   child.on('exit', (code, signal) => {
     const message = `child process exited with code ${code} and signal ${signal}`;
     console.log(message);
