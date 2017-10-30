@@ -121,7 +121,7 @@ class Search extends Component {
           videoIdPlaying={this.props.player.videoId}
           onPressMoreInfo={this.props.songInfoFocus}
         />
-        <CurrentSongFooter/>
+        <CurrentSongFooter navigator={this.props.navigator}/>
       </View>
     );
   }

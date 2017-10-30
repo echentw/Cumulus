@@ -97,7 +97,7 @@ class SavedSongs extends Component {
           onPressPlay={this._onPressPlay}
           videoIdPlaying={this.props.player.videoId}
         />
-        <CurrentSongFooter/>
+        <CurrentSongFooter navigator={this.props.navigator}/>
       </View>
     );
   }

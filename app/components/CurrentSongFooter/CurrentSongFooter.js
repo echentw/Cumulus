@@ -9,8 +9,18 @@ import {
   StyleSheet,
   TouchableHighlight,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 class CurrentSongFooter extends Component {
+  _onPress = () => {
+    this.props.navigator.push({
+      screen: 'Cumulus.CurrentSong',
+      title: 'Current Song',
+      animated: true,
+      animationType: 'slide-horizontal',
+    });
+  };
+
   render() {
     const title = this.props.currentSongInfo.title ? this.props.currentSongInfo.title : 'No song playing';
 
@@ -18,7 +28,7 @@ class CurrentSongFooter extends Component {
       <TouchableHighlight
         activeOpacity={0.7}
         underlayColor={'rgb(220, 220, 220)'}
-        onPress={() => console.log('you wanna see more about the current song hmmm')}
+        onPress={this._onPress}
       >
         <View style={styles.container}>
           <Text style={{ fontSize: 12 }}>Current Song</Text>
@@ -45,6 +55,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+CurrentSongFooter.propTypes = {
+  navigator: PropTypes.object.isRequired,
+};
 
 function mapStateToProps(state) {
   return {
