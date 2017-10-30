@@ -7,7 +7,7 @@ import RNFS from 'react-native-fs';
 import Sound from 'react-native-sound';
 Sound.setCategory('Playback');
 
-import { getAudioUrl } from '../lib/serverRequest';
+import { downloadVideoToServer, getAudioUrl } from '../lib/serverRequest';
 
 import SongOptions from '../components/SongOptions';
 
@@ -16,11 +16,12 @@ import { saveSong } from '../db/realm';
 class SongOptionsContainer extends Component {
   _onPress = (value) => {
     if (value == 'Download song') {
-      console.log('you want to download song with id ' + this.props.songInfo.videoId);
-      const songsDirPromise = RNFS.mkdir(RNFS.DocumentDirectoryPath + '/songs');
-      const thumbnailsDirPromise = RNFS.mkdir(RNFS.DocumentDirectoryPath + '/thumbnails');
-
-      Promise.all([songsDirPromise, thumbnailsDirPromise]).then(() => {
+      Promise.all([
+        downloadVideoToServer(this.props.songInfo.videoId),
+        RNFS.mkdir(RNFS.DocumentDirectoryPath + '/songs'),
+        RNFS.mkdir(RNFS.DocumentDirectoryPath + '/thumbnails'),
+      ])
+      .then(() => {
         const songDownloadPromise = RNFS.downloadFile({
           fromUrl: getAudioUrl(this.props.songInfo.videoId),
           toFile: RNFS.DocumentDirectoryPath + '/songs/song_' + this.props.songInfo.videoId + '.mp3',
@@ -37,15 +38,19 @@ class SongOptionsContainer extends Component {
         songDownloadPromise.catch((error) => console.log('error in downloading', error));
         thumbnailDownloadPromise.catch((error) => console.log('error in downloading', error));
 
-        Promise.all([songDownloadPromise, thumbnailDownloadPromise]).then((results) => {
-          if (results[0].statusCode == 200 && results[1].statusCode == 200) {
-            saveSong(this.props.songInfo.videoId, this.props.songInfo.title, () => {
-              console.log('done writing to db!');
-            });
-          } else {
-            console.log('error getting data back');
-          }
-        });
+        return Promise.all([songDownloadPromise, thumbnailDownloadPromise]);
+      })
+      .then((results) => {
+        if (results[0].statusCode == 200 && results[1].statusCode == 200) {
+          saveSong(this.props.songInfo.videoId, this.props.songInfo.title, () => {
+            console.log('done writing to db!');
+          });
+        } else {
+          console.log('error getting data back');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       });
     } else {
       console.log('you pressed ' + value);
