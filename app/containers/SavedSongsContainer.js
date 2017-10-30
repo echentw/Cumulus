@@ -41,9 +41,29 @@ class SavedSongsContainer extends Component {
     }
   }
 
-  _onPressPlay = (videoId) => {
+  _setPlayer = (videoId, sound) => {
     if (this.props.player.sound) {
-      this.props.player.sound.release();
+      this.props.player.sound.stop(() => {
+        this.props.player.sound.release();
+        this.props.setPlayer(videoId, sound);
+        this.props.playerPlay();
+      });
+    } else {
+      this.props.setPlayer(videoId, sound);
+      this.props.playerPlay();
+    }
+  }
+
+  _onPressPlay = (videoId) => {
+    if (videoId == this.props.player.videoId) {
+      if (this.props.playingStatus) {
+        this.props.playerPause();
+        this.props.player.sound.pause();
+      } else {
+        this.props.playerPlay();
+        this.props.player.sound.play();
+      }
+      return;
     }
 
     const sound = new Sound('song_' + videoId + '.mp3', RNFS.DocumentDirectoryPath + '/songs', (error) => {
@@ -59,7 +79,7 @@ class SavedSongsContainer extends Component {
           console.log('playback failed due to audio decoding errors');
         }
       });
-      this.props.setPlayer(videoId, sound);
+      this._setPlayer(videoId, sound);
     });
   }
 
