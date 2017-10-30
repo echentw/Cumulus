@@ -12,8 +12,6 @@ import PropTypes from 'prop-types';
 import RNFS from 'react-native-fs';
 import Icon from 'react-native-vector-icons/Entypo';
 
-import Header from '../Header/Header';
-
 class SavedSongsView extends Component {
   _renderItem = ({ item }) => {
     return (
@@ -48,22 +46,16 @@ class SavedSongsView extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Header title={'Saved Songs'}/>
-        <FlatList
-          data={this.props.songs}
-          renderItem={this._renderItem}
-          extraData={this.props.videoIdPlaying}
-        />
-      </View>
+      <FlatList
+        data={this.props.songs}
+        renderItem={this._renderItem}
+        extraData={this.props.videoIdPlaying}
+      />
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   item: {
     flexDirection: 'row',
     alignItems: 'center',

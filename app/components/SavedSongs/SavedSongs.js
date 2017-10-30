@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
+import { View } from 'react-native';
 
 import RNFS from 'react-native-fs';
 import Sound from 'react-native-sound';
@@ -9,6 +10,7 @@ Sound.setCategory('Playback');
 
 import { getSongs } from '../../db/realm';
 
+import Header from '../Header/Header';
 import SavedSongsView from './SavedSongsView';
 
 class SavedSongs extends Component {
@@ -85,11 +87,14 @@ class SavedSongs extends Component {
 
   render() {
     return (
-      <SavedSongsView
-        songs={this.state.songs}
-        onPressPlay={this._onPressPlay}
-        videoIdPlaying={this.props.player.videoId}
-      />
+      <View style={{ flex: 1 }}>
+        <Header title='Saved Songs'/>
+        <SavedSongsView
+          songs={this.state.songs}
+          onPressPlay={this._onPressPlay}
+          videoIdPlaying={this.props.player.videoId}
+        />
+      </View>
     );
   }
 }
