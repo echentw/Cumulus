@@ -40,7 +40,7 @@ class SearchView extends Component {
             onShowUnderlay={this._onPressIn}
             onHideUnderlay={this._onPressOut}
           >
-            <Icon size={16} name="dots-three-vertical"/>
+            <Icon size={16} name='dots-three-vertical'/>
           </TouchableHighlight>
         </View>
       </TouchableHighlight>
