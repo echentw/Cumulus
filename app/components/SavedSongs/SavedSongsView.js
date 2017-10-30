@@ -9,9 +9,10 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { Header } from 'react-native-elements';
 import RNFS from 'react-native-fs';
 import Icon from 'react-native-vector-icons/Entypo';
+
+import Header from '../Header/Header';
 
 class SavedSongsView extends Component {
   _renderItem = ({ item }) => {
@@ -48,11 +49,7 @@ class SavedSongsView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header
-          leftComponent={{ icon: 'menu', color: '#fff' }}
-          centerComponent={{ text: 'Saved Songs', style: { color: '#fff', fontSize: 18 } }}
-          outerContainerStyles={{ backgroundColor: 'lightblue', position: 'relative' }}
-        />
+        <Header title={'Saved Songs'}/>
         <FlatList
           data={this.props.songs}
           renderItem={this._renderItem}
