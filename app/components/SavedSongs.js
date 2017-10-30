@@ -49,6 +49,11 @@ class SavedSongs extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Header
+          leftComponent={{ icon: 'menu', color: '#fff' }}
+          centerComponent={{ text: 'Saved Songs', style: { color: '#fff', fontSize: 18 } }}
+          outerContainerStyles={{ backgroundColor: 'lightblue', position: 'relative' }}
+        />
         <FlatList
           data={this.props.songs}
           renderItem={this._renderItem}
@@ -62,7 +67,6 @@ class SavedSongs extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
   },
   item: {
     flexDirection: 'row',
