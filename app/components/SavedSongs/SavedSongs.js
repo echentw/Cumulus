@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { ActionCreators } from '../actions';
+import { ActionCreators } from '../../actions';
 
 import RNFS from 'react-native-fs';
-import { getSongs } from '../db/realm';
-
 import Sound from 'react-native-sound';
 Sound.setCategory('Playback');
 
-import SavedSongs from '../components/SavedSongs';
+import { getSongs } from '../../db/realm';
 
-class SavedSongsContainer extends Component {
+import SavedSongsView from './SavedSongsView';
+
+class SavedSongs extends Component {
   constructor(props) {
     super(props);
 
@@ -85,7 +85,7 @@ class SavedSongsContainer extends Component {
 
   render() {
     return (
-      <SavedSongs
+      <SavedSongsView
         songs={this.state.songs}
         onPressPlay={this._onPressPlay}
         videoIdPlaying={this.props.player.videoId}
@@ -105,4 +105,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SavedSongsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SavedSongs);

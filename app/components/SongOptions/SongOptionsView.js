@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-class SongOptions extends Component {
+class SongOptionsView extends Component {
   constructor(props) {
     super(props);
 
@@ -91,10 +91,10 @@ const styles = StyleSheet.create({
   },
 });
 
-SongOptions.propTypes = {
+SongOptionsView.propTypes = {
   songInfo: PropTypes.object.isRequired,
   songInfoBlur: PropTypes.func.isRequired,
   onPress: PropTypes.func.isRequired,
 };
 
-export default SongOptions;
+export default SongOptionsView;

@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { ActionCreators } from '../actions';
+import { ActionCreators } from '../../actions';
 
 import Sound from 'react-native-sound';
 Sound.setCategory('Playback');
 
-import youtubeSearch from '../lib/youtubeSearch';
-import { downloadVideoToServer, getAudioUrl } from '../lib/serverRequest.js';
+import youtubeSearch from '../../lib/youtubeSearch';
+import { downloadVideoToServer, getAudioUrl } from '../../lib/serverRequest.js';
 
-import Search from '../components/Search';
+import SearchView from './SearchView';
 
-class SearchContainer extends Component {
+class Search extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -106,7 +106,7 @@ class SearchContainer extends Component {
 
   render() {
     return (
-      <Search
+      <SearchView
         defaultSearchQuery={this.props.searchQuery}
         onChangeText={this._onChangeText}
         onSubmitEditing={this._onSubmitEditing}
@@ -133,4 +133,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

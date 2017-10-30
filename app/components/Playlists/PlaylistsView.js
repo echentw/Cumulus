@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-class Playlists extends Component {
+class PlaylistsView extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Playlists;
+export default PlaylistsView;

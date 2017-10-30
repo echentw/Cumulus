@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-class Drawer extends Component {
+class DrawerView extends Component {
   _renderItem = ({ item }) => {
     return (
       <TouchableHighlight
@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
   },
 });
 
-Drawer.propTypes = {
+DrawerView.propTypes = {
   onPressItem: PropTypes.func.isRequired,
 };
 
-export default Drawer;
+export default DrawerView;

@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { Linking, Platform } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { ActionCreators } from '../actions';
+import { ActionCreators } from '../../actions';
+
 import SafariView from 'react-native-safari-view';
 
-import { getOAuthEntrypoint } from '../lib/serverRequest';
+import { getOAuthEntrypoint } from '../../lib/serverRequest';
 
-import Login from '../components/Login';
+import LoginView from './LoginView';
 
-class LoginContainer extends Component {
+class Login extends Component {
   // Set up Linking
   componentDidMount() {
     // Add event listener to handle OAuthLogin:// URLs
@@ -64,7 +65,7 @@ class LoginContainer extends Component {
 
   render() {
     return (
-      <Login loginWithGoogle={this.loginWithGoogle}/>
+      <LoginView loginWithGoogle={this.loginWithGoogle}/>
     );
   }
 }
@@ -76,4 +77,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

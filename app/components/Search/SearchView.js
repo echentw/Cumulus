@@ -13,9 +13,9 @@ import PropTypes from 'prop-types';
 import { SearchBar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Entypo';
 
-import SongOptionsContainer from '../containers/SongOptionsContainer';
+import SongOptions from '../SongOptions/SongOptions';
 
-class Search extends Component {
+class SearchView extends Component {
   _renderItem = ({ item }) => {
     return (
       <TouchableHighlight
@@ -63,7 +63,7 @@ class Search extends Component {
           renderItem={this._renderItem}
           extraData={{...this.state, videoIdPlaying: this.props.videoIdPlaying}}
         />
-        <SongOptionsContainer/>
+        <SongOptions/>
       </View>
     );
   }
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
 });
 
-Search.propTypes = {
+SearchView.propTypes = {
   onChangeText: PropTypes.func.isRequired,
   onSubmitEditing: PropTypes.func.isRequired,
   searchResults: PropTypes.array.isRequired,
@@ -110,4 +110,4 @@ Search.propTypes = {
   defaultSearchQuery: PropTypes.string.isRequired,
 };
 
-export default Search;
+export default SearchView;

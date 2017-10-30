@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { ActionCreators } from '../actions';
-
-import Drawer from '../components/Drawer';
+import { ActionCreators } from '../../actions';
 
 import RNFS from 'react-native-fs';
-import { getSongs } from '../db/realm';
 
-class DrawerContainer extends Component {
+import { getSongs } from '../../db/realm';
+
+import DrawerView from './DrawerView';
+
+class Drawer extends Component {
   _onPressItem = (selection) => {
     this.props.navigator.toggleDrawer({
       side: 'left',
@@ -31,7 +32,7 @@ class DrawerContainer extends Component {
 
   render() {
     return (
-      <Drawer onPressItem={this._onPressItem}/>
+      <DrawerView onPressItem={this._onPressItem}/>
     );
   }
 }
@@ -44,4 +45,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrawerContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(Drawer);

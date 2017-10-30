@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { ActionCreators } from '../actions';
+import { ActionCreators } from '../../actions';
 
 import RNFS from 'react-native-fs';
 import Sound from 'react-native-sound';
 Sound.setCategory('Playback');
 
-import { downloadVideoToServer, getAudioUrl } from '../lib/serverRequest';
+import { downloadVideoToServer, getAudioUrl } from '../../lib/serverRequest';
 
-import SongOptions from '../components/SongOptions';
+import SongOptionsView from './SongOptionsView';
 
-import { saveSong } from '../db/realm';
+import { saveSong } from '../../db/realm';
 
-class SongOptionsContainer extends Component {
+class SongOptions extends Component {
   _onPress = (value) => {
     if (value == 'Download song') {
       Promise.all([
@@ -61,7 +61,7 @@ class SongOptionsContainer extends Component {
 
   render() {
     return (
-      <SongOptions
+      <SongOptionsView
         songInfo={this.props.songInfo}
         songInfoBlur={this.props.songInfoBlur}
         onPress={this._onPress}
@@ -80,4 +80,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SongOptionsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SongOptions);

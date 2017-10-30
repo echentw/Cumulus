@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { ActionCreators } from '../actions';
+import { ActionCreators } from '../../actions';
 
-import Playlists from '../components/Playlists';
+import PlaylistsView from './PlaylistsView';
 
-class PlaylistsContainer extends Component {
+class Playlists extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -26,7 +26,7 @@ class PlaylistsContainer extends Component {
 
   render() {
     return (
-      <Playlists/>
+      <PlaylistsView/>
     );
   }
 }
@@ -39,4 +39,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(ActionCreators, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlaylistsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(Playlists);

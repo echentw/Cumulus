@@ -10,11 +10,10 @@ import {
 import PropTypes from 'prop-types';
 
 import { Header } from 'react-native-elements';
-
 import RNFS from 'react-native-fs';
 import Icon from 'react-native-vector-icons/Entypo';
 
-class SavedSongs extends Component {
+class SavedSongsView extends Component {
   _renderItem = ({ item }) => {
     return (
       <TouchableHighlight
@@ -94,10 +93,10 @@ const styles = StyleSheet.create({
   },
 });
 
-SavedSongs.propTypes = {
+SavedSongsView.propTypes = {
   songs: PropTypes.array.isRequired,
   onPressPlay: PropTypes.func.isRequired,
   videoIdPlaying: PropTypes.string,
 };
 
-export default SavedSongs;
+export default SavedSongsView;

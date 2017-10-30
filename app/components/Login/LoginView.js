@@ -7,7 +7,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PropTypes from 'prop-types';
 
-const Login = (props) => (
+const LoginView = (props) => (
   <View style={styles.container}>
     <View style={styles.content}>
       <Text style={styles.header}>
@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
   },
 });
 
-Login.propTypes = {
+LoginView.propTypes = {
   loginWithGoogle: PropTypes.func.isRequired,
 };
 
-export default Login;
+export default LoginView;
