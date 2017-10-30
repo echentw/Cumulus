@@ -11,6 +11,7 @@ Sound.setCategory('Playback');
 import { getSongs } from '../../db/realm';
 
 import Header from '../Header/Header';
+import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import SavedSongsView from './SavedSongsView';
 
 class SavedSongs extends Component {
@@ -56,7 +57,9 @@ class SavedSongs extends Component {
     }
   }
 
-  _onPressPlay = (videoId) => {
+  _onPressPlay = (videoId, title, thumbnail) => {
+    this.props.setCurrentSongInfo(title, thumbnail);
+
     if (videoId == this.props.player.videoId) {
       if (this.props.playingStatus) {
         this.props.playerPause();
@@ -94,6 +97,7 @@ class SavedSongs extends Component {
           onPressPlay={this._onPressPlay}
           videoIdPlaying={this.props.player.videoId}
         />
+        <CurrentSongFooter/>
       </View>
     );
   }

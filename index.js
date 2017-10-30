@@ -36,6 +36,10 @@ const store = configureStore({
     title: null,
     thumbnail: null,
   },
+  currentSongInfo: {
+    title: null,
+    thumbnail: null,
+  },
   searchQuery: '',
   searchResults: [],
 });

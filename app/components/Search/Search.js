@@ -68,7 +68,9 @@ class Search extends Component {
       });
   }
 
-  _onPressPlay = (videoId) => {
+  _onPressPlay = (videoId, title, thumbnail) => {
+    this.props.setCurrentSongInfo(title, thumbnail);
+
     if (videoId == this.props.player.videoId) {
       if (this.props.playingStatus) {
         this.props.playerPause();

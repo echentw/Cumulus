@@ -14,14 +14,19 @@ import Icon from 'react-native-vector-icons/Entypo';
 
 class SavedSongsView extends Component {
   _renderItem = ({ item }) => {
+    const thumbnail = {
+      url: RNFS.DocumentDirectoryPath + '/thumbnails/thumbnail_' + item.videoId + '.jpg',
+      // TODO: add height and width to here
+    };
+
     return (
       <TouchableHighlight
         activeOpacity={0.7}
         underlayColor={'rgb(220, 220, 220)'}
-        onPress={() => this.props.onPressPlay(item.videoId)}
+        onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
       >
         <View style={styles.item}>
-          <Image style={styles.itemImage} source={{uri: RNFS.DocumentDirectoryPath + '/thumbnails/thumbnail_' + item.videoId + '.jpg'}}/>
+          <Image style={styles.itemImage} source={{uri: thumbnail.url}}/>
           <Text
             style={this.props.videoIdPlaying == item.videoId ? styles.itemTextPlaying : styles.itemText}
             numberOfLines={1}
