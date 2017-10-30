@@ -7,6 +7,8 @@ import RNFS from 'react-native-fs';
 import Sound from 'react-native-sound';
 Sound.setCategory('Playback');
 
+import { getAudioUrl } from '../lib/serverRequest';
+
 import SongOptions from '../components/SongOptions';
 
 import { saveSong } from '../db/realm';
@@ -20,7 +22,7 @@ class SongOptionsContainer extends Component {
 
       Promise.all([songsDirPromise, thumbnailsDirPromise]).then(() => {
         const songDownloadPromise = RNFS.downloadFile({
-          fromUrl: 'http://localhost:3000/downloads/song_' + this.props.songInfo.videoId + '.mp3',
+          fromUrl: getAudioUrl(this.props.songInfo.videoId),
           toFile: RNFS.DocumentDirectoryPath + '/songs/song_' + this.props.songInfo.videoId + '.mp3',
           begin: (res) => console.log('download song has begun', res),
           progress: (res) => console.log('download progress', res),

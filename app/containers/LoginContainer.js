@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { Linking, Platform } from 'react-native';
-
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../actions';
-
 import SafariView from 'react-native-safari-view';
 
-import Login from '../components/Login';
+import { getOAuthEntrypoint } from '../lib/serverRequest';
 
-const serverUrl = 'http://localhost:3000';
+import Login from '../components/Login';
 
 class LoginContainer extends Component {
   // Set up Linking
@@ -47,7 +45,7 @@ class LoginContainer extends Component {
   };
 
   // Handle Login with Google button tap
-  loginWithGoogle = () => this.openURL(serverUrl + '/auth/google');
+  loginWithGoogle = () => this.openURL(getOAuthEntrypoint());
 
   // Open URL in a browser
   openURL = (url) => {
