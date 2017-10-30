@@ -10,16 +10,21 @@ import {
 
 class CurrentSong extends Component {
   render() {
+    const { title } = this.props;
+    const message = title ? `You are currently listening to ${title}` : 'No song playing';
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>You wanna view the song currently playing hmmmm</Text>
+        <Text>{message}</Text>
       </View>
     );
   }
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    title: state.currentSongInfo.title,
+    thumbnail: state.currentSongInfo.thumbnail,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
