@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
+import { Header } from 'react-native-elements';
+
 import RNFS from 'react-native-fs';
 import Icon from 'react-native-vector-icons/Entypo';
 
@@ -23,7 +25,7 @@ class SavedSongs extends Component {
         <View style={styles.item}>
           <Image style={styles.itemImage} source={{uri: RNFS.DocumentDirectoryPath + '/thumbnails/thumbnail_' + item.videoId + '.jpg'}}/>
           <Text
-            style={styles.itemText}
+            style={this.props.videoIdPlaying == item.videoId ? styles.itemTextPlaying : styles.itemText}
             numberOfLines={1}
             ellipsizeMode={'tail'}
           >
@@ -50,6 +52,7 @@ class SavedSongs extends Component {
         <FlatList
           data={this.props.songs}
           renderItem={this._renderItem}
+          extraData={this.props.videoIdPlaying}
         />
       </View>
     );
@@ -90,6 +93,7 @@ const styles = StyleSheet.create({
 SavedSongs.propTypes = {
   songs: PropTypes.array.isRequired,
   onPressPlay: PropTypes.func.isRequired,
+  videoIdPlaying: PropTypes.string,
 };
 
 export default SavedSongs;

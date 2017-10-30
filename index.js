@@ -45,7 +45,7 @@ registerScreens(store, Provider);
 Navigation.startSingleScreenApp({
   screen: {
     screen: 'Cumulus.Login',
-    title: 'Search',
+    title: 'Login',
     navigatorStyle: {
       navBarHidden: true,
     }

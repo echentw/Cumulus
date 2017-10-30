@@ -88,6 +88,7 @@ class SavedSongsContainer extends Component {
       <SavedSongs
         songs={this.state.songs}
         onPressPlay={this._onPressPlay}
+        videoIdPlaying={this.props.player.videoId}
       />
     );
   }
