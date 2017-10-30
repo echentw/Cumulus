@@ -3,12 +3,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
+import { View } from 'react-native';
+
 import Sound from 'react-native-sound';
 Sound.setCategory('Playback');
 
 import youtubeSearch from '../../lib/youtubeSearch';
 import { downloadVideoToServer, getAudioUrl } from '../../lib/serverRequest.js';
 
+import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import SearchView from './SearchView';
 
 class Search extends Component {
@@ -108,15 +111,18 @@ class Search extends Component {
 
   render() {
     return (
-      <SearchView
-        defaultSearchQuery={this.props.searchQuery}
-        onChangeText={this._onChangeText}
-        onSubmitEditing={this._onSubmitEditing}
-        searchResults={this.props.searchResults}
-        onPressPlay={this._onPressPlay}
-        videoIdPlaying={this.props.player.videoId}
-        onPressMoreInfo={this.props.songInfoFocus}
-      />
+      <View style={{ flex: 1 }}>
+        <SearchView
+          defaultSearchQuery={this.props.searchQuery}
+          onChangeText={this._onChangeText}
+          onSubmitEditing={this._onSubmitEditing}
+          searchResults={this.props.searchResults}
+          onPressPlay={this._onPressPlay}
+          videoIdPlaying={this.props.player.videoId}
+          onPressMoreInfo={this.props.songInfoFocus}
+        />
+        <CurrentSongFooter/>
+      </View>
     );
   }
 }
