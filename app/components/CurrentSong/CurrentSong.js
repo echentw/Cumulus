@@ -3,34 +3,33 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
-import Icon from 'react-native-vector-icons/Foundation';
-
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Slider,
-} from 'react-native';
-
 import { onPlayEnd } from '../../lib/player';
+
+import CurrentSongView from './CurrentSongView';
 
 class CurrentSong extends Component {
   static navigatorStyle = {
     disabledBackGesture: true,
   };
 
-  state = {
-    isSliding: false,
-    sliderValue: null,
-    interval: null,
-  }
-
   constructor(props) {
     super(props);
+    this.state = {
+      isSliding: false,
+      sliderValue: 0,
 
+      // We use this to render the looping icon instead of sound.getNumberOfLoops()
+      // because this gives more immediate feedback.
+      isLooping: (this.props.player.sound.getNumberOfLoops() == -1),
+
+      // Used for updating the slider as the music progresses.
+      interval: null,
+    };
+  }
+
+  componentDidMount() {
+    const { sound } = this.props.player;
     const interval = setInterval(() => {
-      const { sound } = this.props.player;
       sound.getCurrentTime((seconds) => {
         if (!this.state.isSliding) {
           this.setState({
@@ -39,8 +38,11 @@ class CurrentSong extends Component {
         }
       });
     }, 250);
+    this.setState({ interval: interval });
+  }
 
-    this.state.interval = interval;
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
   }
 
   _onPressPlayPause = () => {
@@ -69,40 +71,25 @@ class CurrentSong extends Component {
     const { sound } = this.props.player;
     if (sound.getNumberOfLoops() == -1) {
       sound.setNumberOfLoops(0);
+      this.setState({ isLooping: false });
     } else {
       sound.setNumberOfLoops(-1);
+      this.setState({ isLooping: true });
     }
   }
 
   render() {
-    if (!this.props.title) {
-      return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>No song playing</Text>
-        </View>
-      );
-    }
-
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>You are currently listening to {this.props.title}</Text>
-
-        <Slider
-          style={{ width: 300 }}
-          value={this.state.sliderValue}
-          onValueChange={this._onSeeking}
-          onSlidingComplete={this._onSeekEnd}
-          debugTouchArea={true}
-        />
-
-        <TouchableOpacity onPress={this._onPressPlayPause}>
-          <Icon size={64} name={this.props.playingStatus ? 'pause' : 'play'}/>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={this._onPressLoop}>
-          <Icon size={64} name='loop'/>
-        </TouchableOpacity>
-      </View>
+      <CurrentSongView
+        title={this.props.title}
+        playingStatus={this.props.playingStatus}
+        isLooping={this.state.isLooping}
+        sliderValue={this.state.sliderValue}
+        onPressPlayPause={this._onPressPlayPause}
+        onPressLoop={this._onPressLoop}
+        onSeeking={this._onSeeking}
+        onSeekEnd={this._onSeekEnd}
+      />
     );
   }
 }

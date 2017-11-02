@@ -30,7 +30,7 @@ const store = configureStore({
     videoId: null,
     sound: null,
   },
-  playingStatus: true,
+  playingStatus: false,
   songInfo: {
     videoId: null,
     title: null,
