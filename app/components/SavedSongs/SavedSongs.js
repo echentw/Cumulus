@@ -9,6 +9,7 @@ import Sound from 'react-native-sound';
 Sound.setCategory('Playback');
 
 import { getSongs } from '../../db/realm';
+import { onPlayEnd } from '../../lib/player';
 
 import Header from '../Header/Header';
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
@@ -66,7 +67,7 @@ class SavedSongs extends Component {
         this.props.player.sound.pause();
       } else {
         this.props.playerPlay();
-        this.props.player.sound.play();
+        this.props.player.sound.play(onPlayEnd.bind(this));
       }
       return;
     }
@@ -77,13 +78,7 @@ class SavedSongs extends Component {
         return;
       }
       sound.setNumberOfLoops(-1);
-      sound.play((success) => {
-        if (success) {
-          console.log('successfully finished playing');
-        } else {
-          console.log('playback failed due to audio decoding errors');
-        }
-      });
+      sound.play(onPlayEnd.bind(this));
       this._setPlayer(videoId, sound);
     });
   }

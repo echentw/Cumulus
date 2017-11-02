@@ -10,6 +10,7 @@ Sound.setCategory('Playback');
 
 import youtubeSearch from '../../lib/youtubeSearch';
 import { downloadVideoToServer, getAudioUrl } from '../../lib/serverRequest.js';
+import { onPlayEnd } from '../../lib/player';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import SearchView from './SearchView';
@@ -80,7 +81,7 @@ class Search extends Component {
         this.props.player.sound.pause();
       } else {
         this.props.playerPlay();
-        this.props.player.sound.play();
+        this.props.player.sound.play(onPlayEnd.bind(this));
       }
       return;
     }
@@ -94,13 +95,7 @@ class Search extends Component {
             return;
           }
           sound.setNumberOfLoops(-1);
-          sound.play((success) => {
-            if (success) {
-              console.log('successfully finished playing');
-            } else {
-              console.log('playback failed due to audio decoding errors');
-            }
-          });
+          sound.play(onPlayEnd.bind(this));
         });
         this._setPlayer(videoId, sound);
       })
