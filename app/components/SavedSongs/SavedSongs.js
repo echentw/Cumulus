@@ -32,7 +32,7 @@ class SavedSongs extends Component {
     const { songsDB } = this.state;
 
     songsDB.open().then(() => {
-      const songs = songsDB.getSongs().map((song) => ({
+      const songs = songsDB.getAll().map((song) => ({
         key: song.videoId,
         videoId: song.videoId,
         title: song.title,

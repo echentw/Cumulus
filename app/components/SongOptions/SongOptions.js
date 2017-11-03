@@ -27,6 +27,11 @@ class SongOptions extends Component {
     const { videoId, title, thumbnail } = this.props.songInfo;
 
     if (value == 'Download song') {
+      if (this.state.songsDB.exists(videoId)) {
+        console.log('this particular video has already been downloaded');
+        return;
+      }
+
       Promise.all([
         downloadVideoToServer(videoId),
         RNFS.mkdir(RNFS.DocumentDirectoryPath + '/songs'),
@@ -53,7 +58,7 @@ class SongOptions extends Component {
       })
       .then((results) => {
         if (results[0].statusCode == 200 && results[1].statusCode == 200) {
-          return this.state.songsDB.saveSong(videoId, title);
+          return this.state.songsDB.create(videoId, title);
         } else {
           return new Promise((resolve, reject) => reject('error fetching data from server'));
         }
