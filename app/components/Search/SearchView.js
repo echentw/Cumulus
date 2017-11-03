@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -32,16 +33,14 @@ class SearchView extends Component {
           >
             {item.title}
           </Text>
-          <TouchableHighlight
-            activeOpacity={0.5}
-            style={{marginLeft: 6}}
-            underlayColor={'white'}
-            onPress={() => this.props.onPressMoreInfo(item.videoId, item.title, item.thumbnail)}
-            onShowUnderlay={this._onPressIn}
-            onHideUnderlay={this._onPressOut}
-          >
-            <Icon size={16} name='dots-three-vertical'/>
-          </TouchableHighlight>
+          <View style={{ flexDirection: 'column' }}>
+            <TouchableOpacity
+              style={styles.itemThreeDots}
+              onPress={() => this.props.onPressMoreInfo(item.videoId, item.title, item.thumbnail)}
+            >
+              <Icon size={16} name='dots-three-vertical'/>
+            </TouchableOpacity>
+          </View>
         </View>
       </TouchableHighlight>
     );
@@ -79,7 +78,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 50,
     paddingLeft: 8,
-    paddingRight: 8,
   },
   itemImage: {
     height: 40,
@@ -97,6 +95,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'blue',
+  },
+  itemThreeDots: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    width: 50,
   },
 });
 
