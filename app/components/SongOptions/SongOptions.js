@@ -8,12 +8,21 @@ import Sound from 'react-native-sound';
 Sound.setCategory('Playback');
 
 import { downloadVideoToServer, getAudioUrl } from '../../lib/serverRequest';
+import SongsDB from '../../db/realm';
 
 import SongOptionsView from './SongOptionsView';
 
-import { saveSong, getSongs } from '../../db/realm';
-
 class SongOptions extends Component {
+  constructor(props) {
+    super(props);
+
+    const songsDB = new SongsDB();
+    songsDB.open().then(() => console.log('finished opening'));
+    this.state = {
+      songsDB: songsDB,
+    };
+  }
+
   _onPress = (value) => {
     const { videoId, title, thumbnail } = this.props.songInfo;
 
@@ -44,20 +53,15 @@ class SongOptions extends Component {
       })
       .then((results) => {
         if (results[0].statusCode == 200 && results[1].statusCode == 200) {
-          saveSong(videoId, title, () => {
-            console.log('done writing to db!');
-          });
+          return this.state.songsDB.saveSong(videoId, title);
         } else {
-          console.log('error getting data back');
+          return new Promise((resolve, reject) => reject('error fetching data from server'));
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(() => console.log('successfully wrote to db!'))
+      .catch((err) => console.log('an error happened', err));
     } else {
       console.log('you pressed ' + value);
-      const songs = getSongs().map((song) => ({title: song.title, videoId: song.videoId}));
-      console.log(songs);
     }
   }
 

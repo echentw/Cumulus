@@ -8,7 +8,7 @@ import RNFS from 'react-native-fs';
 import Sound from 'react-native-sound';
 Sound.setCategory('Playback');
 
-import { getSongs } from '../../db/realm';
+import SongsDB from '../../db/realm';
 import { onPlayEnd } from '../../lib/player';
 
 import Header from '../Header/Header';
@@ -19,17 +19,26 @@ class SavedSongs extends Component {
   constructor(props) {
     super(props);
 
-    const songs = getSongs().map((song) => ({
-      key: song.videoId,
-      videoId: song.videoId,
-      title: song.title,
-    }));
-
+    const songsDB = new SongsDB();
     this.state = {
-      songs: songs,
+      songsDB: songsDB,
+      songs: [],
     };
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  componentWillMount() {
+    const { songsDB } = this.state;
+
+    songsDB.open().then(() => {
+      const songs = songsDB.getSongs().map((song) => ({
+        key: song.videoId,
+        videoId: song.videoId,
+        title: song.title,
+      }));
+      this.setState({ songs: songs });
+    });
   }
 
   onNavigatorEvent(event) {

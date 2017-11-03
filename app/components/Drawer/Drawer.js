@@ -5,8 +5,6 @@ import { ActionCreators } from '../../actions';
 
 import RNFS from 'react-native-fs';
 
-import { getSongs } from '../../db/realm';
-
 import DrawerView from './DrawerView';
 
 class Drawer extends Component {

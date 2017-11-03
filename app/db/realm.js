@@ -11,18 +11,33 @@ class Song extends Realm.Object {
   }
 }
 
-const realm = new Realm({schema: [Song]});
-
-export const saveSong = (videoId, title, done) => {
-  realm.write(() => {
-    realm.create(Song.schema.name, {
-      videoId: videoId,
-      title: title,
+export default class SongsDB {
+  open = () => {
+    return new Promise((resolve, reject) => {
+      Realm.open({
+        schema: [Song],
+      })
+      .then((realm) => {
+        this.realm = realm;
+        resolve();
+      })
+      .catch((error) => reject(error));
     });
-    done();
-  });
-}
+  }
 
-export const getSongs = () => {
-  return realm.objects(Song.schema.name);
+  saveSong = (videoId, title) => {
+    return new Promise((resolve, reject) => {
+      this.realm.write(() => {
+        this.realm.create(Song.schema.name, {
+          videoId: videoId,
+          title: title,
+        });
+        resolve();
+      });
+    });
+  }
+
+  getSongs = () => {
+    return this.realm.objects(Song.schema.name);
+  }
 }
