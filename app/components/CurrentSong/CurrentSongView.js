@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 });
 
 CurrentSongView.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   playingStatus: PropTypes.bool.isRequired,
   isLooping: PropTypes.bool.isRequired,
   sliderValue: PropTypes.number.isRequired,

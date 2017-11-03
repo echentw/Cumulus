@@ -20,7 +20,7 @@ class CurrentSong extends Component {
 
       // We use this to render the looping icon instead of sound.getNumberOfLoops()
       // because this gives more immediate feedback.
-      isLooping: (this.props.player.sound.getNumberOfLoops() == -1),
+      isLooping: props.player.sound ? (props.player.sound.getNumberOfLoops() == -1) : false,
 
       // Used for updating the slider as the music progresses.
       interval: null,
@@ -29,16 +29,18 @@ class CurrentSong extends Component {
 
   componentDidMount() {
     const { sound } = this.props.player;
-    const interval = setInterval(() => {
-      sound.getCurrentTime((seconds) => {
-        if (!this.state.isSliding) {
-          this.setState({
-            sliderValue: seconds / sound.getDuration(),
-          });
-        }
-      });
-    }, 250);
-    this.setState({ interval: interval });
+    if (sound) {
+      const interval = setInterval(() => {
+        sound.getCurrentTime((seconds) => {
+          if (!this.state.isSliding) {
+            this.setState({
+              sliderValue: seconds / sound.getDuration(),
+            });
+          }
+        });
+      }, 250);
+      this.setState({ interval: interval });
+    }
   }
 
   componentWillUnmount() {
