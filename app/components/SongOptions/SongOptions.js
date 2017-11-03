@@ -11,27 +11,29 @@ import { downloadVideoToServer, getAudioUrl } from '../../lib/serverRequest';
 
 import SongOptionsView from './SongOptionsView';
 
-import { saveSong } from '../../db/realm';
+import { saveSong, getSongs } from '../../db/realm';
 
 class SongOptions extends Component {
   _onPress = (value) => {
+    const { videoId, title, thumbnail } = this.props.songInfo;
+
     if (value == 'Download song') {
       Promise.all([
-        downloadVideoToServer(this.props.songInfo.videoId),
+        downloadVideoToServer(videoId),
         RNFS.mkdir(RNFS.DocumentDirectoryPath + '/songs'),
         RNFS.mkdir(RNFS.DocumentDirectoryPath + '/thumbnails'),
       ])
       .then(() => {
         const songDownloadPromise = RNFS.downloadFile({
-          fromUrl: getAudioUrl(this.props.songInfo.videoId),
-          toFile: RNFS.DocumentDirectoryPath + '/songs/song_' + this.props.songInfo.videoId + '.mp3',
+          fromUrl: getAudioUrl(videoId),
+          toFile: RNFS.DocumentDirectoryPath + '/songs/song_' + videoId + '.mp3',
           begin: (res) => console.log('download song has begun', res),
           progress: (res) => console.log('download progress', res),
         }).promise;
 
         const thumbnailDownloadPromise = RNFS.downloadFile({
-          fromUrl: this.props.songInfo.thumbnail.url,
-          toFile: RNFS.DocumentDirectoryPath + '/thumbnails/thumbnail_' + this.props.songInfo.videoId + '.jpg',
+          fromUrl: thumbnail.url,
+          toFile: RNFS.DocumentDirectoryPath + '/thumbnails/thumbnail_' + videoId + '.jpg',
           begin: (res) => console.log('download thumbnail has begun', res),
         }).promise;
 
@@ -42,7 +44,7 @@ class SongOptions extends Component {
       })
       .then((results) => {
         if (results[0].statusCode == 200 && results[1].statusCode == 200) {
-          saveSong(this.props.songInfo.videoId, this.props.songInfo.title, () => {
+          saveSong(videoId, title, () => {
             console.log('done writing to db!');
           });
         } else {
@@ -59,11 +61,16 @@ class SongOptions extends Component {
     }
   }
 
+  _songInfoBlur = () => {
+    this.props.navigator.dismissLightBox();
+    this.props.songInfoBlur();
+  }
+
   render() {
     return (
       <SongOptionsView
         songInfo={this.props.songInfo}
-        songInfoBlur={this.props.songInfoBlur}
+        songInfoBlur={this._songInfoBlur}
         onPress={this._onPress}
       />
     );

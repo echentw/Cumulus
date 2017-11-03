@@ -14,8 +14,6 @@ import PropTypes from 'prop-types';
 import { SearchBar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Entypo';
 
-import SongOptions from '../SongOptions/SongOptions';
-
 class SearchView extends Component {
   _renderItem = ({ item }) => {
     return (
@@ -62,7 +60,6 @@ class SearchView extends Component {
           renderItem={this._renderItem}
           extraData={{...this.state, videoIdPlaying: this.props.videoIdPlaying}}
         />
-        <SongOptions/>
       </View>
     );
   }

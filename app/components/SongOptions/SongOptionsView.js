@@ -5,28 +5,10 @@ import {
   Text,
   FlatList,
   TouchableHighlight,
-  Animated,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
 class SongOptionsView extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      bounceValue: new Animated.Value(200),
-    };
-  }
-
-  _toggle = () => {
-    const toValue = this.props.songInfo.videoId ? 0 : 200;
-    Animated.spring(this.state.bounceValue, {
-      toValue: toValue,
-      velocity: 4,
-      bounciness: 0,
-    }).start();
-  }
-
   _renderItem = ({ item }) => {
     return (
       <TouchableHighlight
@@ -43,18 +25,8 @@ class SongOptionsView extends Component {
   }
 
   render() {
-    this._toggle();
     return (
-      <Animated.View
-        style={[
-          styles.subView,
-          {
-            transform: [{
-              translateY: this.state.bounceValue
-            }]
-          }
-        ]}
-      >
+      <View style={{ flex: 1 }}>
         <FlatList
           data={[{key: 'Download song'}, {key: 'Something else'}]}
           renderItem={this._renderItem}
@@ -67,20 +39,29 @@ class SongOptionsView extends Component {
             <Text style={styles.itemText}>Cancel</Text>
           </View>
         </TouchableHighlight>
-      </Animated.View>
+      </View>
+    );
+
+    return (
+      <View>
+        <FlatList
+          data={[{key: 'Download song'}, {key: 'Something else'}]}
+          renderItem={this._renderItem}
+        />
+        <TouchableHighlight
+          underlayColor={'lightgrey'}
+          onPress={this.props.songInfoBlur}
+        >
+          <View style={styles.item}>
+            <Text style={styles.itemText}>Cancel</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  subView: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: '#ffffff',
-    height: 200,
-  },
   item: {
     justifyContent: 'center',
     alignItems: 'center',

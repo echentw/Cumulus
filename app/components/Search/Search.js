@@ -34,6 +34,17 @@ class Search extends Component {
     }
   }
 
+  _onPressMoreInfo = (videoId, title, thumbnail) => {
+    this.props.songInfoFocus(videoId, title, thumbnail);
+    this.props.navigator.showLightBox({
+      screen: 'Cumulus.SongOptions',
+      style: {
+        backgroundBlur: 'light',
+        backgroundColor: '#88888820',
+      },
+    });
+  }
+
   _setPlayer = (videoId, sound) => {
     if (this.props.player.sound) {
       this.props.player.sound.stop(() => {
@@ -114,7 +125,7 @@ class Search extends Component {
           searchResults={this.props.searchResults}
           onPressPlay={this._onPressPlay}
           videoIdPlaying={this.props.player.videoId}
-          onPressMoreInfo={this.props.songInfoFocus}
+          onPressMoreInfo={this._onPressMoreInfo}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
       </View>
