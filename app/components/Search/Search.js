@@ -34,13 +34,26 @@ class Search extends Component {
     }
   }
 
+  _enableDrawer = () => {
+    this.props.navigator.setDrawerEnabled({ side: 'left', enabled: true });
+  }
+
+  _disableDrawer = () => {
+    this.props.navigator.setDrawerEnabled({ side: 'left', enabled: false });
+  }
+
   _onPressMoreInfo = (videoId, title, thumbnail) => {
     this.props.songInfoFocus(videoId, title, thumbnail);
+    this._disableDrawer();
     this.props.navigator.showLightBox({
       screen: 'Cumulus.SongOptions',
+      passProps: {
+        enableDrawer: this._enableDrawer,
+      },
       style: {
         backgroundBlur: 'light',
         backgroundColor: '#88888820',
+        tapBackgroundToDismiss: true,
       },
     });
   }

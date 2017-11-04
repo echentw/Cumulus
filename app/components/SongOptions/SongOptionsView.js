@@ -26,25 +26,24 @@ class SongOptionsView extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <FlatList
-          data={[{key: 'Download song'}, {key: 'Something else'}]}
+          data={[
+            {key: 'Download song'},
+            {key: 'Add to playlist'},
+            {key: 'Cancel'},
+          ]}
+          scrollEnabled={false}
           renderItem={this._renderItem}
         />
-        <TouchableHighlight
-          underlayColor={'lightgrey'}
-          onPress={this.props.songInfoBlur}
-        >
-          <View style={styles.item}>
-            <Text style={styles.itemText}>Cancel</Text>
-          </View>
-        </TouchableHighlight>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+  },
   item: {
     justifyContent: 'center',
     alignItems: 'center',

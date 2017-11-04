@@ -23,6 +23,11 @@ class SongOptions extends Component {
     };
   }
 
+  componentWillUnmount() {
+    this.props.enableDrawer();
+    this.props.songInfoBlur();
+  }
+
   _onPress = (value) => {
     const { videoId, title, thumbnail } = this.props.songInfo;
 
@@ -65,6 +70,10 @@ class SongOptions extends Component {
       })
       .then(() => console.log('successfully wrote to db!'))
       .catch((err) => console.log('an error happened', err));
+    } else if (value == 'Add to playlist') {
+      console.log('you wanna add this to a playlist hmmm');
+    } else if (value == 'Cancel') {
+      this.props.navigator.dismissLightBox();
     } else {
       console.log('you pressed ' + value);
     }
