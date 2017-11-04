@@ -41,23 +41,6 @@ class SongOptionsView extends Component {
         </TouchableHighlight>
       </View>
     );
-
-    return (
-      <View>
-        <FlatList
-          data={[{key: 'Download song'}, {key: 'Something else'}]}
-          renderItem={this._renderItem}
-        />
-        <TouchableHighlight
-          underlayColor={'lightgrey'}
-          onPress={this.props.songInfoBlur}
-        >
-          <View style={styles.item}>
-            <Text style={styles.itemText}>Cancel</Text>
-          </View>
-        </TouchableHighlight>
-      </View>
-    );
   }
 }
 
