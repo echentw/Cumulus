@@ -3,6 +3,7 @@ import {
   StyleSheet,
   View,
   Text,
+  Image,
   FlatList,
   TouchableHighlight,
 } from 'react-native';
@@ -25,8 +26,14 @@ class SongOptionsView extends Component {
   }
 
   render() {
+    const { height, width, url } = this.props.songInfo.thumbnail;
     return (
       <View style={styles.container}>
+        <Text style={{ fontSize: 18, marginBottom: 20 }}>{this.props.songInfo.title}</Text>
+        <Image
+          style={{ height: height / 4, width: width / 4, borderRadius: 20, marginBottom: 20 }}
+          source={{ uri: url }}
+        />
         <FlatList
           data={[
             {key: 'Download song'},
@@ -43,6 +50,8 @@ class SongOptionsView extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    width: 500, // Maybe at some point, figure out how to properly do this.
+    alignItems: 'center',
   },
   item: {
     justifyContent: 'center',

@@ -23,7 +23,7 @@ class SearchView extends Component {
         onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
       >
         <View style={styles.item}>
-          <Image style={styles.itemImage} source={{uri: item.thumbnail.url}}/>
+          <Image style={styles.itemImage} source={{ uri: item.thumbnail.url }}/>
           <Text
             style={this.props.videoIdPlaying == item.videoId ? styles.itemTextPlaying : styles.itemText}
             numberOfLines={1}
