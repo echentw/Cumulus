@@ -8,10 +8,6 @@ import { onPlayEnd } from '../../lib/player';
 import CurrentSongView from './CurrentSongView';
 
 class CurrentSong extends Component {
-  static navigatorStyle = {
-    disabledBackGesture: true,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -45,6 +41,25 @@ class CurrentSong extends Component {
 
   componentWillUnmount() {
     clearInterval(this.state.interval);
+  }
+
+  _enableDrawer = () => this.props.navigator.setDrawerEnabled({ side: 'left', enabled: true });
+  _disableDrawer = () => this.props.navigator.setDrawerEnabled({ side: 'left', enabled: false });
+
+  _onPressMoreInfo = () => {
+    this.props.songInfoFocus(this.props.videoId, this.props.title, this.props.thumbnail);
+    this._disableDrawer();
+    this.props.navigator.showLightBox({
+      screen: 'Cumulus.SongOptions',
+      passProps: {
+        enableDrawer: this._enableDrawer,
+      },
+      style: {
+        backgroundBlur: 'light',
+        backgroundColor: '#88888820',
+        tapBackgroundToDismiss: true,
+      },
+    });
   }
 
   _onPressPlayPause = () => {
@@ -91,6 +106,7 @@ class CurrentSong extends Component {
         onPressLoop={this._onPressLoop}
         onSeeking={this._onSeeking}
         onSeekEnd={this._onSeekEnd}
+        onPressMoreInfo={this._onPressMoreInfo}
       />
     );
   }
@@ -98,10 +114,12 @@ class CurrentSong extends Component {
 
 function mapStateToProps(state) {
   return {
+    videoId: state.currentSongInfo.videoId,
     title: state.currentSongInfo.title,
     thumbnail: state.currentSongInfo.thumbnail,
     player: state.player,
     playingStatus: state.playingStatus,
+    currentSongInfo: state.currentSongInfo,
   };
 }
 

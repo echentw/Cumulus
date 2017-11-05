@@ -34,13 +34,8 @@ class Search extends Component {
     }
   }
 
-  _enableDrawer = () => {
-    this.props.navigator.setDrawerEnabled({ side: 'left', enabled: true });
-  }
-
-  _disableDrawer = () => {
-    this.props.navigator.setDrawerEnabled({ side: 'left', enabled: false });
-  }
+  _enableDrawer = () => this.props.navigator.setDrawerEnabled({ side: 'left', enabled: true });
+  _disableDrawer = () => this.props.navigator.setDrawerEnabled({ side: 'left', enabled: false });
 
   _onPressMoreInfo = (videoId, title, thumbnail) => {
     this.props.songInfoFocus(videoId, title, thumbnail);
@@ -97,7 +92,7 @@ class Search extends Component {
   }
 
   _onPressPlay = (videoId, title, thumbnail) => {
-    this.props.setCurrentSongInfo(title, thumbnail);
+    this.props.setCurrentSongInfo(videoId, title, thumbnail);
 
     if (videoId == this.props.player.videoId) {
       if (this.props.playingStatus) {

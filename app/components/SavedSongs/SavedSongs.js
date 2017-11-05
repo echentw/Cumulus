@@ -68,7 +68,7 @@ class SavedSongs extends Component {
   }
 
   _onPressPlay = (videoId, title, thumbnail) => {
-    this.props.setCurrentSongInfo(title, thumbnail);
+    this.props.setCurrentSongInfo(videoId, title, thumbnail);
 
     if (videoId == this.props.player.videoId) {
       if (this.props.playingStatus) {

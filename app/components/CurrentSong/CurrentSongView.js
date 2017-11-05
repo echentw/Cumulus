@@ -9,6 +9,7 @@ import {
 import PropTypes from 'prop-types';
 
 import Icon from 'react-native-vector-icons/Foundation';
+import EIcon from 'react-native-vector-icons/Entypo';
 
 class CurrentSongView extends Component {
   render() {
@@ -39,6 +40,13 @@ class CurrentSongView extends Component {
         <TouchableOpacity onPress={this.props.onPressLoop}>
           <Icon size={64} name='loop' style={ this.props.isLooping ? styles.looping : styles.nonlooping }/>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{ alignItems: 'center', width: 50, marginTop: 20 }}
+          onPress={() => this.props.onPressMoreInfo(this.props.videoId, this.props.title, this.props.thumbnail)}
+        >
+          <EIcon size={36} name='dots-three-vertical'/>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -67,6 +75,7 @@ CurrentSongView.propTypes = {
   onPressLoop: PropTypes.func.isRequired,
   onSeeking: PropTypes.func.isRequired,
   onSeekEnd: PropTypes.func.isRequired,
+  onPressMoreInfo: PropTypes.func.isRequired,
 };
 
 export default CurrentSongView;
