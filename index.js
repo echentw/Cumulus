@@ -51,7 +51,7 @@ Navigation.startSingleScreenApp({
     screen: 'Cumulus.Login',
     navigatorStyle: {
       navBarHidden: true,
-    }
+    },
   },
   drawer: {
     left: {
