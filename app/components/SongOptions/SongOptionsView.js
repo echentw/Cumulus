@@ -29,7 +29,7 @@ class SongOptionsView extends Component {
     const { height, width, url } = this.props.songInfo.thumbnail;
     return (
       <View style={styles.container}>
-        <Text style={{ fontSize: 18, marginBottom: 20 }}>{this.props.songInfo.title}</Text>
+        <Text style={{ textAlign: 'center', fontSize: 18, marginBottom: 20 }}>{this.props.songInfo.title}</Text>
         <Image
           style={{ height: height / 4, width: width / 4, borderRadius: 20, marginBottom: 20 }}
           source={{ uri: url }}
@@ -50,7 +50,7 @@ class SongOptionsView extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    width: 500, // Maybe at some point, figure out how to properly do this.
+    width: 300, // Maybe at some point, figure out how to properly do this.
     alignItems: 'center',
   },
   item: {
