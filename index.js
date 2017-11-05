@@ -26,10 +26,7 @@ function configureStore(initialState) {
 
 const store = configureStore({
   user: null,
-  player: {
-    videoId: null,
-    sound: null,
-  },
+  player: null,
   playingStatus: false,
   songInfo: {
     videoId: null,

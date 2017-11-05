@@ -5,12 +5,9 @@ import { ActionCreators } from '../../actions';
 
 import { View } from 'react-native';
 
-import Sound from 'react-native-sound';
-Sound.setCategory('Playback');
-
 import youtubeSearch from '../../lib/youtubeSearch';
-import { downloadVideoToServer, getAudioUrl } from '../../lib/serverRequest.js';
-import { onPlayEnd } from '../../lib/player';
+import { downloadVideoToServer } from '../../lib/serverRequest.js';
+import Player from '../../lib/player';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import SearchView from './SearchView';
@@ -19,6 +16,9 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    if (!this.props.player) {
+      this.props.initializePlayer();
+    }
   }
 
   onNavigatorEvent(event) {
@@ -53,19 +53,6 @@ class Search extends Component {
     });
   }
 
-  _setPlayer = (videoId, sound) => {
-    if (this.props.player.sound) {
-      this.props.player.sound.stop(() => {
-        this.props.player.sound.release();
-        this.props.setPlayer(videoId, sound);
-        this.props.playerPlay();
-      });
-    } else {
-      this.props.setPlayer(videoId, sound);
-      this.props.playerPlay();
-    }
-  }
-
   _onChangeText = (text) => {
     this.props.updateSearchQuery(text);
   }
@@ -97,33 +84,34 @@ class Search extends Component {
     if (videoId == this.props.player.videoId) {
       if (this.props.playingStatus) {
         this.props.playerPause();
-        this.props.player.sound.pause();
+        this.props.player.pause();
       } else {
         this.props.playerPlay();
-        this.props.player.sound.play(onPlayEnd.bind(this));
+        this.props.player.play(() => this.props.playerPause());
       }
       return;
     }
 
     downloadVideoToServer(videoId)
       .then((response) => {
-        const url = getAudioUrl(videoId);
-        const sound = new Sound(url, null, (error) => {
-          if (error) {
-            console.log('failed to load sound', error);
-            return;
-          }
-          sound.setNumberOfLoops(-1);
-          sound.play(onPlayEnd.bind(this));
-        });
-        this._setPlayer(videoId, sound);
+        // TODO: might want to figure out how to deal with error here
+        return this.props.player.loadRemote(videoId)
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .then(() => {
+        this.props.player.play(() => this.props.playerPause());
+        this.props.playerPlay();
+      })
+      .catch((error) => console.log(error));
   }
 
   render() {
+    if (!this.props.player) {
+      // TODO: add loading spinner
+      return (
+        <View>Loading...</View>
+      );
+    }
+
     return (
       <View style={{ flex: 1 }}>
         <SearchView

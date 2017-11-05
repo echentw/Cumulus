@@ -1,12 +1,11 @@
 import createReducer from '../lib/createReducer';
 import * as types from '../actions/types';
 
-export const player = createReducer({videoId: null, sound: null}, {
-  [types.SET_PLAYER]: (state, action) => {
-    return {
-      videoId: action.videoId,
-      sound: action.sound,
-    };
+import Player from '../lib/player';
+
+export const player = createReducer(null, {
+  [types.INITIALIZE_PLAYER]: (state, action) => {
+    return new Player();
   },
 });
 

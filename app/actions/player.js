@@ -1,10 +1,8 @@
 import * as types from './types';
 
-export function setPlayer(videoId, sound) {
+export function initializePlayer() {
   return {
-    type: types.SET_PLAYER,
-    videoId: videoId,
-    sound: sound,
+    type: types.INITIALIZE_PLAYER,
   };
 }
 

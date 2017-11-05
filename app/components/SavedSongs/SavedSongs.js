@@ -4,12 +4,8 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { View } from 'react-native';
 
-import RNFS from 'react-native-fs';
-import Sound from 'react-native-sound';
-Sound.setCategory('Playback');
-
 import SongsDB from '../../db/realm';
-import { onPlayEnd } from '../../lib/player';
+import Player from '../../lib/player';
 
 import Header from '../Header/Header';
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
@@ -18,14 +14,16 @@ import SavedSongsView from './SavedSongsView';
 class SavedSongs extends Component {
   constructor(props) {
     super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    if (!this.props.player) {
+      this.props.initializePlayer();
+    }
 
     const songsDB = new SongsDB();
     this.state = {
       songsDB: songsDB,
       songs: [],
     };
-
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
   componentWillMount() {
@@ -54,45 +52,36 @@ class SavedSongs extends Component {
     }
   }
 
-  _setPlayer = (videoId, sound) => {
-    if (this.props.player.sound) {
-      this.props.player.sound.stop(() => {
-        this.props.player.sound.release();
-        this.props.setPlayer(videoId, sound);
-        this.props.playerPlay();
-      });
-    } else {
-      this.props.setPlayer(videoId, sound);
-      this.props.playerPlay();
-    }
-  }
-
   _onPressPlay = (videoId, title, thumbnail) => {
     this.props.setCurrentSongInfo(videoId, title, thumbnail);
 
     if (videoId == this.props.player.videoId) {
       if (this.props.playingStatus) {
         this.props.playerPause();
-        this.props.player.sound.pause();
+        this.props.player.pause();
       } else {
         this.props.playerPlay();
-        this.props.player.sound.play(onPlayEnd.bind(this));
+        this.props.player.play(() => this.props.playerPause());
       }
       return;
     }
 
-    const sound = new Sound('song_' + videoId + '.mp3', RNFS.DocumentDirectoryPath + '/songs', (error) => {
-      if (error) {
-        console.log('failed to load sound', error);
-        return;
-      }
-      sound.setNumberOfLoops(-1);
-      sound.play(onPlayEnd.bind(this));
-      this._setPlayer(videoId, sound);
-    });
+    this.props.player.loadLocal(videoId)
+      .then(() => {
+        this.props.player.play(() => this.props.playerPause());
+        this.props.playerPlay();
+      })
+      .catch((error) => console.log(error));
   }
 
   render() {
+    if (!this.props.player) {
+      // TODO: add loading spinner
+      return (
+        <View>Loading...</View>
+      );
+    }
+
     return (
       <View style={{ flex: 1 }}>
         <Header title='Saved Songs'/>

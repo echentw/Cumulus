@@ -20,7 +20,7 @@ class CurrentSong extends Component {
 
       // We use this to render the looping icon instead of sound.getNumberOfLoops()
       // because this gives more immediate feedback.
-      isLooping: props.player.sound ? (props.player.sound.getNumberOfLoops() == -1) : false,
+      isLooping: props.player.isLooping(),
 
       // Used for updating the slider as the music progresses.
       interval: null,
@@ -28,13 +28,13 @@ class CurrentSong extends Component {
   }
 
   componentDidMount() {
-    const { sound } = this.props.player;
-    if (sound) {
+    const { player } = this.props;
+    if (player.isReady()) {
       const interval = setInterval(() => {
-        sound.getCurrentTime((seconds) => {
+        player.getCurrentTime().then((seconds) => {
           if (!this.state.isSliding) {
             this.setState({
-              sliderValue: seconds / sound.getDuration(),
+              sliderValue: seconds / player.getDuration(),
             });
           }
         });
@@ -69,10 +69,10 @@ class CurrentSong extends Component {
   _onPressPlayPause = () => {
     if (this.props.playingStatus) {
       this.props.playerPause();
-      this.props.player.sound.pause();
+      this.props.player.pause();
     } else {
       this.props.playerPlay();
-      this.props.player.sound.play(onPlayEnd.bind(this));
+      this.props.player.play(() => this.props.playerPause());
     }
   }
 
@@ -83,20 +83,14 @@ class CurrentSong extends Component {
   // This callback is called after the last _onSeeking(), so there should
   // be no race conditions involving isSliding here.
   _onSeekEnd = (value) => {
-    const { sound } = this.props.player;
-    sound.setCurrentTime(value * sound.getDuration());
+    this.props.player.setCurrentTime(value * this.props.player.getDuration());
     this.setState({ isSliding: false });
   }
 
   _onPressLoop = () => {
-    const { sound } = this.props.player;
-    if (sound.getNumberOfLoops() == -1) {
-      sound.setNumberOfLoops(0);
-      this.setState({ isLooping: false });
-    } else {
-      sound.setNumberOfLoops(-1);
-      this.setState({ isLooping: true });
-    }
+    const shouldLoop = !this.props.player.isLooping();
+    this.props.player.setLoop(shouldLoop);
+    this.setState({ isLooping: shouldLoop });
   }
 
   render() {
