@@ -18,7 +18,7 @@ class CurrentSong extends Component {
 
       // We use this to render the looping icon instead of sound.getNumberOfLoops()
       // because this gives more immediate feedback.
-      isLooping: props.player.isLooping(),
+      isLooping: props.player.isReady() ? props.player.isLooping() : false,
 
       // Used for updating the slider as the music progresses.
       interval: null,
