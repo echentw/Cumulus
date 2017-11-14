@@ -1,7 +1,7 @@
 import createReducer from '../lib/createReducer';
 import * as types from '../actions/types';
 
-import Player from '../lib/player';
+import Player from '../lib/Player';
 
 export const player = createReducer(null, {
   [types.INITIALIZE_PLAYER]: (state, action) => {

@@ -11,19 +11,22 @@ export default class Player {
     this.player = null; // RNSound or RNAudioStreaming
   }
 
+  _init = (videoId) => {
+    if (this.player && this.player.videoId != videoId) {
+      this.player.release();
+    }
+    this.videoId = videoId;
+  }
+
   isReady = () => {
     return this.player != null;
   }
 
   // Returns Promise<null> when loading is done.
   loadRemote = (videoId) => {
-    if (this.player && this.player.videoId != videoId) {
-      this.player.release();
-    }
+    this._init(videoId);
 
-    this.videoId = videoId;
     const url = getAudioUrl(videoId);
-
     return new Promise((resolve, reject) => {
       this.player = new RNSound(url, null, (error) => {
         if (error) {
@@ -37,14 +40,11 @@ export default class Player {
   }
 
   loadLocal = (videoId) => {
-    if (this.player && this.player.videoId != videoId) {
-      this.player.release();
-    }
+    this._init(videoId);
 
     this.videoId = videoId;
     const dir = RNFS.DocumentDirectoryPath + '/songs';
     const audioFile = 'song_' + videoId + '.mp3';
-
     return new Promise((resolve, reject) => {
       this.player = new RNSound(audioFile, dir, (error) => {
         if (error) {

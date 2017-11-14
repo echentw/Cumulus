@@ -3,8 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
-import { onPlayEnd } from '../../lib/player';
-
 import CurrentSongView from './CurrentSongView';
 
 class CurrentSong extends Component {

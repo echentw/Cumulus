@@ -5,7 +5,7 @@ import { ActionCreators } from '../../actions';
 import { View } from 'react-native';
 
 import SongsDB from '../../db/realm';
-import Player from '../../lib/player';
+import Player from '../../lib/Player';
 
 import Header from '../Header/Header';
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';

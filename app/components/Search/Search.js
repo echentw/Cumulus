@@ -7,7 +7,7 @@ import { View } from 'react-native';
 
 import youtubeSearch from '../../lib/youtubeSearch';
 import { downloadVideoToServer } from '../../lib/serverRequest.js';
-import Player from '../../lib/player';
+import Player from '../../lib/Player';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import SearchView from './SearchView';
