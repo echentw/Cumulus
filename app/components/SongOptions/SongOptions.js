@@ -24,7 +24,6 @@ class SongOptions extends Component {
   }
 
   componentWillUnmount() {
-    this.props.enableDrawer();
     this.props.songInfoBlur();
   }
 
