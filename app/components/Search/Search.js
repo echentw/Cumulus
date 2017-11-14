@@ -15,36 +15,15 @@ import SearchView from './SearchView';
 class Search extends Component {
   constructor(props) {
     super(props);
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     if (!this.props.player) {
       this.props.initializePlayer();
     }
   }
 
-  onNavigatorEvent(event) {
-    if (event.type == 'DeepLink') {
-      this.props.navigator.resetTo({
-        screen: event.link,
-        animated: true,
-        animationType: 'fade',
-        navigatorStyle: {
-          navBarHidden: true,
-        },
-      });
-    }
-  }
-
-  _enableDrawer = () => this.props.navigator.setDrawerEnabled({ side: 'left', enabled: true });
-  _disableDrawer = () => this.props.navigator.setDrawerEnabled({ side: 'left', enabled: false });
-
   _onPressMoreInfo = (videoId, title, thumbnail) => {
     this.props.songInfoFocus(videoId, title, thumbnail);
-    this._disableDrawer();
     this.props.navigator.showLightBox({
       screen: 'Cumulus.SongOptions',
-      passProps: {
-        enableDrawer: this._enableDrawer,
-      },
       style: {
         backgroundBlur: 'light',
         backgroundColor: '#88888820',

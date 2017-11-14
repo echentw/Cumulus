@@ -10,18 +10,6 @@ function startLogin() {
         navBarHidden: true,
       },
     },
-    drawer: {
-      left: {
-        screen: 'Cumulus.Drawer',
-      },
-      style: {
-        drawerShadow: false,
-        contentOverlayColor: 'rgba(0,0,0,0.1)',
-        leftDrawerWidth: 80, // percent
-      },
-      animationType: 'parallax', // TODO: can play around with different options here :D
-    },
-    passProps: {},
     animationType: 'none',
   });
 }

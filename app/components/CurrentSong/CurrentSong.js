@@ -45,17 +45,10 @@ class CurrentSong extends Component {
     clearInterval(this.state.interval);
   }
 
-  _enableDrawer = () => this.props.navigator.setDrawerEnabled({ side: 'left', enabled: true });
-  _disableDrawer = () => this.props.navigator.setDrawerEnabled({ side: 'left', enabled: false });
-
   _onPressMoreInfo = () => {
     this.props.songInfoFocus(this.props.videoId, this.props.title, this.props.thumbnail);
-    this._disableDrawer();
     this.props.navigator.showLightBox({
       screen: 'Cumulus.SongOptions',
-      passProps: {
-        enableDrawer: this._enableDrawer,
-      },
       style: {
         backgroundBlur: 'light',
         backgroundColor: '#88888820',

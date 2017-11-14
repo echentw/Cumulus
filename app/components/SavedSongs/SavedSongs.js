@@ -7,14 +7,12 @@ import { View } from 'react-native';
 import SongsDB from '../../db/realm';
 import Player from '../../lib/Player';
 
-import Header from '../Header/Header';
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import SavedSongsView from './SavedSongsView';
 
 class SavedSongs extends Component {
   constructor(props) {
     super(props);
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     if (!this.props.player) {
       this.props.initializePlayer();
     }
@@ -37,19 +35,6 @@ class SavedSongs extends Component {
       }));
       this.setState({ songs: songs });
     });
-  }
-
-  onNavigatorEvent(event) {
-    if (event.type == 'DeepLink') {
-      this.props.navigator.resetTo({
-        screen: event.link,
-        animated: true,
-        animationType: 'fade',
-        navigatorStyle: {
-          navBarHidden: true,
-        },
-      });
-    }
   }
 
   _onPressPlay = (videoId, title, thumbnail) => {
@@ -84,7 +69,6 @@ class SavedSongs extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <Header title='Saved Songs'/>
         <SavedSongsView
           songs={this.state.songs}
           onPressPlay={this._onPressPlay}
