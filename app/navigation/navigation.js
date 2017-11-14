@@ -32,15 +32,13 @@ function startApp() {
       {
         label: 'Search',
         screen: 'Cumulus.Search',
-        // icon: require('../img/one.png'),
-        // selectedIcon: require('../img/one_selected.png'),
+        icon: require('./img/search16x16.png'),
         title: 'Search',
       },
       {
         label: 'Saved Songs',
         screen: 'Cumulus.SavedSongs',
-        // icon: require('../img/two.png'),
-        // selectedIcon: require('../img/two_selected.png'),
+        icon: require('./img/music24x24.png'),
         title: 'Saved Songs'
       },
       {
@@ -50,10 +48,10 @@ function startApp() {
       },
     ],
     appStyle: {
-      orientation: 'portrait', // Sets a specific orientation to the entire app. Default: 'auto'. Supported values: 'auto', 'landscape', 'portrait'
+      orientation: 'portrait',
     },
-    passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
-    animationType: 'slide-down' // optional, add transition animation to root change: 'none', 'slide-down', 'fade'
+    passProps: {},
+    animationType: 'slide-down',
   });
 }
 
