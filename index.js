@@ -8,9 +8,7 @@ import { createLogger } from 'redux-logger';
 
 import reducer from './app/reducers';
 
-import { Navigation } from 'react-native-navigation';
-
-import { registerScreens } from './app/screens';
+import navigation from './app/navigation/navigation';
 
 const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__ });
 
@@ -42,26 +40,5 @@ const store = configureStore({
   searchResults: [],
 });
 
-registerScreens(store, Provider);
-
-Navigation.startSingleScreenApp({
-  screen: {
-    screen: 'Cumulus.Login',
-    navigatorStyle: {
-      navBarHidden: true,
-    },
-  },
-  drawer: {
-    left: {
-      screen: 'Cumulus.Drawer',
-    },
-    style: {
-      drawerShadow: false,
-      contentOverlayColor: 'rgba(0,0,0,0.1)',
-      leftDrawerWidth: 80, // percent
-    },
-    animationType: 'parallax', // TODO: can play around with different options here :D
-  },
-  passProps: {},
-  animationType: 'none',
-});
+navigation.registerScreens(store, Provider);
+navigation.startLogin();

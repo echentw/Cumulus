@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
 import SafariView from 'react-native-safari-view';
-
 import { getOAuthEntrypoint } from '../../lib/serverRequest';
+
+import navigation from '../../navigation/navigation';
 
 import LoginView from './LoginView';
 
@@ -32,17 +33,7 @@ class Login extends Component {
     // Extract stringified user string out of the URL
     const [, userString] = url.match(/user=([^#]+)/);
     this.props.setUser(JSON.parse(decodeURI(userString)));
-    if (Platform.OS === 'ios') {
-      SafariView.dismiss();
-    }
-    this.props.navigator.resetTo({
-      screen: 'Cumulus.Search',
-      animated: true,
-      animationType: 'fade',
-      navigatorStyle: {
-        navBarHidden: true,
-      },
-    });
+    navigation.startApp();
   };
 
   // Handle Login with Google button tap

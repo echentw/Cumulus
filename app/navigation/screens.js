@@ -1,12 +1,12 @@
 import { Navigation } from 'react-native-navigation';
 
-import Login from './components/Login/Login';
-import Search from './components/Search/Search';
-import Drawer from './components/Drawer/Drawer';
-import SavedSongs from './components/SavedSongs/SavedSongs';
-import Playlists from './components/Playlists/Playlists';
-import CurrentSong from './components/CurrentSong/CurrentSong';
-import SongOptions from './components/SongOptions/SongOptions';
+import Login from '../components/Login/Login';
+import Search from '../components/Search/Search';
+import Drawer from '../components/Drawer/Drawer';
+import SavedSongs from '../components/SavedSongs/SavedSongs';
+import Playlists from '../components/Playlists/Playlists';
+import CurrentSong from '../components/CurrentSong/CurrentSong';
+import SongOptions from '../components/SongOptions/SongOptions';
 
 export function registerScreens(store, Provider) {
   Navigation.registerComponent('Cumulus.Login', () => Login, store, Provider);
