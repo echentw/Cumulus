@@ -120,7 +120,7 @@ class Search extends Component {
           onSubmitEditing={this._onSubmitEditing}
           searchResults={this.props.searchResults}
           onPressPlay={this._onPressPlay}
-          videoIdPlaying={this.props.player.videoId}
+          videoIdPlaying={this.props.currentSongInfo.videoId}
           onPressMoreInfo={this._onPressMoreInfo}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
@@ -136,6 +136,7 @@ function mapStateToProps(state) {
     playingStatus: state.playingStatus,
     searchQuery: state.searchQuery,
     searchResults: state.searchResults,
+    currentSongInfo: state.currentSongInfo,
   };
 }
 

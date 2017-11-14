@@ -88,7 +88,7 @@ class SavedSongs extends Component {
         <SavedSongsView
           songs={this.state.songs}
           onPressPlay={this._onPressPlay}
-          videoIdPlaying={this.props.player.videoId}
+          videoIdPlaying={this.props.currentSongInfo.videoId}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
       </View>
@@ -100,6 +100,7 @@ function mapStateToProps(state) {
   return {
     player: state.player,
     playingStatus: state.playingStatus,
+    currentSongInfo: state.currentSongInfo,
   };
 }
 
