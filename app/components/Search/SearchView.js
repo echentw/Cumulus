@@ -68,7 +68,6 @@ class SearchView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
   },
   item: {
     flexDirection: 'row',
