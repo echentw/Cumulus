@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { SearchBar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Entypo';
 
 class SearchView extends Component {
@@ -47,13 +46,17 @@ class SearchView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <SearchBar
-          clearIcon
+        <TextInput
+          style={styles.searchBar}
           onChangeText={this.props.onChangeText}
           onSubmitEditing={this.props.onSubmitEditing}
           enablesReturnKeyAutomatically={true}
           placeholder='Search'
+          placeholderTextColor={'rgb(200, 200, 200)'}
           defaultValue={this.props.defaultSearchQuery}
+          returnKeyType={'search'}
+          clearButtonMode={'while-editing'}
+          keyboardAppearance={'dark'}
         />
         <FlatList
           data={this.props.searchResults}
@@ -68,6 +71,12 @@ class SearchView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  searchBar: {
+    height: 40,
+    color: 'white',
+    backgroundColor: 'grey',
+    padding: 10
   },
   item: {
     flexDirection: 'row',
