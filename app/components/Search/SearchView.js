@@ -52,7 +52,7 @@ class SearchView extends Component {
           onSubmitEditing={this.props.onSubmitEditing}
           enablesReturnKeyAutomatically={true}
           placeholder='Search'
-          placeholderTextColor={'rgb(200, 200, 200)'}
+          placeholderTextColor={'rgb(150, 150, 150)'}
           defaultValue={this.props.defaultSearchQuery}
           returnKeyType={'search'}
           clearButtonMode={'while-editing'}
@@ -71,11 +71,12 @@ class SearchView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 22,
   },
   searchBar: {
     height: 40,
     color: 'white',
-    backgroundColor: 'grey',
+    backgroundColor: 'rgb(50, 50, 50)',
     padding: 10
   },
   item: {

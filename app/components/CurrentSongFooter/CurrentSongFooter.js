@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     paddingTop: 2,
     paddingLeft: 14,
     paddingRight: 14,
-    backgroundColor: 'lightgreen',
+    backgroundColor: 'lightblue',
     alignItems: 'center',
   },
 });
