@@ -22,9 +22,9 @@ function startApp() {
         screen: 'Cumulus.Search',
         icon: require('./img/search16x16.png'),
         navigatorStyle: {
-          navBarHidden: true,
           navBarTextColor: 'white',
           navBarBackgroundColor: 'rgb(50, 50, 50)',
+          navBarCustomView: 'Cumulus.SearchBar',
         },
         title: 'Search',
       },

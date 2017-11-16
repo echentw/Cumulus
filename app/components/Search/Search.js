@@ -5,7 +5,6 @@ import { ActionCreators } from '../../actions';
 
 import { View } from 'react-native';
 
-import youtubeSearch from '../../lib/youtubeSearch';
 import { downloadVideoToServer } from '../../lib/serverRequest.js';
 import Player from '../../lib/Player';
 
@@ -30,31 +29,6 @@ class Search extends Component {
         tapBackgroundToDismiss: true,
       },
     });
-  }
-
-  _onChangeText = (text) => {
-    this.props.updateSearchQuery(text);
-  }
-
-  _onSubmitEditing = () => {
-    youtubeSearch(this.props.searchQuery, this.props.user.token)
-      .then((response) => {
-        const blob = JSON.parse(response._bodyText);
-        const results = blob.items.map((result) => ({
-          key: result.id.videoId,
-          videoId: result.id.videoId,
-          title: result.snippet.title,
-          thumbnail: {
-            url: result.snippet.thumbnails.high.url,
-            height: result.snippet.thumbnails.high.height,
-            width: result.snippet.thumbnails.high.width,
-          },
-        }));
-        this.props.updateSearchResults(results);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   }
 
   _onPressPlay = (videoId, title, thumbnail) => {
@@ -94,9 +68,6 @@ class Search extends Component {
     return (
       <View style={{ flex: 1 }}>
         <SearchView
-          defaultSearchQuery={this.props.searchQuery}
-          onChangeText={this._onChangeText}
-          onSubmitEditing={this._onSubmitEditing}
           searchResults={this.props.searchResults}
           onPressPlay={this._onPressPlay}
           videoIdPlaying={this.props.currentSongInfo.videoId}

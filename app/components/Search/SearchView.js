@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  TextInput,
   Text,
   FlatList,
   Image,
@@ -46,18 +45,6 @@ class SearchView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.searchBar}
-          onChangeText={this.props.onChangeText}
-          onSubmitEditing={this.props.onSubmitEditing}
-          enablesReturnKeyAutomatically={true}
-          placeholder='Search'
-          placeholderTextColor={'rgb(150, 150, 150)'}
-          defaultValue={this.props.defaultSearchQuery}
-          returnKeyType={'search'}
-          clearButtonMode={'while-editing'}
-          keyboardAppearance={'dark'}
-        />
         <FlatList
           data={this.props.searchResults}
           renderItem={this._renderItem}
@@ -71,13 +58,6 @@ class SearchView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
-  },
-  searchBar: {
-    height: 40,
-    color: 'white',
-    backgroundColor: 'rgb(50, 50, 50)',
-    padding: 10
   },
   item: {
     flexDirection: 'row',
@@ -111,13 +91,10 @@ const styles = StyleSheet.create({
 });
 
 SearchView.propTypes = {
-  onChangeText: PropTypes.func.isRequired,
-  onSubmitEditing: PropTypes.func.isRequired,
   searchResults: PropTypes.array.isRequired,
   onPressPlay: PropTypes.func.isRequired,
   onPressMoreInfo: PropTypes.func.isRequired,
   videoIdPlaying: PropTypes.string,
-  defaultSearchQuery: PropTypes.string.isRequired,
 };
 
 export default SearchView;
