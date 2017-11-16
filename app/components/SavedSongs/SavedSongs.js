@@ -68,7 +68,7 @@ class SavedSongs extends Component {
     }
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: 'rgb(230, 230, 230)' }}>
         <SavedSongsView
           songs={this.state.songs}
           onPressPlay={this._onPressPlay}

@@ -15,7 +15,7 @@ class CurrentSongView extends Component {
   render() {
     if (!this.props.title) {
       return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.container}>
           <Text>No song playing</Text>
         </View>
       );
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(230, 230, 230)',
   },
   looping: {
-    color: 'lightgreen',
+    color: 'lightblue',
   },
   nonlooping: {
     color: 'black',

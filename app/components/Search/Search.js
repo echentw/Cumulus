@@ -66,7 +66,7 @@ class Search extends Component {
     }
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: 'rgb(230, 230, 230)' }}>
         <SearchView
           searchResults={this.props.searchResults}
           onPressPlay={this._onPressPlay}
