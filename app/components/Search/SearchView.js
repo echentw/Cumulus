@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   itemText: {
     flex: 1,
     marginLeft: 10,
-    fontSize: 18,
+    fontSize: 16,
   },
   itemTextPlaying: {
     flex: 1,
