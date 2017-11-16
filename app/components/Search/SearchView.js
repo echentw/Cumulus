@@ -5,7 +5,6 @@ import {
   Text,
   FlatList,
   Image,
-  TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -15,9 +14,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 class SearchView extends Component {
   _renderItem = ({ item }) => {
     return (
-      <TouchableHighlight
-        activeOpacity={0.7}
-        underlayColor={'rgb(220, 220, 220)'}
+      <TouchableOpacity
         onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
       >
         <View style={styles.item}>
@@ -38,7 +35,7 @@ class SearchView extends Component {
             </TouchableOpacity>
           </View>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 

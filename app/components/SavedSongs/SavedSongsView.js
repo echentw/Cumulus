@@ -5,7 +5,6 @@ import {
   Text,
   FlatList,
   Image,
-  TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -21,9 +20,7 @@ class SavedSongsView extends Component {
     };
 
     return (
-      <TouchableHighlight
-        activeOpacity={0.7}
-        underlayColor={'rgb(220, 220, 220)'}
+      <TouchableOpacity
         onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
       >
         <View style={styles.item}>
@@ -44,7 +41,7 @@ class SavedSongsView extends Component {
             </TouchableOpacity>
           </View>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     );
   }
 
