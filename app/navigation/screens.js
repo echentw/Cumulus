@@ -6,7 +6,6 @@ import SearchBar from '../components/SearchBar/SearchBar';
 import SavedSongs from '../components/SavedSongs/SavedSongs';
 import Playlists from '../components/Playlists/Playlists';
 import CurrentSong from '../components/CurrentSong/CurrentSong';
-import SongOptions from '../components/SongOptions/SongOptions';
 
 export function registerScreens(store, Provider) {
   Navigation.registerComponent('Cumulus.Login', () => Login, store, Provider);
@@ -15,5 +14,4 @@ export function registerScreens(store, Provider) {
   Navigation.registerComponent('Cumulus.SavedSongs', () => SavedSongs, store, Provider);
   Navigation.registerComponent('Cumulus.Playlists', () => Playlists, store, Provider);
   Navigation.registerComponent('Cumulus.CurrentSong', () => CurrentSong, store, Provider);
-  Navigation.registerComponent('Cumulus.SongOptions', () => SongOptions, store, Provider);
 }

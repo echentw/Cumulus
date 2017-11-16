@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
+import { ActionSheetIOS } from 'react-native';
+
 import CurrentSongView from './CurrentSongView';
 
 class CurrentSong extends Component {
@@ -46,14 +48,21 @@ class CurrentSong extends Component {
   }
 
   _onPressMoreInfo = () => {
-    this.props.songInfoFocus(this.props.videoId, this.props.title, this.props.thumbnail);
-    this.props.navigator.showLightBox({
-      screen: 'Cumulus.SongOptions',
-      style: {
-        backgroundBlur: 'light',
-        backgroundColor: '#88888820',
-        tapBackgroundToDismiss: true,
-      },
+    const { videoId, title, thumbnail } = this.props;
+    this.props.songInfoFocus(videoId, title, thumbnail);
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Cancel', 'Download', 'Add to Playlist'],
+      cancelButtonIndex: 0,
+      title: title,
+      tintColor: 'black',
+    }, (index) => {
+      if (index == 1) {
+        downloadSong(videoId, title, thumbnail)
+          .then(() => console.log('done writing to db!'))
+          .catch((err) => console.log('an error happened', err));
+      } else if (index == 2) {
+        console.log('you want to add this to a playlist hmmm');
+      }
     });
   }
 

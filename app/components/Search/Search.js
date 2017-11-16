@@ -3,9 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
-import { View } from 'react-native';
+import { View, ActionSheetIOS } from 'react-native';
 
-import { downloadVideoToServer } from '../../lib/serverRequest.js';
+import { downloadVideoToServer, downloadSong } from '../../lib/serverRequest.js';
 import Player from '../../lib/Player';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
@@ -21,13 +21,19 @@ class Search extends Component {
 
   _onPressMoreInfo = (videoId, title, thumbnail) => {
     this.props.songInfoFocus(videoId, title, thumbnail);
-    this.props.navigator.showLightBox({
-      screen: 'Cumulus.SongOptions',
-      style: {
-        backgroundBlur: 'light',
-        backgroundColor: '#88888820',
-        tapBackgroundToDismiss: true,
-      },
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Cancel', 'Download', 'Add to Playlist'],
+      cancelButtonIndex: 0,
+      title: title,
+      tintColor: 'black',
+    }, (index) => {
+      if (index == 1) {
+        downloadSong(videoId, title, thumbnail)
+          .then(() => console.log('done writing to db!'))
+          .catch((err) => console.log('an error happened', err));
+      } else if (index == 2) {
+        console.log('you want to add this to a playlist hmmm');
+      }
     });
   }
 
