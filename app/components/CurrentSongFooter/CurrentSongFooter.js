@@ -33,7 +33,7 @@ class CurrentSongFooter extends Component {
         <View style={styles.container}>
           <Text style={{ fontSize: 12 }}>Current Song</Text>
           <Text
-            style={{ fontSize: 18 }}
+            style={{ fontSize: 16 }}
             numberOfLines={1}
             ellipsizeMode={'tail'}
           >
@@ -47,7 +47,7 @@ class CurrentSongFooter extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
+    height: 48,
     paddingTop: 2,
     paddingLeft: 14,
     paddingRight: 14,

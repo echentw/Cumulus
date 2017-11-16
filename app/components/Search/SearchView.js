@@ -78,9 +78,8 @@ const styles = StyleSheet.create({
   itemTextPlaying: {
     flex: 1,
     marginLeft: 10,
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: 'blue',
   },
   itemThreeDots: {
     alignItems: 'center',
