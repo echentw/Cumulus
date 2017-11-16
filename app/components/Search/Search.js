@@ -76,8 +76,8 @@ class Search extends Component {
         <SearchView
           searchResults={this.props.searchResults}
           onPressPlay={this._onPressPlay}
-          videoIdPlaying={this.props.currentSongInfo.videoId}
           onPressMoreInfo={this._onPressMoreInfo}
+          videoIdPlaying={this.props.currentSongInfo.videoId}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
       </View>

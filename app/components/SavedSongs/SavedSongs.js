@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
-import { View } from 'react-native';
+import { View, ActionSheetIOS } from 'react-native';
 
 import SongsDB from '../../db/realm';
 import Player from '../../lib/Player';
@@ -34,6 +34,24 @@ class SavedSongs extends Component {
         title: song.title,
       }));
       this.setState({ songs: songs });
+    });
+  }
+
+  _onPressMoreInfo = (videoId, title, thumbnail) => {
+    this.props.songInfoFocus(videoId, title, thumbnail);
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Cancel', 'Download', 'Add to Playlist'],
+      cancelButtonIndex: 0,
+      title: title,
+      tintColor: 'black',
+    }, (index) => {
+      if (index == 1) {
+        downloadSong(videoId, title, thumbnail)
+          .then(() => console.log('done writing to db!'))
+          .catch((err) => console.log('an error happened', err));
+      } else if (index == 2) {
+        console.log('you want to add this to a playlist hmmm');
+      }
     });
   }
 
@@ -72,6 +90,7 @@ class SavedSongs extends Component {
         <SavedSongsView
           songs={this.state.songs}
           onPressPlay={this._onPressPlay}
+          onPressMoreInfo={this._onPressMoreInfo}
           videoIdPlaying={this.props.currentSongInfo.videoId}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>

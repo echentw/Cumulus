@@ -35,7 +35,7 @@ class SavedSongsView extends Component {
           <View style={{ flexDirection: 'column' }}>
             <TouchableOpacity
               style={styles.itemThreeDots}
-              onPress={() => console.log('you are pressing me')}
+              onPress={() => this.props.onPressMoreInfo(item.videoId, item.title, item.thumbnail)}
             >
               <Icon size={16} name="dots-three-vertical"/>
             </TouchableOpacity>
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
 SavedSongsView.propTypes = {
   songs: PropTypes.array.isRequired,
   onPressPlay: PropTypes.func.isRequired,
+  onPressMoreInfo: PropTypes.func.isRequired,
   videoIdPlaying: PropTypes.string,
 };
 
