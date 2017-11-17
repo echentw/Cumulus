@@ -20,10 +20,11 @@ class SavedSongsView extends Component {
     };
 
     return (
-      <TouchableOpacity
-        onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
-      >
-        <View style={styles.item}>
+      <View style={styles.item}>
+        <TouchableOpacity
+          onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
+          style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+        >
           <Image style={styles.itemImage} source={{uri: thumbnail.url}}/>
           <Text
             style={this.props.videoIdPlaying == item.videoId ? styles.itemTextPlaying : styles.itemText}
@@ -32,16 +33,14 @@ class SavedSongsView extends Component {
           >
             {item.title}
           </Text>
-          <View style={{ flexDirection: 'column' }}>
-            <TouchableOpacity
-              style={styles.itemThreeDots}
-              onPress={() => this.props.onPressMoreInfo(item.videoId, item.title, item.thumbnail)}
-            >
-              <Icon size={16} name="dots-three-vertical"/>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.itemThreeDots}
+          onPress={() => this.props.onPressMoreInfo(item.videoId, item.title, item.thumbnail)}
+        >
+          <Icon size={16} name="dots-three-vertical"/>
+        </TouchableOpacity>
+      </View>
     );
   }
 
@@ -59,7 +58,6 @@ class SavedSongsView extends Component {
 const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
-    alignItems: 'center',
     height: 50,
     paddingLeft: 8,
   },
@@ -82,7 +80,6 @@ const styles = StyleSheet.create({
   itemThreeDots: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
     width: 50,
   },
 });
