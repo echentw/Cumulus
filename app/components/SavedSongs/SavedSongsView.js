@@ -22,8 +22,8 @@ class SavedSongsView extends Component {
     return (
       <View style={styles.item}>
         <TouchableOpacity
-          onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
           style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+          onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
         >
           <Image style={styles.itemImage} source={{uri: thumbnail.url}}/>
           <Text

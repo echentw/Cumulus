@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
-import { View, ActionSheetIOS } from 'react-native';
+import { View, Text, ActionSheetIOS } from 'react-native';
 
 import { downloadVideoToServer, downloadSong } from '../../lib/serverRequest.js';
 import Player from '../../lib/Player';
@@ -67,7 +67,10 @@ class Search extends Component {
     if (!this.props.player) {
       // TODO: add loading spinner
       return (
-        <View>Loading...</View>
+        <View style={{ flex: 1, backgroundColor: 'rgb(230, 230, 230)' }}>
+          <Text>Loading...</Text>
+          <CurrentSongFooter navigator={this.props.navigator}/>
+        </View>
       );
     }
 
