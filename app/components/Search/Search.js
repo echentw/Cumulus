@@ -5,7 +5,8 @@ import { ActionCreators } from '../../actions';
 
 import { View, Text, ActionSheetIOS } from 'react-native';
 
-import { downloadVideoToServer, downloadSong } from '../../lib/serverRequest.js';
+import { downloadVideoToServer } from '../../lib/serverRequest';
+import { downloadSong } from '../../lib/songManagement';
 import Player from '../../lib/Player';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';

@@ -47,6 +47,16 @@ class SongsDB {
     });
   }
 
+  delete = (videoId) => {
+    return new Promise((resolve, reject) => {
+      this.realm.write(() => {
+        const song = this.realm.objects(Song.schema.name).filtered(`videoId = "${videoId}"`);
+        this.realm.delete(song);
+        resolve();
+      });
+    });
+  }
+
   addOnChangeListener = (callback) => {
     this.realm.addListener('change', callback);
   };

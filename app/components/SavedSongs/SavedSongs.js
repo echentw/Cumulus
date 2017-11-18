@@ -7,6 +7,8 @@ import { View, Text, ActionSheetIOS } from 'react-native';
 import songsDB from '../../db/realm';
 import Player from '../../lib/Player';
 
+import { removeSong } from '../../lib/songManagement';
+
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import SavedSongsView from './SavedSongsView';
 
@@ -39,17 +41,17 @@ class SavedSongs extends Component {
   _onPressMoreInfo = (videoId, title, thumbnail) => {
     this.props.songInfoFocus(videoId, title, thumbnail);
     ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Download', 'Add to Playlist'],
+      options: ['Cancel', 'Add to Playlist', 'Remove'],
       cancelButtonIndex: 0,
       title: title,
       tintColor: 'black',
     }, (index) => {
       if (index == 1) {
-        downloadSong(videoId, title, thumbnail)
-          .then(() => console.log('done writing to db!'))
-          .catch((err) => console.log('an error happened', err));
-      } else if (index == 2) {
         console.log('you want to add this to a playlist hmmm');
+      } else if (index == 2) {
+        console.log('you want to delete this song');
+        removeSong(videoId)
+          .then(() => console.log('song successfully deleted!'));
       }
     });
   }

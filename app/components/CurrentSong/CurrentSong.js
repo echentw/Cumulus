@@ -5,6 +5,8 @@ import { ActionCreators } from '../../actions';
 
 import { ActionSheetIOS } from 'react-native';
 
+import { downloadSong } from '../../lib/songManagement';
+
 import CurrentSongView from './CurrentSongView';
 
 class CurrentSong extends Component {
