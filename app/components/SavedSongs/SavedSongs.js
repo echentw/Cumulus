@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { View, Text, ActionSheetIOS } from 'react-native';
 
-import SongsDB from '../../db/realm';
+import songsDB from '../../db/realm';
 import Player from '../../lib/Player';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
@@ -17,17 +17,16 @@ class SavedSongs extends Component {
       this.props.initializePlayer();
     }
 
-    const songsDB = new SongsDB();
-    this.state = {
-      songsDB: songsDB,
-      songs: [],
-    };
+    const songs = songsDB.getAll().map((song) => ({
+      key: song.videoId,
+      videoId: song.videoId,
+      title: song.title,
+    }));
+    this.state = { songs: songs };
   }
 
-  componentWillMount() {
-    const { songsDB } = this.state;
-
-    songsDB.open().then(() => {
+  componentDidMount() {
+    songsDB.addOnChangeListener(() => {
       const songs = songsDB.getAll().map((song) => ({
         key: song.videoId,
         videoId: song.videoId,

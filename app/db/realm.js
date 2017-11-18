@@ -12,7 +12,7 @@ class Song extends Realm.Object {
   }
 }
 
-export default class SongsDB {
+class SongsDB {
   open = () => {
     return new Promise((resolve, reject) => {
       Realm.open({
@@ -46,4 +46,13 @@ export default class SongsDB {
       });
     });
   }
+
+  addOnChangeListener = (callback) => {
+    this.realm.addListener('change', callback);
+  };
 }
+
+const songsDB = new SongsDB();
+songsDB.open().then(() => console.log('finished opening songsDB'));
+
+export default songsDB;

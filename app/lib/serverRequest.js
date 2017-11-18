@@ -1,11 +1,8 @@
 import RNFS from 'react-native-fs';
 
-import SongsDB from '../db/realm';
+import songsDB from '../db/realm';
 
 const serverUrl = 'http://localhost:3000';
-
-const songsDB = new SongsDB();
-songsDB.open().then(() => console.log('finished opening'));
 
 export function downloadVideoToServer(videoId) {
   return fetch(serverUrl + '/play', {
