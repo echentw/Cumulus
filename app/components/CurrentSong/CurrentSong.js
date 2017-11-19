@@ -51,7 +51,6 @@ class CurrentSong extends Component {
 
   _onPressMoreInfo = () => {
     const { videoId, title, thumbnail } = this.props;
-    this.props.songInfoFocus(videoId, title, thumbnail);
     ActionSheetIOS.showActionSheetWithOptions({
       options: ['Cancel', 'Download', 'Add to Playlist'],
       cancelButtonIndex: 0,

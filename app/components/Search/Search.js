@@ -35,7 +35,6 @@ class Search extends Component {
   }
 
   _onPressMoreInfo = (videoId, title, thumbnail) => {
-    this.props.songInfoFocus(videoId, title, thumbnail);
     ActionSheetIOS.showActionSheetWithOptions({
       options: ['Cancel', 'Download', 'Add to Playlist'],
       cancelButtonIndex: 0,

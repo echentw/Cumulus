@@ -26,11 +26,6 @@ const store = configureStore({
   user: null,
   player: null,
   playingStatus: false,
-  songInfo: {
-    videoId: null,
-    title: null,
-    thumbnail: null,
-  },
   currentSongInfo: {
     videoId: null,
     title: null,

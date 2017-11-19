@@ -39,7 +39,6 @@ class SavedSongs extends Component {
   }
 
   _onPressMoreInfo = (videoId, title, thumbnail) => {
-    this.props.songInfoFocus(videoId, title, thumbnail);
     ActionSheetIOS.showActionSheetWithOptions({
       options: ['Cancel', 'Add to Playlist', 'Remove'],
       cancelButtonIndex: 0,

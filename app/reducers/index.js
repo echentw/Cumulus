@@ -4,7 +4,6 @@ import * as playerReducer from './player';
 import * as userReducer from './user';
 import * as searchReducer from './search';
 import * as searchBarReducer from './searchBar';
-import * as songInfoReducer from './songInfo';
 import * as currentSongInfoReducer from './currentSongInfo';
 
 export default combineReducers(Object.assign({},
@@ -12,6 +11,5 @@ export default combineReducers(Object.assign({},
   userReducer,
   searchReducer,
   searchBarReducer,
-  songInfoReducer,
   currentSongInfoReducer,
 ));
