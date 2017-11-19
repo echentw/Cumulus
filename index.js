@@ -38,6 +38,7 @@ const store = configureStore({
   },
   searchQuery: '',
   searchResults: [],
+  searchBarFocused: false,
 });
 
 navigation.registerScreens(store, Provider);

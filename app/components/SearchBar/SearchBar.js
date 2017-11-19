@@ -41,6 +41,8 @@ class SearchBar extends Component {
         onChangeText={this._onChangeText}
         onSubmitEditing={this._onSubmitEditing}
         defaultSearchQuery={this.props.searchQuery}
+        onFocus={this.props.searchBarFocus}
+        onBlur={this.props.searchBarBlur}
       />
     );
   }

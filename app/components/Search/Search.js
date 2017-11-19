@@ -3,7 +3,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
-import { View, Text, ActionSheetIOS } from 'react-native';
+import {
+  View,
+  Text,
+  ActionSheetIOS,
+  Animated,
+} from 'react-native';
 
 import { downloadVideoToServer } from '../../lib/serverRequest';
 import { downloadSong } from '../../lib/songManagement';
@@ -18,6 +23,15 @@ class Search extends Component {
     if (!this.props.player) {
       this.props.initializePlayer();
     }
+    this.state = { opacity: new Animated.Value(0) };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      this.props.player != nextProps.player ||
+      this.props.searchResults != nextProps.searchResults ||
+      this.props.searchBarFocused != nextProps.searchBarFocused
+    );
   }
 
   _onPressMoreInfo = (videoId, title, thumbnail) => {
@@ -75,6 +89,12 @@ class Search extends Component {
       );
     }
 
+    const nextOpacity = this.props.searchBarFocused ? 0.25 : 0;
+    Animated.timing(this.state.opacity, {
+      toValue: nextOpacity,
+      duration: 250,
+    }).start();
+
     return (
       <View style={{ flex: 1, backgroundColor: 'rgb(230, 230, 230)' }}>
         <SearchView
@@ -84,6 +104,18 @@ class Search extends Component {
           videoIdPlaying={this.props.currentSongInfo.videoId}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
+        <Animated.View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'black',
+            opacity: this.state.opacity,
+          }}
+          pointerEvents='none'
+        />
       </View>
     );
   }
@@ -97,6 +129,7 @@ function mapStateToProps(state) {
     searchQuery: state.searchQuery,
     searchResults: state.searchResults,
     currentSongInfo: state.currentSongInfo,
+    searchBarFocused: state.searchBarFocused,
   };
 }
 

@@ -15,6 +15,8 @@ class SearchBarView extends Component {
         style={styles.searchBar}
         onChangeText={this.props.onChangeText}
         onSubmitEditing={this.props.onSubmitEditing}
+        onFocus={this.props.onFocus}
+        onBlur={this.props.onBlur}
         enablesReturnKeyAutomatically={true}
         placeholder='Search'
         placeholderTextColor={'rgb(150, 150, 150)'}
@@ -46,6 +48,8 @@ SearchBarView.propTypes = {
   onChangeText: PropTypes.func.isRequired,
   onSubmitEditing: PropTypes.func.isRequired,
   defaultSearchQuery: PropTypes.string.isRequired,
+  onFocus: PropTypes.func.isRequired,
+  onBlur: PropTypes.func.isRequired,
 };
 
 export default SearchBarView;
