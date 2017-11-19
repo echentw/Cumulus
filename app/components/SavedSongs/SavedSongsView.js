@@ -12,20 +12,17 @@ import PropTypes from 'prop-types';
 import RNFS from 'react-native-fs';
 import Icon from 'react-native-vector-icons/Entypo';
 
+import { thumbnailPath } from '../../lib/songManagement';
+
 class SavedSongsView extends Component {
   _renderItem = ({ item }) => {
-    const thumbnail = {
-      url: RNFS.DocumentDirectoryPath + '/thumbnails/thumbnail_' + item.videoId + '.jpg',
-      // TODO: add height and width to here
-    };
-
     return (
       <View style={styles.item}>
         <TouchableOpacity
           style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
           onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
         >
-          <Image style={styles.itemImage} source={{uri: thumbnail.url}}/>
+          <Image style={styles.itemImage} source={{uri: thumbnailPath(item.videoId) }}/>
           <Text
             style={this.props.videoIdPlaying == item.videoId ? styles.itemTextPlaying : styles.itemText}
             numberOfLines={1}

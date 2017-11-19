@@ -7,7 +7,7 @@ function mp3Path(videoId) {
   return RNFS.DocumentDirectoryPath + '/songs/song_' + videoId + '.mp3';
 }
 
-function thumbnailPath(videoId) {
+export function thumbnailPath(videoId) {
   return RNFS.DocumentDirectoryPath + '/thumbnails/thumbnail_' + videoId + '.jpg';
 }
 
