@@ -82,7 +82,9 @@ class Search extends Component {
       // TODO: add loading spinner
       return (
         <View style={{ flex: 1, backgroundColor: 'rgb(230, 230, 230)' }}>
-          <Text>Loading...</Text>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text>Loading...</Text>
+          </View>
           <CurrentSongFooter navigator={this.props.navigator}/>
         </View>
       );
