@@ -10,12 +10,6 @@ import GoogleStrategy from 'passport-google-oauth20';
 // Load environment variables
 dotenv.config();
 
-const googleCreds = {
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.GOOGLE_CALLBACK_URL,
-};
-
 // Transform Google profile into user object
 const transformGoogleProfile = (profile) => ({
   id: profile.id,
@@ -26,16 +20,28 @@ const transformGoogleProfile = (profile) => ({
 const tokenStore = {};
 
 const stripIdFromProfileAndAddToken = (profile) => {
-  const clone = Object.assign({}, profile, {token: tokenStore[profile.id]});
+  const clone = Object.assign({}, profile, {
+    token: tokenStore[profile.id]['accessToken']
+  });
   delete clone.id;
   return clone;
 };
 
 // Register Google Passport strategy
-passport.use(new GoogleStrategy(googleCreds,
-  (accessToken, refreshToken, profile, done) => {
-    tokenStore[profile.id] = accessToken;
-    console.log(accessToken);
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL,
+  }, (accessToken, refreshToken, params, profile, done) => {
+    if (tokenStore.hasOwnProperty(profile.id)) {
+      tokenStore[profile.id]['accessToken'] = accessToken;
+    } else {
+      tokenStore[profile.id] = {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      };
+    }
+    console.log(tokenStore[profile.id]);
     done(null, transformGoogleProfile(profile._json))
   }
 ));
@@ -55,11 +61,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Set up Google auth routes
-app.get('/auth/google',
-  passport.authenticate('google', { scope: [
-    'profile',
-    'https://www.googleapis.com/auth/youtube'
-  ]
+app.get('/auth/google', passport.authenticate('google', {
+  scope: ['profile', 'https://www.googleapis.com/auth/youtube'],
+  accessType: 'offline',
+  prompt: 'consent',
 }));
 
 app.get('/auth/google/callback',
