@@ -5,6 +5,9 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import passport from 'passport';
 import { spawn } from 'child_process';
+import axios from 'axios';
+import qs from 'qs';
+
 import GoogleStrategy from 'passport-google-oauth20';
 
 // Load environment variables
@@ -68,12 +71,45 @@ app.get('/auth/google', passport.authenticate('google', {
 }));
 
 app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/auth/google' }),
+  passport.authenticate('google', { accessType: 'offline', failureRedirect: '/auth/google' }),
   (req, res) => {
     const user = stripIdFromProfileAndAddToken(req.user);
     res.redirect('Cumulus://login?user=' + JSON.stringify(user))
   }
 );
+
+app.post('/token', (req, res) => {
+  // TODO: authenticate the user session
+
+  // TODO: get the profile id properly
+  const profileId = 'something';
+
+  axios({
+    method: 'POST',
+    url: 'https://www.googleapis.com/oauth2/v4/token',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    data: qs.stringify({
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      refresh_token: tokenStore[profileId]['accessToken'],
+      grant_type: 'refresh_token',
+    }),
+  })
+  .then((response) => {
+    if (response.status == 200) {
+      res.send(response.data.access_token);
+    } else {
+      res.send('something went wrong');
+      console.log(response);
+    }
+  })
+  .catch((error) => {
+    res.send('something went wrong');
+    console.log(error);
+  });
+});
 
 app.use('/downloads', express.static(path.join(__dirname, 'downloads')));
 app.post('/play', (req, res) => {
