@@ -1,4 +1,4 @@
-import Realm from 'realm'
+import Realm from 'realm';
 import uuid from 'uuid';
 
 class Song extends Realm.Object {
@@ -13,21 +13,12 @@ class Song extends Realm.Object {
 }
 
 class SongsDB {
-  open = () => {
-    return new Promise((resolve, reject) => {
-      Realm.open({
-        schema: [Song],
-      })
-      .then((realm) => {
-        this.realm = realm;
-        resolve();
-      })
-      .catch((error) => reject(error));
-    });
+  constructor() {
+    this.realm = new Realm({ schema: [Song] });
   }
 
   getAll = () => {
-    return this.realm.objects(Song.schema.name);
+    return this.realm.objects(Song.schema.name).sorted('title');
   }
 
   exists = (videoId) => {
@@ -63,6 +54,5 @@ class SongsDB {
 }
 
 const songsDB = new SongsDB();
-songsDB.open().then(() => console.log('finished opening songsDB'));
 
 export default songsDB;
