@@ -4,6 +4,7 @@ export function downloadVideoToServer(videoId) {
   return fetch(serverUrl + '/play', {
     // TODO: authenticate this post request
     method: 'POST',
+    credentials: 'include',
     headers: {
       'accept': 'application/json',
       'content-type': 'application/json',

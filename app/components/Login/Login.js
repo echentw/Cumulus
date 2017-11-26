@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Linking, Platform } from 'react-native';
+import { Linking, Platform, AsyncStorage } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
 import SafariView from 'react-native-safari-view';
-import { getOAuthEntrypoint } from '../../lib/serverRequest';
+import QueryString from 'query-string';
 
+import { getOAuthEntrypoint } from '../../lib/serverRequest';
 import navigation from '../../navigation/navigation';
 
 import LoginView from './LoginView';
@@ -29,10 +30,10 @@ class Login extends Component {
     Linking.removeEventListener('url', this.handleOpenURL);
   };
 
-  handleOpenURL = ({ url }) => {
-    // Extract stringified user string out of the URL
-    const [, userString] = url.match(/user=([^#]+)/);
-    this.props.setUser(JSON.parse(decodeURI(userString)));
+  handleOpenURL = async ({ url }) => {
+    const queryString = url.substring('cumulus://login'.length);
+    const { accessToken, refreshToken} = QueryString.parse(queryString);
+    await AsyncStorage.multiSet([['accessToken', accessToken], ['refreshTOken', refreshToken]]);
     navigation.startApp();
   };
 

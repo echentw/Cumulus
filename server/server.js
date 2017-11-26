@@ -2,116 +2,80 @@ import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import fs from 'fs';
+import google from 'googleapis';
+import redis from 'redis';
 import passport from 'passport';
+import { Strategy as BearerStrategy } from 'passport-http-bearer';
 import { spawn } from 'child_process';
-import axios from 'axios';
-import qs from 'qs';
 
-import GoogleStrategy from 'passport-google-oauth20';
+const redisClient = redis.createClient({
+  host: '127.0.0.1',
+  port: 6379,
+});
 
-// Load environment variables
+const OAuth2 = google.auth.OAuth2;
+const plus = google.plus('v1');
+
 dotenv.config();
 
-// Transform Google profile into user object
-const transformGoogleProfile = (profile) => ({
-  id: profile.id,
-  name: profile.displayName,
-  avatar: profile.image.url,
-});
-
-const tokenStore = {};
-
-const stripIdFromProfileAndAddToken = (profile) => {
-  const clone = Object.assign({}, profile, {
-    token: tokenStore[profile.id]['accessToken']
-  });
-  delete clone.id;
-  return clone;
-};
-
-// Register Google Passport strategy
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK_URL,
-  }, (accessToken, refreshToken, params, profile, done) => {
-    if (tokenStore.hasOwnProperty(profile.id)) {
-      tokenStore[profile.id]['accessToken'] = accessToken;
-    } else {
-      tokenStore[profile.id] = {
-        accessToken: accessToken,
-        refreshToken: refreshToken,
-      };
-    }
-    console.log(tokenStore[profile.id]);
-    done(null, transformGoogleProfile(profile._json))
-  }
-));
-
-// Serialize / deserialize the user into the sessions.
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((user, done) => done(null, user));
-
-// Initialize http server
-const app = express();
-
-// Initialize middleware.
-app.use(bodyParser.json());
-
-// Initialize Passport
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Set up Google auth routes
-app.get('/auth/google', passport.authenticate('google', {
-  scope: ['profile', 'https://www.googleapis.com/auth/youtube'],
-  accessType: 'offline',
-  prompt: 'consent',
-}));
-
-app.get('/auth/google/callback',
-  passport.authenticate('google', { accessType: 'offline', failureRedirect: '/auth/google' }),
-  (req, res) => {
-    const user = stripIdFromProfileAndAddToken(req.user);
-    res.redirect('Cumulus://login?user=' + JSON.stringify(user))
-  }
+const oauth2Client = new OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_CALLBACK_URL
 );
 
-app.post('/token', (req, res) => {
-  // TODO: authenticate the user session
+const googleAuthUrl = oauth2Client.generateAuthUrl({
+  access_type: 'offline',
+  scope: ['profile', 'https://www.googleapis.com/auth/youtube'],
+  prompt: 'consent',
+});
 
-  // TODO: get the profile id properly
-  const profileId = 'something';
+passport.use(new BearerStrategy((token, done) => {
+  redisClient.get(token, (err, user) => {
+    if (err) return done(err);
+    if (!user) return done(null, false);
+    return done(null, user);
+  });
+}));
 
-  axios({
-    method: 'POST',
-    url: 'https://www.googleapis.com/oauth2/v4/token',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    data: qs.stringify({
-      client_id: process.env.GOOGLE_CLIENT_ID,
-      client_secret: process.env.GOOGLE_CLIENT_SECRET,
-      refresh_token: tokenStore[profileId]['accessToken'],
-      grant_type: 'refresh_token',
-    }),
-  })
-  .then((response) => {
-    if (response.status == 200) {
-      res.send(response.data.access_token);
-    } else {
-      res.send('something went wrong');
-      console.log(response);
-    }
-  })
-  .catch((error) => {
-    res.send('something went wrong');
-    console.log(error);
+const app = express();
+app.use(bodyParser.json());
+
+// Set up Google auth routes
+app.get('/auth/google', (req, res) => {
+  res.redirect(googleAuthUrl);
+});
+
+app.get('/auth/google/callback', (req, res) => {
+  const { code } = req.query;
+  oauth2Client.getToken(code, (err, tokens) => {
+    const accessToken = tokens.access_token;
+    const refreshToken = tokens.refresh_token;
+
+    oauth2Client.setCredentials({
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    });
+
+    plus.people.get({ userId: 'me', auth: oauth2Client }, (err, response) => {
+      if (err) res.redirect('/auth/google');
+      const { id, displayName, image } = response;
+
+      redisClient.hmset([refreshToken,
+        'accessToken', accessToken,
+        'refreshToken', refreshToken,
+      ], (err, response) => {
+        if (err) return res.redirect('/auth/google');
+        res.redirect(`Cumulus://login?accessToken=${accessToken}&refreshToken=${refreshToken}`);
+      });
+    });
   });
 });
 
+// TODO: authenticate this endpoint
 app.use('/downloads', express.static(path.join(__dirname, 'downloads')));
+
+// TODO: authenticate this endpoint
 app.post('/play', (req, res) => {
   const { videoId } = req.body;
 
@@ -129,7 +93,6 @@ app.post('/play', (req, res) => {
   child.stderr.on('data', (data) => console.error(`child stderr: ${data}`));
 });
 
-// Launch the server on the port 3000
 const server = app.listen(3000, () => {
   const { address, port } = server.address();
   console.log(`Listening at http://${address}:${port}`);

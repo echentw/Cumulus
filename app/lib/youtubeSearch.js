@@ -1,4 +1,6 @@
-export default function youtubeSearch(searchQuery, accessToken) {
+import { AsyncStorage } from 'react-native';
+
+export default function youtubeSearch(searchQuery) {
   const maxResults = 10;
 
   const url = [
@@ -8,14 +10,17 @@ export default function youtubeSearch(searchQuery, accessToken) {
     'type=video'
   ].join('&');
 
-  return fetch(url, {
-    method: 'GET',
-    referrerPolicy: 'no-referrer-when-downgrade',
-    headers: {
-      'accept': '*/*',
-      'accept-encoding': 'gzip, deflate, br',
-      'accept-language': 'en-US,en;q=0.8',
-      'authorization': 'Bearer ' + accessToken,
-    },
-  });
+  return AsyncStorage.getItem('accessToken')
+    .then((token) => {
+      return fetch(url, {
+        method: 'GET',
+        referrerPolicy: 'no-referrer-when-downgrade',
+        headers: {
+          'accept': '*/*',
+          'accept-encoding': 'gzip, deflate, br',
+          'accept-language': 'en-US,en;q=0.8',
+          'authorization': 'Bearer ' + token,
+        },
+      });
+    });
 }

@@ -9,20 +9,19 @@
   "author": "Eric Chen",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.17.1",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "body-parser": "^1.18.2",
-    "cookie-session": "^2.0.0-beta.3",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "googleapis": "^22.2.0",
     "nodemon": "^1.12.1",
     "passport": "^0.4.0",
-    "passport-google-oauth20": "^1.0.0",
+    "passport-http-bearer": "^1.0.1",
     "path": "^0.12.7",
-    "qs": "^6.5.1"
+    "redis": "^2.8.0"
   }
 }

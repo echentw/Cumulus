@@ -15,7 +15,7 @@ class SearchBar extends Component {
   }
 
   _onSubmitEditing = () => {
-    youtubeSearch(this.props.searchQuery, this.props.user.token)
+    youtubeSearch(this.props.searchQuery)
       .then((response) => {
         const blob = JSON.parse(response._bodyText);
         const results = blob.items.map((result) => ({
