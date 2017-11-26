@@ -1,18 +1,23 @@
+import { AsyncStorage } from 'react-native';
+
 const serverUrl = 'http://localhost:3000';
 
 export function downloadVideoToServer(videoId) {
-  return fetch(serverUrl + '/play', {
-    // TODO: authenticate this post request
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'accept': 'application/json',
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      videoId: videoId,
-    }),
-  });
+  return AsyncStorage.getItem('refreshToken')
+    .then((token) => {
+      return fetch(serverUrl + '/play', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'accept': 'application/json',
+          'content-type': 'application/json',
+          'authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify({
+          videoId: videoId,
+        }),
+      });
+    });
 }
 
 export function getAudioUrl(videoId) {

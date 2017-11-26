@@ -4,8 +4,6 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import google from 'googleapis';
 import redis from 'redis';
-import passport from 'passport';
-import { Strategy as BearerStrategy } from 'passport-http-bearer';
 import { spawn } from 'child_process';
 
 const redisClient = redis.createClient({
@@ -30,13 +28,17 @@ const googleAuthUrl = oauth2Client.generateAuthUrl({
   prompt: 'consent',
 });
 
-passport.use(new BearerStrategy((token, done) => {
-  redisClient.get(token, (err, user) => {
-    if (err) return done(err);
-    if (!user) return done(null, false);
-    return done(null, user);
-  });
-}));
+function authenticate(req, res, next) {
+  if (!req.headers.authorization) {
+    return res.status(401).send({ message: 'Please log in.' });
+  }
+  const refreshToken = req.headers.authorization.substring('Bearer '.length);
+  if (redisClient.exists(refreshToken)) {
+    next();
+  } else {
+    res.status(401).send({ message: 'Please log in.' });
+  }
+}
 
 const app = express();
 app.use(bodyParser.json());
@@ -72,11 +74,9 @@ app.get('/auth/google/callback', (req, res) => {
   });
 });
 
-// TODO: authenticate this endpoint
-app.use('/downloads', express.static(path.join(__dirname, 'downloads')));
+app.use('/downloads', authenticate, express.static(path.join(__dirname, 'downloads')));
 
-// TODO: authenticate this endpoint
-app.post('/play', (req, res) => {
+app.post('/play', authenticate, (req, res) => {
   const { videoId } = req.body;
 
   // Escape all non-alphanumeric characters.

@@ -33,7 +33,7 @@ class Login extends Component {
   handleOpenURL = async ({ url }) => {
     const queryString = url.substring('cumulus://login'.length);
     const { accessToken, refreshToken} = QueryString.parse(queryString);
-    await AsyncStorage.multiSet([['accessToken', accessToken], ['refreshTOken', refreshToken]]);
+    await AsyncStorage.multiSet([['accessToken', accessToken], ['refreshToken', refreshToken]]);
     navigation.startApp();
   };
 
