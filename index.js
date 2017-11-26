@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, AsyncStorage } from 'react-native';
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, combineReduxers, compose } from 'redux';
@@ -37,4 +37,12 @@ const store = configureStore({
 });
 
 navigation.registerScreens(store, Provider);
-navigation.startLogin();
+
+AsyncStorage.getItem('refreshToken')
+  .then((token) => {
+    if (token) {
+      navigation.startApp();
+    } else {
+      navigation.startLogin();
+    }
+  });
