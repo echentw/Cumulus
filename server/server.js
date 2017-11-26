@@ -74,6 +74,28 @@ app.get('/auth/google/callback', (req, res) => {
   });
 });
 
+app.post('/token', authenticate, (req, res) => {
+  const refreshToken = req.headers.authorization.substring('Bearer '.length);
+  redisClient.hmget([refreshToken, 'refreshToken'], (err, response) => {
+    if (err) {
+      return res.status(500).send({ message: 'Internal server error.' });
+    }
+
+    const refreshToken = response[0];
+    oauth2Client.setCredentials({ refresh_token: refreshToken });
+
+    oauth2Client.refreshAccessToken((err, tokens) => {
+      const accessToken = tokens.access_token;
+      redisClient.hmset([refreshToken,
+        'accessToken', accessToken,
+      ], (err, response) => {
+        if (err) return res.status(500).send({ message: 'Internal server error.' });
+        res.status(200).send({ accessToken: accessToken });
+      });
+    });
+  });
+});
+
 app.use('/downloads', authenticate, express.static(path.join(__dirname, 'downloads')));
 
 app.post('/play', authenticate, (req, res) => {

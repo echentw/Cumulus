@@ -20,6 +20,21 @@ export function downloadVideoToServer(videoId) {
     });
 }
 
+export function refreshAccessToken() {
+  return AsyncStorage.getItem('refreshToken')
+    .then((token) => {
+      return fetch(serverUrl + '/token', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'accept': 'application/json',
+          'content-type': 'application/json',
+          'authorization': 'Bearer ' + token,
+        },
+      });
+    });
+}
+
 export function getAudioUrl(videoId) {
   return `${serverUrl}/downloads/song_${videoId}.mp3`;
 }
