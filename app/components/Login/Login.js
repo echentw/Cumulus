@@ -6,6 +6,7 @@ import { ActionCreators } from '../../actions';
 
 import SafariView from 'react-native-safari-view';
 import QueryString from 'query-string';
+import parseUrl from 'url-parse';
 
 import { getOAuthEntrypoint } from '../../lib/serverRequest';
 import navigation from '../../navigation/navigation';
@@ -31,7 +32,7 @@ class Login extends Component {
   };
 
   handleOpenURL = async ({ url }) => {
-    const queryString = url.substring('cumulus://login'.length);
+    const queryString = parseUrl(url).query;
     const { accessToken, refreshToken} = QueryString.parse(queryString);
     await AsyncStorage.multiSet([['accessToken', accessToken], ['refreshToken', refreshToken]]);
     navigation.startApp();
