@@ -96,9 +96,9 @@ app.post('/token', authenticate, (req, res) => {
   });
 });
 
-app.use('/downloads', authenticate, express.static(path.join(__dirname, 'downloads')));
+app.use('/downloads', express.static(path.join(__dirname, 'downloads')));
 
-app.post('/play', authenticate, (req, res) => {
+app.post('/download', authenticate, (req, res) => {
   const { videoId } = req.body;
 
   // Escape all non-alphanumeric characters.
@@ -106,11 +106,13 @@ app.post('/play', authenticate, (req, res) => {
 
   const child = spawn('./check_and_download_youtube.py', ['--videoId', 'song_' + escapedVideoId]);
   child.on('exit', (code, signal) => {
-    const message = `child process exited with code ${code} and signal ${signal}`;
-    console.log(message);
-    res.send({message: message});
+    console.log(`child process exited with code ${code} and signal ${signal}`);
+    if (code == 0) {
+      return res.status(200).send({ message: 'Mp3 file is finished processing!' });
+    } else {
+      return res.status(500).send({ message: 'Internal server error.' });
+    }
   });
-
   child.stdout.on('data', (data) => console.log(`child stdout: ${data}`));
   child.stderr.on('data', (data) => console.error(`child stderr: ${data}`));
 });

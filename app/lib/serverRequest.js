@@ -5,7 +5,7 @@ const serverUrl = 'http://localhost:3000';
 export function downloadVideoToServer(videoId) {
   return AsyncStorage.getItem('refreshToken')
     .then((token) => {
-      return fetch(serverUrl + '/play', {
+      return fetch(serverUrl + '/download', {
         method: 'POST',
         credentials: 'include',
         headers: {
