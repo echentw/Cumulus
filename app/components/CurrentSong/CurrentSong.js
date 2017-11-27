@@ -6,6 +6,7 @@ import { ActionCreators } from '../../actions';
 import { ActionSheetIOS } from 'react-native';
 
 import { downloadSong } from '../../lib/songManagement';
+import { progressToDisplay } from '../../lib/utils';
 
 import CurrentSongView from './CurrentSongView';
 
@@ -19,6 +20,7 @@ class CurrentSong extends Component {
     this.state = {
       isSliding: false,
       sliderValue: 0,
+      songProgress: progressToDisplay(0, 0),
 
       // We use this to render the looping icon instead of sound.getNumberOfLoops()
       // because this gives more immediate feedback.
@@ -36,7 +38,8 @@ class CurrentSong extends Component {
         player.getCurrentTime().then((seconds) => {
           if (!this.state.isSliding) {
             this.setState({
-              sliderValue: seconds / player.getDuration(),
+              sliderValue: seconds,
+              songProgress: progressToDisplay(seconds, player.getDuration()),
             });
           }
         });
@@ -78,13 +81,16 @@ class CurrentSong extends Component {
   }
 
   _onSeeking = (value) => {
-    this.setState({ isSliding: true });
+    this.setState({
+      isSliding: true,
+      songProgress: progressToDisplay(value, this.props.player.getDuration()),
+    });
   }
 
   // This callback is called after the last _onSeeking(), so there should
   // be no race conditions involving isSliding here.
-  _onSeekEnd = (value) => {
-    this.props.player.setCurrentTime(value * this.props.player.getDuration());
+  _onSeekEnd = (seconds) => {
+    this.props.player.setCurrentTime(seconds);
     this.setState({ isSliding: false });
   }
 
@@ -101,6 +107,8 @@ class CurrentSong extends Component {
         playingStatus={this.props.playingStatus}
         isLooping={this.state.isLooping}
         sliderValue={this.state.sliderValue}
+        sliderMaxValue={this.props.player.isReady() ? this.props.player.getDuration() : 1}
+        songProgress={this.state.songProgress}
         onPressPlayPause={this._onPressPlayPause}
         onPressLoop={this._onPressLoop}
         onSeeking={this._onSeeking}

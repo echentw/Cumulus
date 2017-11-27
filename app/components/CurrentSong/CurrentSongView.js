@@ -28,10 +28,13 @@ class CurrentSongView extends Component {
         <Slider
           style={{ width: 300 }}
           value={this.props.sliderValue}
+          maximumValue={this.props.sliderMaxValue}
           onValueChange={this.props.onSeeking}
           onSlidingComplete={this.props.onSeekEnd}
           debugTouchArea={true}
         />
+
+        <Text>{this.props.songProgress}</Text>
 
         <TouchableOpacity onPress={this.props.onPressPlayPause}>
           <Icon size={64} name={this.props.playingStatus ? 'pause' : 'play'}/>
@@ -71,7 +74,11 @@ CurrentSongView.propTypes = {
   title: PropTypes.string,
   playingStatus: PropTypes.bool.isRequired,
   isLooping: PropTypes.bool.isRequired,
+
   sliderValue: PropTypes.number.isRequired,
+  sliderMaxValue: PropTypes.number.isRequired,
+  songProgress: PropTypes.string.isRequired,
+
   onPressPlayPause: PropTypes.func.isRequired,
   onPressLoop: PropTypes.func.isRequired,
   onSeeking: PropTypes.func.isRequired,
