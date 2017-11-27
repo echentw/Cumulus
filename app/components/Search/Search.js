@@ -29,6 +29,7 @@ class Search extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return (
       this.props.player != nextProps.player ||
+      this.props.currentSongInfo != nextProps.currentSongInfo ||
       this.props.searchResults != nextProps.searchResults ||
       this.props.searchBarFocused != nextProps.searchBarFocused
     );
