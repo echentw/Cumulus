@@ -16,7 +16,6 @@ class CurrentSongView extends Component {
     return (
       <TouchableOpacity
         style={{ margin: 20 }}
-        hitSlop={{ left: 10, right: 10 }}
         onPress={ onPressFunction }
       >
         { element }
