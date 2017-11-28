@@ -12,6 +12,18 @@ import Icon from 'react-native-vector-icons/Foundation';
 import EIcon from 'react-native-vector-icons/Entypo';
 
 class CurrentSongView extends Component {
+  _buttonView = (element, onPressFunction) => {
+    return (
+      <TouchableOpacity
+        style={{ margin: 20 }}
+        hitSlop={{ left: 10, right: 10 }}
+        onPress={ onPressFunction }
+      >
+        { element }
+      </TouchableOpacity>
+    );
+  }
+
   render() {
     if (!this.props.title) {
       return (
@@ -21,35 +33,37 @@ class CurrentSongView extends Component {
       );
     }
 
+    const loopElement = (
+      <Icon size={64} name='loop' style={ this.props.isLooping ? { color: 'lightblue' } : { color: 'black' } }/>
+    );
+    const playPauseElement = (
+      <Icon size={64} name={this.props.playingStatus ? 'pause' : 'play'}/>
+    );
+    const moreOptionsElement = (
+      <EIcon size={36} name='dots-three-vertical' style={{ paddingTop: 13, paddingBottom: 13 }}/>
+    );
+
+    const { videoId, title, thumbanil } = this.props;
+
     return (
       <View style={styles.container}>
-        <Text>You are currently listening to {this.props.title}</Text>
-
-        <Slider
-          style={{ width: 300 }}
-          value={this.props.sliderValue}
-          maximumValue={this.props.sliderMaxValue}
-          onValueChange={this.props.onSeeking}
-          onSlidingComplete={this.props.onSeekEnd}
-          debugTouchArea={true}
-        />
-
-        <Text>{this.props.songProgress}</Text>
-
-        <TouchableOpacity onPress={this.props.onPressPlayPause}>
-          <Icon size={64} name={this.props.playingStatus ? 'pause' : 'play'}/>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={this.props.onPressLoop}>
-          <Icon size={64} name='loop' style={ this.props.isLooping ? styles.looping : styles.nonlooping }/>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{ alignItems: 'center', width: 50, marginTop: 20 }}
-          onPress={() => this.props.onPressMoreInfo(this.props.videoId, this.props.title, this.props.thumbnail)}
-        >
-          <EIcon size={36} name='dots-three-vertical'/>
-        </TouchableOpacity>
+        <View style={styles.top}>
+          <Text>{this.props.title}</Text>
+          <Text>{this.props.songProgress}</Text>
+          <Slider
+            style={{ width: 300 }}
+            value={this.props.sliderValue}
+            maximumValue={this.props.sliderMaxValue}
+            onValueChange={this.props.onSeeking}
+            onSlidingComplete={this.props.onSeekEnd}
+            debugTouchArea={true}
+          />
+        </View>
+        <View style={styles.bottom}>
+          { this._buttonView(loopElement, this.props.onPressLoop) }
+          { this._buttonView(playPauseElement, this.props.onPressPlayPause) }
+          { this._buttonView(moreOptionsElement, () => this.props.onPressMoreInfo(videoId, title, thumbnail)) }
+        </View>
       </View>
     );
   }
@@ -58,16 +72,20 @@ class CurrentSongView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'column',
     backgroundColor: 'rgb(230, 230, 230)',
   },
-  looping: {
-    color: 'lightblue',
+  top: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
-  nonlooping: {
-    color: 'black',
-  }
+  bottom: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
 });
 
 CurrentSongView.propTypes = {
