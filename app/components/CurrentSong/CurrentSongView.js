@@ -27,7 +27,12 @@ class CurrentSongView extends Component {
   render() {
     if (!this.props.title) {
       return (
-        <View style={styles.container}>
+        <View style={{
+          flex: 1,
+          backgroundColor: 'rgb(230, 230, 230)',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
           <Text>No song playing</Text>
         </View>
       );
