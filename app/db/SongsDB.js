@@ -1,35 +1,22 @@
 import Realm from 'realm';
 import uuid from 'uuid';
 
-class Song extends Realm.Object {
-  static schema = {
-    name: 'Song',
-    primaryKey: 'videoId',
-    properties: {
-      videoId: 'string',
-      title: 'string',
-    },
-  }
-}
+import realm, { Song, Playlist } from './schemas';
 
-class SongsDB {
-  constructor() {
-    this.realm = new Realm({ schema: [Song] });
+export default class SongsDB {
+  static getAll() {
+    return realm.objects(Song.schema.name).sorted('title');
   }
 
-  getAll = () => {
-    return this.realm.objects(Song.schema.name).sorted('title');
-  }
-
-  exists = (videoId) => {
-    const results = this.realm.objects(Song.schema.name).filtered(`videoId == "${videoId}"`);
+  static exists(videoId) {
+    const results = realm.objects(Song.schema.name).filtered(`videoId == "${videoId}"`);
     return (results.length != 0);
   }
 
-  create = (videoId, title) => {
+  static create(videoId, title) {
     return new Promise((resolve, reject) => {
-      this.realm.write(() => {
-        this.realm.create(Song.schema.name, {
+      realm.write(() => {
+        realm.create(Song.schema.name, {
           videoId: videoId,
           title: title,
         });
@@ -38,21 +25,17 @@ class SongsDB {
     });
   }
 
-  delete = (videoId) => {
+  static delete(videoId) {
     return new Promise((resolve, reject) => {
-      this.realm.write(() => {
-        const song = this.realm.objects(Song.schema.name).filtered(`videoId = "${videoId}"`);
-        this.realm.delete(song);
+      realm.write(() => {
+        const song = realm.objects(Song.schema.name).filtered(`videoId = "${videoId}"`);
+        realm.delete(song);
         resolve();
       });
     });
   }
 
-  addOnChangeListener = (callback) => {
-    this.realm.addListener('change', callback);
+  static addOnChangeListener(callback) {
+    realm.addListener('change', callback);
   };
 }
-
-const songsDB = new SongsDB();
-
-export default songsDB;

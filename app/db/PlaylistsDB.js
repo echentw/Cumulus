@@ -1,32 +1,18 @@
 import Realm from 'realm';
 import uuid from 'uuid';
 
-class Playlist extends Realm.Object {
-  static schema = {
-    name: 'Playlist',
-    primaryKey: 'playlistId',
-    properties: {
-      playlistId: 'string',
-      title: 'string',
-      songs: 'list', // TODO: what's the right way to do this?
-    },
-  }
-}
+import realm, { Song, Playlist } from './schemas';
 
-class PlaylistsDB {
-  constructor() {
-    this.realm = new Realm({ schema: [Playlist] });
+export default class PlaylistsDB {
+  static getAll() {
+    return realm.objects(Playlist.schema.name).sorted('title');
   }
 
-  getAll = () => {
-    return this.realm.objects(Playlist.schema.name).sorted('title');
-  }
-
-  create = (title) => {
+  static create(title) {
     return new Promise((resolve, reject) => {
-      this.realm.write(() => {
+      realm.write(() => {
         const playlistId = 'blah'; // TODO: use uuid to generate a unique id
-        this.realm.create(Playlist.schema.name, {
+        realm.create(Playlist.schema.name, {
           playlistId: playlistId,
           title: title,
         });
@@ -35,33 +21,29 @@ class PlaylistsDB {
     });
   }
 
-  delete = (playlistId) => {
+  static delete(playlistId) {
     return new Promise((resolve, reject) => {
-      this.realm.write(() => {
-        const playlist = this.realm.objects(Playlist.schema.name).filtered(`playlistId = "${playlistId}"`);
-        this.realm.delete(playlist);
+      realm.write(() => {
+        const playlist = realm.objects(Playlist.schema.name).filtered(`playlistId = "${playlistId}"`);
+        realm.delete(playlist);
         resolve();
       });
     });
   }
 
-  editTitle = (playlistId, newTitle) => {
+  static editTitle(playlistId, newTitle) {
     // TODO: implement me!
   };
 
-  addSong = (videoId) => {
+  static addSong(videoId) {
     // TODO: implement me!
   }
 
-  removeSong = (videoId) => {
+  static removeSong(videoId) {
     // TODO: implement me!
   }
 
-  addOnChangeListener = (callback) => {
-    this.realm.addListener('change', callback);
+  static addOnChangeListener(callback) {
+    realm.addListener('change', callback);
   }
 }
-
-const playlistsDB = new PlaylistsDB();
-
-export default playlistsDB;

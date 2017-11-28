@@ -1,6 +1,6 @@
 import RNFS from 'react-native-fs';
 
-import songsDB from '../db/SongsDB';
+import SongsDB from '../db/SongsDB';
 import { downloadVideoToServer, getAudioUrl, getOAuthEntrypoint } from './serverRequest';
 
 function mp3Path(videoId) {
@@ -38,7 +38,7 @@ export function downloadSong(videoId, title, thumbnail) {
   })
   .then((results) => {
     if (results[0].statusCode == 200 && results[1].statusCode == 200) {
-      return songsDB.create(videoId, title);
+      return SongsDB.create(videoId, title);
     } else {
       return new Promise((resolve, reject) => reject('error fetching data from server'));
     }
@@ -47,7 +47,7 @@ export function downloadSong(videoId, title, thumbnail) {
 
 export function removeSong(videoId) {
   return Promise.all([
-    songsDB.delete(videoId),
+    SongsDB.delete(videoId),
     RNFS.unlink(mp3Path(videoId)),
     RNFS.unlink(thumbnailPath(videoId)),
   ]);

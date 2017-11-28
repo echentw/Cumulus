@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { View, Text, ActionSheetIOS } from 'react-native';
 
-import songsDB from '../../db/SongsDB';
+import SongsDB from '../../db/SongsDB';
 import Player from '../../lib/Player';
 
 import { removeSong } from '../../lib/songManagement';
@@ -19,7 +19,7 @@ class SavedSongs extends Component {
       this.props.initializePlayer();
     }
 
-    const songs = songsDB.getAll().map((song) => ({
+    const songs = SongsDB.getAll().map((song) => ({
       key: song.videoId,
       videoId: song.videoId,
       title: song.title,
@@ -28,8 +28,8 @@ class SavedSongs extends Component {
   }
 
   componentDidMount() {
-    songsDB.addOnChangeListener(() => {
-      const songs = songsDB.getAll().map((song) => ({
+    SongsDB.addOnChangeListener(() => {
+      const songs = SongsDB.getAll().map((song) => ({
         key: song.videoId,
         videoId: song.videoId,
         title: song.title,
