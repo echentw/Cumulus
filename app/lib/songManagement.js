@@ -1,6 +1,6 @@
 import RNFS from 'react-native-fs';
 
-import songsDB from '../db/realm';
+import songsDB from '../db/SongsDB';
 import { downloadVideoToServer, getAudioUrl, getOAuthEntrypoint } from './serverRequest';
 
 function mp3Path(videoId) {

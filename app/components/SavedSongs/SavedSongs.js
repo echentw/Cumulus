@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 import { View, Text, ActionSheetIOS } from 'react-native';
 
-import songsDB from '../../db/realm';
+import songsDB from '../../db/SongsDB';
 import Player from '../../lib/Player';
 
 import { removeSong } from '../../lib/songManagement';
