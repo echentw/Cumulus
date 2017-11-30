@@ -1,3 +1,5 @@
+import Realm from 'realm';
+
 export class Song extends Realm.Object {
   static schema = {
     name: 'Song',
@@ -5,6 +7,7 @@ export class Song extends Realm.Object {
     properties: {
       videoId: 'string',
       title: 'string',
+      playlists: 'Playlist[]',
     },
   }
 }
@@ -16,11 +19,7 @@ export class Playlist extends Realm.Object {
     properties: {
       playlistId: 'string',
       title: 'string',
-      songs: 'Song[]',
+      songs: {type: 'linkingObjects', objectType: 'Song', property: 'playlists'},
     },
   }
 }
-
-const realm = new Realm({ schema: [Song, Playlist] });
-
-export default realm;

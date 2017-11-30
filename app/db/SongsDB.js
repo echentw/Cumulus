@@ -1,7 +1,7 @@
 import Realm from 'realm';
-import uuid from 'uuid';
 
-import realm, { Song, Playlist } from './schemas';
+import { Song, Playlist } from './schemas';
+import realm from './realm';
 
 export default class SongsDB {
   static getAll() {
