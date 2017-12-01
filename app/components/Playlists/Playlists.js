@@ -19,6 +19,17 @@ class Playlists extends Component {
     this.state = { playlists: playlists };
   }
 
+  componentDidMount() {
+    PlaylistsDB.addOnChangeListener(() => {
+      const playlists = PlaylistsDB.getAll().map((playlist) => ({
+        key: playlist.playlistId,
+        playlistId: playlist.playlistId,
+        title: playlist.title,
+      }));
+      this.setState({ playlists: playlists });
+    });
+  }
+
   _onPress = (playlistId, title) => {
     this.props.navigator.push({
       screen: 'Cumulus.Playlist',
