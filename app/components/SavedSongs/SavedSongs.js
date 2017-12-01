@@ -55,8 +55,8 @@ class SavedSongs extends Component {
           title: 'Add to playlist',
           tintColor: 'black',
         }, (index) => {
-          // TODO: implement me! add song to the chosen playlist
-          console.log(index);
+          const playlistId = playlists[index].playlistId;
+          PlaylistsDB.addSong(playlistId, videoId);
         });
       } else if (index == 2) {
         removeSong(videoId)

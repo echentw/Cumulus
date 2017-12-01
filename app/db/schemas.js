@@ -7,7 +7,7 @@ export class Song extends Realm.Object {
     properties: {
       videoId: 'string',
       title: 'string',
-      playlists: 'Playlist[]',
+      playlists: {type: 'linkingObjects', objectType: 'Playlist', property: 'songs'},
     },
   }
 }
@@ -19,7 +19,7 @@ export class Playlist extends Realm.Object {
     properties: {
       playlistId: 'string',
       title: 'string',
-      songs: {type: 'linkingObjects', objectType: 'Song', property: 'playlists'},
+      songs: 'Song[]',
     },
   }
 }
