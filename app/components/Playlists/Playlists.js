@@ -41,14 +41,12 @@ class Playlists extends Component {
       tintColor: 'black',
     }, (index) => {
       if (index == 1) {
-        // TODO: implement me!
-        console.log('you want to delete this playlist!!!');
+        PlaylistsDB.delete(playlistId);
       }
     });
   }
 
   _onPressNewPlaylist = () => {
-    // TODO: implement me!
     AlertIOS.prompt(
       'New playlist',
       'Give it a name!',
