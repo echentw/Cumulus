@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
-import { ActionSheetIOS } from 'react-native';
+import { ActionSheetIOS, AlertIOS } from 'react-native';
 
 import PlaylistsDB from '../../db/PlaylistsDB';
 
@@ -49,7 +49,17 @@ class Playlists extends Component {
 
   _onPressNewPlaylist = () => {
     // TODO: implement me!
-    console.log('you wanna createa  new playlist');
+    AlertIOS.prompt(
+      'New playlist',
+      'Give it a name!',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Create', onPress: (title) => PlaylistsDB.create(title) },
+      ],
+      'plain-text', // text input type
+      '', // default text in text input
+      'default', // keyboard type
+    );
   }
 
   render() {
