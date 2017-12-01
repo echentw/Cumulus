@@ -9,7 +9,7 @@ export default class PlaylistsDB {
     return realm.objects(Song.schema.name).filtered(`videoId = "${videoId}"`)[0];
   }
 
-  static _getPlaylist(playlistId) {
+  static getPlaylist(playlistId) {
     return realm.objects(Playlist.schema.name).filtered(`playlistId = "${playlistId}"`)[0];
   }
 
@@ -35,7 +35,7 @@ export default class PlaylistsDB {
   }
 
   static delete(playlistId) {
-    const playlist = PlaylistsDB._getPlaylist(playlistId);
+    const playlist = PlaylistsDB.getPlaylist(playlistId);
     try {
       realm.write(() => realm.delete(playlist));
       return true;
@@ -46,7 +46,7 @@ export default class PlaylistsDB {
   }
 
   static editTitle(playlistId, newTitle) {
-    const playlist = PlaylistsDB._getPlaylist(playlistId);
+    const playlist = PlaylistsDB.getPlaylist(playlistId);
     try {
       realm.write(() => playlist.title = newTitle);
       return true;
@@ -57,7 +57,7 @@ export default class PlaylistsDB {
   };
 
   static addSong(playlistId, videoId) {
-    const playlist = PlaylistsDB._getPlaylist(playlistId);
+    const playlist = PlaylistsDB.getPlaylist(playlistId);
     const index = playlist.songs.findIndex((song) => song.videoId == videoId);
     if (index != -1) {
       console.log(`Song ${videoId} already exists in playlist ${playlistId}.`);
@@ -74,7 +74,7 @@ export default class PlaylistsDB {
   }
 
   static removeSong(playlistId, videoId) {
-    const playlist = PlaylistsDB._getPlaylist(playlistId);
+    const playlist = PlaylistsDB.getPlaylist(playlistId);
     const index = playlist.songs.findIndex((song) => song.videoId == videoId);
     if (index == -1) {
       console.log(`Song ${videoId} doesn't exist in playlist ${playlistId}.`);
@@ -93,6 +93,3 @@ export default class PlaylistsDB {
     realm.addListener('change', callback);
   }
 }
-
-PlaylistsDB.create('My first playlist');
-PlaylistsDB.create('My second playlist');
