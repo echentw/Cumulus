@@ -5,6 +5,7 @@ import { ActionCreators } from '../../actions';
 import { View, Text, ActionSheetIOS } from 'react-native';
 
 import SongsDB from '../../db/SongsDB';
+import PlaylistsDB from '../../db/PlaylistsDB';
 import Player from '../../lib/Player';
 
 import { removeSong } from '../../lib/songManagement';
@@ -46,9 +47,18 @@ class SavedSongs extends Component {
       tintColor: 'black',
     }, (index) => {
       if (index == 1) {
-        console.log('you want to add this to a playlist hmmm');
+        const playlists = PlaylistsDB.getAll();
+        const playlistTitles = playlists.map((playlist) => playlist.title);
+        ActionSheetIOS.showActionSheetWithOptions({
+          options: [...playlistTitles, 'Cancel'],
+          cancelButtonIndex: playlistTitles.length,
+          title: 'Add to playlist',
+          tintColor: 'black',
+        }, (index) => {
+          // TODO: implement me! add song to the chosen playlist
+          console.log(index);
+        });
       } else if (index == 2) {
-        console.log('you want to delete this song');
         removeSong(videoId)
           .then(() => console.log('song successfully deleted!'));
       }
