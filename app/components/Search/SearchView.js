@@ -1,87 +1,33 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  FlatList,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import { FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Icon from 'react-native-vector-icons/Entypo';
 
+import ListItem from '../utils/ListItem';
+
 class SearchView extends Component {
   _renderItem = ({ item }) => {
     return (
-      <View style={styles.item}>
-        <TouchableOpacity
-          style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
-          onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
-        >
-          <Image style={styles.itemImage} source={{ uri: item.thumbnail.url }}/>
-          <Text
-            style={this.props.videoIdPlaying == item.videoId ? styles.itemTextPlaying : styles.itemText}
-            numberOfLines={1}
-            ellipsizeMode={'tail'}
-          >
-            {item.title}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.itemThreeDots}
-          onPress={() => this.props.onPressMoreInfo(item.videoId, item.title, item.thumbnail)}
-        >
-          <Icon size={16} name='dots-three-vertical'/>
-        </TouchableOpacity>
-      </View>
+      <ListItem
+        item={item}
+        onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
+        onPressEllipsis={() => this.props.onPressMoreInfo(item.videoId, item.title, item.thumbnail)}
+        isPlaying={this.props.videoIdPlaying == item.videoId}
+      />
     );
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <FlatList
-          data={this.props.searchResults}
-          renderItem={this._renderItem}
-          extraData={{...this.state, videoIdPlaying: this.props.videoIdPlaying}}
-        />
-      </View>
+      <FlatList
+        data={this.props.searchResults}
+        renderItem={this._renderItem}
+        extraData={{...this.state, videoIdPlaying: this.props.videoIdPlaying}}
+      />
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  item: {
-    flexDirection: 'row',
-    height: 50,
-    paddingLeft: 8,
-  },
-  itemImage: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-  },
-  itemText: {
-    flex: 1,
-    marginLeft: 10,
-    fontSize: 16,
-  },
-  itemTextPlaying: {
-    flex: 1,
-    marginLeft: 10,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  itemThreeDots: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 50,
-  },
-});
 
 SearchView.propTypes = {
   searchResults: PropTypes.array.isRequired,
