@@ -35,7 +35,7 @@ class PlaylistsView extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: 'rgb(230, 230, 230)' }}>
+      <View style={{ flex: 1 }}>
         <FlatList
           data={this.props.playlists}
           renderItem={this._renderItem}

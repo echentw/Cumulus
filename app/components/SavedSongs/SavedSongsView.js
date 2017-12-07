@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 
-import Icon from 'react-native-vector-icons/Entypo';
-
 import { thumbnailPath } from '../../lib/songManagement';
 import ListItem from '../utils/ListItem';
 

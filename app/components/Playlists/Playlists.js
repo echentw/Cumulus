@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
-import { ActionSheetIOS, AlertIOS } from 'react-native';
+import { View, ActionSheetIOS, AlertIOS } from 'react-native';
 
 import PlaylistsDB from '../../db/PlaylistsDB';
 
+import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import PlaylistsView from './PlaylistsView';
 
 class Playlists extends Component {
@@ -73,12 +74,15 @@ class Playlists extends Component {
 
   render() {
     return (
-      <PlaylistsView
-        playlists={this.state.playlists}
-        onPress={this._onPress}
-        onPressOptions={this._onPressOptions}
-        onPressNewPlaylist={this._onPressNewPlaylist}
-      />
+      <View style={{ flex: 1, backgroundColor: 'rgb(230, 230, 230)' }}>
+        <PlaylistsView
+          playlists={this.state.playlists}
+          onPress={this._onPress}
+          onPressOptions={this._onPressOptions}
+          onPressNewPlaylist={this._onPressNewPlaylist}
+        />
+        <CurrentSongFooter navigator={this.props.navigator}/>
+      </View>
     );
   }
 }
