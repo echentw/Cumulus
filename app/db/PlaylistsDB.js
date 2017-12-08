@@ -81,7 +81,7 @@ export default class PlaylistsDB {
       return true;
     }
     try {
-      realm.write(() => playlist.songs.splice(index));
+      realm.write(() => playlist.songs.splice(index, 1));
       return true;
     } catch (e) {
       console.log(`Error removing song ${videoId} from playlist ${playlistId}: ${e}.`);
@@ -91,5 +91,9 @@ export default class PlaylistsDB {
 
   static addOnChangeListener(callback) {
     realm.addListener('change', callback);
+  }
+
+  static removeOnChangeListener(callback) {
+    realm.removeListener('change', callback);
   }
 }

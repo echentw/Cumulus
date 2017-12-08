@@ -55,16 +55,22 @@ class Playlist extends Component {
     console.log('you pressed play');
   }
 
+  _songsOnChangeCallback = () => {
+    const playlist = PlaylistsDB.getPlaylist(this.props.playlistId);
+    const songs = playlist.songs.map((song) => ({
+      key: song.videoId,
+      videoId: song.videoId,
+      title: song.title,
+    }));
+    this.setState({ songs: songs });
+  }
+
   componentDidMount() {
-    PlaylistsDB.addOnChangeListener(() => {
-      const playlist = PlaylistsDB.getPlaylist(this.props.playlistId);
-      const songs = playlist.songs.map((song) => ({
-        key: song.videoId,
-        videoId: song.videoId,
-        title: song.title,
-      }));
-      this.setState({ songs: songs });
-    });
+    PlaylistsDB.addOnChangeListener(this._songsOnChangeCallback);
+  }
+
+  componentWillUnmount() {
+    PlaylistsDB.removeOnChangeListener(this._songsOnChangeCallback);
   }
 
   render() {
