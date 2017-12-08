@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
-import { View } from 'react-native';
+import { View, ActionSheetIOS } from 'react-native';
 import PropTypes from 'prop-types';
 
 import PlaylistsDB from '../../db/PlaylistsDB';
@@ -27,7 +27,28 @@ class Playlist extends Component {
   }
 
   _onPressMoreInfo = (videoId, title, thumbnail) => {
-    console.log('you pressed more info');
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Cancel', 'Add to playlist', 'Remove from this playlist'],
+      cancelButtonIndex: 0,
+      title: title,
+      tintColor: 'black',
+    }, (index) => {
+      if (index == 1) {
+        const playlists = PlaylistsDB.getAll();
+        const playlistTitles = playlists.map((playlist) => playlist.title);
+        ActionSheetIOS.showActionSheetWithOptions({
+          options: [...playlistTitles, 'Cancel'],
+          cancelButtonIndex: playlistTitles.length,
+          title: 'Add to playlist',
+          tintColor: 'black',
+        }, (index) => {
+          const playlistId = playlists[index].playlistId;
+          PlaylistsDB.addSong(playlistId, videoId);
+        });
+      } else if (index == 2) {
+        PlaylistsDB.removeSong(this.props.playlistId, videoId);
+      }
+    });
   }
 
   _onPressPlay = (videoId, title, thumbnail) => {
@@ -36,7 +57,7 @@ class Playlist extends Component {
 
   componentDidMount() {
     PlaylistsDB.addOnChangeListener(() => {
-      const playlist = PlaylistsDB.getPlaylist(props.playlistId);
+      const playlist = PlaylistsDB.getPlaylist(this.props.playlistId);
       const songs = playlist.songs.map((song) => ({
         key: song.videoId,
         videoId: song.videoId,

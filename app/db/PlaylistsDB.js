@@ -84,7 +84,7 @@ export default class PlaylistsDB {
       realm.write(() => playlist.songs.splice(index));
       return true;
     } catch (e) {
-      console.log(`Error removing song ${videoId} from playlist ${playlistId}.`);
+      console.log(`Error removing song ${videoId} from playlist ${playlistId}: ${e}.`);
       return false;
     }
   }
