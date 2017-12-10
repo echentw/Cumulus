@@ -37,8 +37,12 @@ export function downloadSong(videoId, title, thumbnail) {
     return Promise.all([songDownloadPromise, thumbnailDownloadPromise]);
   })
   .then((results) => {
+    let success = false;
     if (results[0].statusCode == 200 && results[1].statusCode == 200) {
-      return SongsDB.create(videoId, title);
+      success = SongsDB.create(videoId, title);
+    }
+    if (success) {
+      return new Promise((resolve, reject) => resolve());
     } else {
       return new Promise((resolve, reject) => reject('error fetching data from server'));
     }
@@ -46,8 +50,11 @@ export function downloadSong(videoId, title, thumbnail) {
 }
 
 export function removeSong(videoId) {
+  const success = SongsDB.delete(videoId);
+  if (!success) {
+    return Promise((resolve, reject) => reject('error removing song'));
+  }
   return Promise.all([
-    SongsDB.delete(videoId),
     RNFS.unlink(mp3Path(videoId)),
     RNFS.unlink(thumbnailPath(videoId)),
   ]);

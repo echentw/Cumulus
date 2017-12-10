@@ -4,6 +4,10 @@ import { Song, Playlist } from './schemas';
 import realm from './realm';
 
 export default class SongsDB {
+  static _getSong(videoId) {
+    return realm.objects(Song.schema.name).filtered(`videoId = "${videoId}"`);
+  }
+
   static getAll() {
     return realm.objects(Song.schema.name).sorted('title');
   }
@@ -14,25 +18,29 @@ export default class SongsDB {
   }
 
   static create(videoId, title) {
-    return new Promise((resolve, reject) => {
+    try {
       realm.write(() => {
         realm.create(Song.schema.name, {
           videoId: videoId,
           title: title,
         });
-        resolve();
       });
-    });
+      return true;
+    } catch (e) {
+      console.log(`Error creating song ${title} with videoId ${videoId}: ${e}`);
+      return false;
+    }
   }
 
   static delete(videoId) {
-    return new Promise((resolve, reject) => {
-      realm.write(() => {
-        const song = realm.objects(Song.schema.name).filtered(`videoId = "${videoId}"`);
-        realm.delete(song);
-        resolve();
-      });
-    });
+    const song = this._getSong(videoId);
+    try {
+      realm.write(() => realm.delete(song));
+      return true;
+    } catch (e) {
+      console.log(`Error deleting song with videoId ${videoId}: ${e}`);
+      return false;
+    }
   }
 
   static addOnChangeListener(callback) {
