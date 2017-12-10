@@ -6,6 +6,7 @@ import { View, ActionSheetIOS } from 'react-native';
 import PropTypes from 'prop-types';
 
 import PlaylistsDB from '../../db/PlaylistsDB';
+import { LoopStatus } from '../../constants';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import PlaylistView from './PlaylistView';
@@ -18,7 +19,7 @@ class Playlist extends Component {
     }
 
     const playlist = PlaylistsDB.getPlaylist(props.playlistId);
-    const songs = playlist.songs.map((song) => ({
+    const songs = playlist.songs.sorted('title').map((song) => ({
       key: song.videoId,
       videoId: song.videoId,
       title: song.title,
@@ -52,12 +53,23 @@ class Playlist extends Component {
   }
 
   _onPlayEnd = () => {
-    // TODO: do some more
-    this.props.playerPause();
+    const index = this.state.songs.findIndex((song) => song.videoId == this.props.currentlyPlaying.videoId);
+    const nextIndex = (index + 1) % this.state.songs.length;
+    const nextSong = this.state.songs[nextIndex];
+
+    this.props.setCurrentlyPlaying({
+      playlistId: this.props.playlistId,
+      videoId: nextSong.videoId,
+      songTitle: nextSong.title,
+      songThumbnail: nextSong.thumbnail,
+    });
+
+    this.props.player.loadLocal(nextSong.videoId)
+      .then(() => this.props.player.play(this._onPlayEnd))
+      .catch((error) => console.log(error));
   }
 
   _onPressPlay = (videoId, songTitle, songThumbnail) => {
-    console.log('you pressed play');
     this.props.setCurrentlyPlaying({
       playlistId: this.props.playlistId,
       videoId: videoId,
@@ -86,7 +98,7 @@ class Playlist extends Component {
 
   _songsOnChangeCallback = () => {
     const playlist = PlaylistsDB.getPlaylist(this.props.playlistId);
-    const songs = playlist.songs.map((song) => ({
+    const songs = playlist.songs.sorted('title').map((song) => ({
       key: song.videoId,
       videoId: song.videoId,
       title: song.title,
