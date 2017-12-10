@@ -41,8 +41,6 @@ export default class Player {
 
   loadLocal = (videoId) => {
     this._init(videoId);
-
-    this.videoId = videoId;
     const dir = RNFS.DocumentDirectoryPath + '/songs';
     const audioFile = 'song_' + videoId + '.mp3';
     return new Promise((resolve, reject) => {
@@ -50,7 +48,6 @@ export default class Player {
         if (error) {
           reject(error);
         } else {
-          this.player.setNumberOfLoops(-1);
           resolve();
         }
       });
