@@ -86,8 +86,8 @@ class SavedSongs extends Component {
 
     this.props.player.loadLocal(videoId)
       .then(() => {
-        this.props.player.play(() => this.props.playerPause());
         this.props.playerPlay();
+        this.props.player.play(() => this.props.playerPause());
       })
       .catch((error) => console.log(error));
   }

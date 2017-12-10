@@ -51,8 +51,37 @@ class Playlist extends Component {
     });
   }
 
-  _onPressPlay = (videoId, title, thumbnail) => {
+  _onPlayEnd = () => {
+    // TODO: do some more
+    this.props.playerPause();
+  }
+
+  _onPressPlay = (videoId, songTitle, songThumbnail) => {
     console.log('you pressed play');
+    this.props.setCurrentlyPlaying({
+      playlistId: this.props.playlistId,
+      videoId: videoId,
+      songTitle: songTitle,
+      songThumbnail: songThumbnail,
+    });
+
+    if (videoId == this.props.player.videoId) {
+      if (this.props.playingStatus) {
+        this.props.playerPause();
+        this.props.player.pause();
+      } else {
+        this.props.playerPlay();
+        this.props.player.play(this._onPlayEnd);
+      }
+      return;
+    }
+
+    this.props.player.loadLocal(videoId)
+      .then(() => {
+        this.props.playerPlay();
+        this.props.player.play(this._onPlayEnd);
+      })
+      .catch((error) => console.log(error));
   }
 
   _songsOnChangeCallback = () => {
@@ -95,6 +124,7 @@ Playlist.propTypes = {
 function mapStateToProps(state) {
   return {
     player: state.player,
+    playingStatus: state.playingStatus,
     currentlyPlaying: state.currentlyPlaying,
   };
 }

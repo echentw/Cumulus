@@ -8,6 +8,8 @@ import { createLogger } from 'redux-logger';
 
 import reducer from './app/reducers';
 
+import { LoopStatus } from './app/constants';
+
 import navigation from './app/navigation/navigation';
 
 const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__ });
@@ -31,7 +33,7 @@ const store = configureStore({
     videoId: null,
     songTitle: null,
     songThumbnail: { url: null },
-    loopStatus: null,
+    loopStatus: LoopStatus.LOOP_SONG,
   },
   searchQuery: '',
   searchResults: [],

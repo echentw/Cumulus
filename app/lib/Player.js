@@ -57,11 +57,10 @@ export default class Player {
     });
   }
 
-  play = (callback) => {
+  play = (onEnd) => {
     this.player.play((success) => {
       if (success) {
-        console.log('successfully finished playing');
-        callback();
+        onEnd();
       } else {
         console.log('playback failed due to audio decoding errors');
       }
