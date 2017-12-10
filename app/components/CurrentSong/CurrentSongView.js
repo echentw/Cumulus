@@ -47,7 +47,7 @@ class CurrentSongView extends Component {
       <EIcon size={36} name='dots-three-vertical' style={{ paddingTop: 13, paddingBottom: 13 }}/>
     );
 
-    const { videoId, title, thumbanil } = this.props;
+    const { videoId, title, thumbnail } = this.props;
 
     return (
       <View style={styles.container}>

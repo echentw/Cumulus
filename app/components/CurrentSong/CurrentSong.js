@@ -53,15 +53,15 @@ class CurrentSong extends Component {
   }
 
   _onPressMoreInfo = () => {
-    const { videoId, title, thumbnail } = this.props;
+    const { videoId, songTitle, songThumbnail } = this.props.currentlyPlaying;
     ActionSheetIOS.showActionSheetWithOptions({
       options: ['Cancel', 'Download', 'Add to Playlist'],
       cancelButtonIndex: 0,
-      title: title,
+      title: songTitle,
       tintColor: 'black',
     }, (index) => {
       if (index == 1) {
-        downloadSong(videoId, title, thumbnail)
+        downloadSong(videoId, songTitle, songThumbnail)
           .then(() => console.log('done writing to db!'))
           .catch((err) => console.log('an error happened', err));
       } else if (index == 2) {
@@ -103,7 +103,7 @@ class CurrentSong extends Component {
   render() {
     return (
       <CurrentSongView
-        title={this.props.title}
+        title={this.props.currentlyPlaying.songTitle}
         playingStatus={this.props.playingStatus}
         isLooping={this.state.isLooping}
         sliderValue={this.state.sliderValue}
@@ -121,12 +121,9 @@ class CurrentSong extends Component {
 
 function mapStateToProps(state) {
   return {
-    videoId: state.currentSongInfo.videoId,
-    title: state.currentSongInfo.title,
-    thumbnail: state.currentSongInfo.thumbnail,
+    currentlyPlaying: state.currentlyPlaying,
     player: state.player,
     playingStatus: state.playingStatus,
-    currentSongInfo: state.currentSongInfo,
   };
 }
 

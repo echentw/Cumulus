@@ -80,7 +80,7 @@ class Playlist extends Component {
           songs={this.state.songs}
           onPressPlay={this._onPressPlay}
           onPressMoreInfo={this._onPressMoreInfo}
-          videoIdPlaying={this.props.currentSongInfo.videoId}
+          videoIdPlaying={this.props.currentlyPlaying.videoId}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
       </View>
@@ -95,7 +95,7 @@ Playlist.propTypes = {
 function mapStateToProps(state) {
   return {
     player: state.player,
-    currentSongInfo: state.currentSongInfo,
+    currentlyPlaying: state.currentlyPlaying,
   };
 }
 

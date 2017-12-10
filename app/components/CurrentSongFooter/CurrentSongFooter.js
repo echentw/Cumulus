@@ -22,7 +22,8 @@ class CurrentSongFooter extends Component {
   };
 
   render() {
-    const title = this.props.currentSongInfo.title ? this.props.currentSongInfo.title : 'No song playing';
+    const { songTitle } = this.props.currentlyPlaying;
+    const title = songTitle ? songTitle : 'No song playing';
 
     return (
       <TouchableHighlight
@@ -64,7 +65,7 @@ function mapStateToProps(state) {
   return {
     player: state.player,
     playingStatus: state.playingStatus,
-    currentSongInfo: state.currentSongInfo,
+    currentlyPlaying: state.currentlyPlaying,
   };
 }
 

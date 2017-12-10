@@ -26,10 +26,12 @@ const store = configureStore({
   user: null,
   player: null,
   playingStatus: false,
-  currentSongInfo: {
+  currentlyPlaying: {
+    playlistId: null,
     videoId: null,
-    title: null,
-    thumbnail: null,
+    songTitle: null,
+    songThumbnail: { url: null },
+    loopStatus: null,
   },
   searchQuery: '',
   searchResults: [],

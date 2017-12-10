@@ -65,8 +65,13 @@ class SavedSongs extends Component {
     });
   }
 
-  _onPressPlay = (videoId, title, thumbnail) => {
-    this.props.setCurrentSongInfo(videoId, title, thumbnail);
+  _onPressPlay = (videoId, songTitle, songThumbnail) => {
+    this.props.setCurrentlyPlaying({
+      playlistId: null,
+      videoId: videoId,
+      songTitle: songTitle,
+      songThumbnail: songThumbnail,
+    });
 
     if (videoId == this.props.player.videoId) {
       if (this.props.playingStatus) {
@@ -106,7 +111,7 @@ class SavedSongs extends Component {
           songs={this.state.songs}
           onPressPlay={this._onPressPlay}
           onPressMoreInfo={this._onPressMoreInfo}
-          videoIdPlaying={this.props.currentSongInfo.videoId}
+          videoIdPlaying={this.props.currentlyPlaying.videoId}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
       </View>
@@ -118,7 +123,7 @@ function mapStateToProps(state) {
   return {
     player: state.player,
     playingStatus: state.playingStatus,
-    currentSongInfo: state.currentSongInfo,
+    currentlyPlaying: state.currentlyPlaying,
   };
 }
 
