@@ -41,6 +41,7 @@ function startApp() {
       {
         label: 'Playlists',
         screen: 'Cumulus.Playlists',
+        icon: require('./img/playlist24x24.png'),
         title: 'Playlists',
         navigatorStyle: {
           navBarTextColor: 'white',
