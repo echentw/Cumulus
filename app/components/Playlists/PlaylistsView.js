@@ -35,16 +35,10 @@ class PlaylistsView extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <FlatList
-          data={this.props.playlists}
-          renderItem={this._renderItem}
-        />
-        <Button
-          title={'+ New Playlist'}
-          onPress={this.props.onPressNewPlaylist}
-        />
-      </View>
+      <FlatList
+        data={this.props.playlists}
+        renderItem={this._renderItem}
+      />
     );
   }
 }
@@ -75,7 +69,6 @@ PlaylistsView.propTypes = {
   playlists: PropTypes.any,
   onPress: PropTypes.func.isRequired,
   onPressOptions: PropTypes.func.isRequired,
-  onPressNewPlaylist: PropTypes.func.isRequired,
 };
 
 export default PlaylistsView;

@@ -10,8 +10,40 @@ import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import PlaylistsView from './PlaylistsView';
 
 class Playlists extends Component {
+  static navigatorButtons = {
+    rightButtons: [
+      {
+        title: '+',
+        id: 'add-playlist',
+        buttonColor: 'rgb(230, 230, 230)',
+        buttonFontSize: 24,
+        buttonFontWeight: '600',
+      },
+    ],
+  }
+
+  onNavigatorEvent(event) {
+    if (event.type == 'NavBarButtonPress') {
+      if (event.id == 'add-playlist') {
+        AlertIOS.prompt(
+          'New playlist',
+          'Give it a name!',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Create', onPress: (title) => PlaylistsDB.create(title) },
+          ],
+          'plain-text', // text input type
+          '', // default text in text input
+          'default', // keyboard type
+        );
+      }
+    }
+  }
+
   constructor(props) {
     super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+
     const playlists = PlaylistsDB.getAll().map((playlist) => ({
       key: playlist.playlistId,
       playlistId: playlist.playlistId,
@@ -58,20 +90,6 @@ class Playlists extends Component {
     });
   }
 
-  _onPressNewPlaylist = () => {
-    AlertIOS.prompt(
-      'New playlist',
-      'Give it a name!',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Create', onPress: (title) => PlaylistsDB.create(title) },
-      ],
-      'plain-text', // text input type
-      '', // default text in text input
-      'default', // keyboard type
-    );
-  }
-
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: 'rgb(230, 230, 230)' }}>
@@ -79,7 +97,6 @@ class Playlists extends Component {
           playlists={this.state.playlists}
           onPress={this._onPress}
           onPressOptions={this._onPressOptions}
-          onPressNewPlaylist={this._onPressNewPlaylist}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
       </View>
