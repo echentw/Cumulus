@@ -121,6 +121,7 @@ class CurrentSong extends Component {
     return (
       <CurrentSongView
         title={this.props.currentlyPlaying.songTitle}
+        playingPlaylist={this.props.currentlyPlaying.playlistId != null}
         playingStatus={this.props.playingStatus}
         isLooping={this.state.isLooping}
         sliderValue={this.state.sliderValue}

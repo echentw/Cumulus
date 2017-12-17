@@ -13,7 +13,7 @@ import EIcon from 'react-native-vector-icons/Entypo';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 
 class CurrentSongView extends Component {
-  _buttonView = (element, onPressFunction, asdf) => {
+  _buttonView = (element, onPressFunction) => {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <TouchableOpacity onPress={onPressFunction}>
@@ -21,6 +21,38 @@ class CurrentSongView extends Component {
         </TouchableOpacity>
       </View>
     );
+  }
+
+  _topButtons = (playingPlaylist) => {
+    const playPauseElement = (
+      <Icon size={64} name={this.props.playingStatus ? 'pause' : 'play'}/>
+    );
+    const rewindElement = <MIcon size={36} name='replay-5'/>;
+    const ffElement = <MIcon size={36} name='forward-5'/>;
+
+    if (playingPlaylist) {
+      const previousElement = <Icon size={48} name='previous'/>;
+      const nextElement = <Icon size={48} name='next'/>;
+      return (
+        <View style={styles.bottomTop}>
+          { this._buttonView(previousElement, () => console.log('previous')) }
+          { this._buttonView(rewindElement, this.props.onPressReplayFiveSec) }
+          { this._buttonView(playPauseElement, this.props.onPressPlayPause) }
+          { this._buttonView(ffElement, this.props.onPressForwardFiveSec) }
+          { this._buttonView(nextElement, () => console.log('next')) }
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.bottomTop}>
+          <View style={{ flex: 1 }}/>
+          { this._buttonView(rewindElement, this.props.onPressReplayFiveSec) }
+          { this._buttonView(playPauseElement, this.props.onPressPlayPause) }
+          { this._buttonView(ffElement, this.props.onPressForwardFiveSec) }
+          <View style={{ flex: 1 }}/>
+        </View>
+      );
+    }
   }
 
   render() {
@@ -36,17 +68,8 @@ class CurrentSongView extends Component {
         </View>
       );
     }
-
-    const rewindElement = <MIcon size={36} name='replay-5'/>;
-    const ffElement = <MIcon size={36} name='forward-5'/>;
-    const previousElement = <Icon size={48} name='previous'/>;
-    const nextElement = <Icon size={48} name='next'/>;
-
     const loopElement = (
       <Icon size={64} name='loop' style={ this.props.isLooping ? { color: 'lightblue' } : { color: 'black' } }/>
-    );
-    const playPauseElement = (
-      <Icon size={64} name={this.props.playingStatus ? 'pause' : 'play'}/>
     );
     const moreOptionsElement = (
       <EIcon size={36} name='dots-three-vertical' style={{ paddingTop: 13, paddingBottom: 13 }}/>
@@ -69,13 +92,7 @@ class CurrentSongView extends Component {
           />
         </View>
         <View style={styles.bottom}>
-          <View style={styles.bottomTop}>
-            { this._buttonView(previousElement, () => console.log('previous')) }
-            { this._buttonView(rewindElement, this.props.onPressReplayFiveSec) }
-            { this._buttonView(playPauseElement, this.props.onPressPlayPause) }
-            { this._buttonView(ffElement, this.props.onPressForwardFiveSec) }
-            { this._buttonView(nextElement, () => console.log('next')) }
-          </View>
+          { this._topButtons(this.props.playingPlaylist) }
           <View style={styles.bottomBottom}>
             { this._buttonView(loopElement, this.props.onPressLoop) }
             { this._buttonView(moreOptionsElement, () => this.props.onPressMoreInfo(videoId, title, thumbnail)) }
@@ -118,6 +135,7 @@ const styles = StyleSheet.create({
 
 CurrentSongView.propTypes = {
   title: PropTypes.string,
+  playingPlaylist: PropTypes.bool.isRequired,
   playingStatus: PropTypes.bool.isRequired,
   isLooping: PropTypes.bool.isRequired,
 
