@@ -1521,6 +1521,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.eric.chen.Cumulus;
 				PRODUCT_NAME = Cumulus;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1548,6 +1549,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.eric.chen.Cumulus;
 				PRODUCT_NAME = Cumulus;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
