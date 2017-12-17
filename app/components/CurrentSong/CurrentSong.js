@@ -118,6 +118,29 @@ class CurrentSong extends Component {
     this.setState({ sliderValue: newSeconds });
   }
 
+  _onPressPreviousSong = () => {
+    const { playlistId, videoId } = this.props.currentlyPlaying;
+    if (playlistId == null) {
+      return;
+    }
+
+    const playlist = PlaylistsDB.getPlaylist(playlistId);
+    const index = playlist.songs.findIndex((song) => song.videoId == videoId);
+    const nextIndex = (index - 1 + playlist.songs.length) % playlist.songs.length;
+    const nextSong = playlist.songs[nextIndex];
+
+    this.props.setCurrentlyPlaying({
+      playlistId: playlistId,
+      videoId: nextSong.videoId,
+      songTitle: nextSong.title,
+      songThumbnail: nextSong.thumbnail,
+    });
+
+    this.props.player.loadLocal(nextSong.videoId)
+      .then(() => this.props.player.play(this._onPressNextSong))
+      .catch((error) => console.log(error));
+  }
+
   _onPressNextSong = () => {
     const { playlistId, videoId } = this.props.currentlyPlaying;
     if (playlistId == null) {
@@ -158,6 +181,7 @@ class CurrentSong extends Component {
         onSeeking={this._onSeeking}
         onSeekEnd={this._onSeekEnd}
         onPressMoreInfo={this._onPressMoreInfo}
+        onPressPreviousSong={this._onPressPreviousSong}
         onPressNextSong={this._onPressNextSong}
       />
     );

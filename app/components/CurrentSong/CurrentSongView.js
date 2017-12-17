@@ -35,7 +35,7 @@ class CurrentSongView extends Component {
       const nextElement = <Icon size={48} name='next'/>;
       return (
         <View style={styles.bottomTop}>
-          { this._buttonView(previousElement, () => console.log('previous')) }
+          { this._buttonView(previousElement, this.props.onPressPreviousSong) }
           { this._buttonView(rewindElement, this.props.onPressReplayFiveSec) }
           { this._buttonView(playPauseElement, this.props.onPressPlayPause) }
           { this._buttonView(ffElement, this.props.onPressForwardFiveSec) }
@@ -151,6 +151,7 @@ CurrentSongView.propTypes = {
 
   onPressReplayFiveSec: PropTypes.func.isRequired,
   onPressForwardFiveSec: PropTypes.func.isRequired,
+  onPressPreviousSong: PropTypes.func.isRequired,
   onPressNextSong: PropTypes.func.isRequired,
 };
 
