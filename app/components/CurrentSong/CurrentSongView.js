@@ -71,9 +71,9 @@ class CurrentSongView extends Component {
         <View style={styles.bottom}>
           <View style={styles.bottomTop}>
             { this._buttonView(previousElement, () => console.log('previous')) }
-            { this._buttonView(rewindElement, () => console.log('rewind')) }
+            { this._buttonView(rewindElement, this.props.onPressReplayFiveSec) }
             { this._buttonView(playPauseElement, this.props.onPressPlayPause) }
-            { this._buttonView(ffElement, () => console.log('ff')) }
+            { this._buttonView(ffElement, this.props.onPressForwardFiveSec) }
             { this._buttonView(nextElement, () => console.log('next')) }
           </View>
           <View style={styles.bottomBottom}>
@@ -130,6 +130,9 @@ CurrentSongView.propTypes = {
   onSeeking: PropTypes.func.isRequired,
   onSeekEnd: PropTypes.func.isRequired,
   onPressMoreInfo: PropTypes.func.isRequired,
+
+  onPressReplayFiveSec: PropTypes.func.isRequired,
+  onPressForwardFiveSec: PropTypes.func.isRequired,
 };
 
 export default CurrentSongView;

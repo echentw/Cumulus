@@ -100,6 +100,23 @@ class CurrentSong extends Component {
     this.setState({ isLooping: shouldLoop });
   }
 
+  _onPressReplayFiveSec = () => {
+    const newSeconds = Math.max(0, this.state.sliderValue - 5);
+    this.props.player.setCurrentTime(newSeconds);
+    this.setState({ sliderValue: newSeconds });
+  }
+
+  _onPressForwardFiveSec = () => {
+    const songDuration = this.props.player.getDuration();
+
+    // Two second margin to prevent some boundary case bugs.
+    // If you fast forward to the end of the song, the song will repeat even if
+    // repeat is not toggled.
+    const newSeconds = Math.min(songDuration - 2, this.state.sliderValue + 5);
+    this.props.player.setCurrentTime(newSeconds);
+    this.setState({ sliderValue: newSeconds });
+  }
+
   render() {
     return (
       <CurrentSongView
@@ -111,6 +128,8 @@ class CurrentSong extends Component {
         songProgress={this.state.songProgress}
         onPressPlayPause={this._onPressPlayPause}
         onPressLoop={this._onPressLoop}
+        onPressReplayFiveSec={this._onPressReplayFiveSec}
+        onPressForwardFiveSec={this._onPressForwardFiveSec}
         onSeeking={this._onSeeking}
         onSeekEnd={this._onSeekEnd}
         onPressMoreInfo={this._onPressMoreInfo}
