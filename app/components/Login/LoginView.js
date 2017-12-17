@@ -1,75 +1,56 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
   View,
+  Button,
+  TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PropTypes from 'prop-types';
 
-const LoginView = (props) => (
-  <View style={styles.container}>
-    <View style={styles.content}>
-      <Text style={styles.header}>
-        Welcome Stranger!
-      </Text>
-      <View style={styles.avatar}>
-        <Icon name="user-circle" size={100} color="rgba(0,0,0,.09)" />
-      </View>
-      <Text style={styles.text}>
-        Please log in to continue {'\n'}
-        to the awesomness
-      </Text>
-    </View>
-    {/* Login buttons */}
-    <View style={styles.buttons}>
-      <Icon.Button
-        name="google"
-        backgroundColor="#DD4B39"
-        onPress={props.loginWithGoogle}
-        {...iconStyles}
-      >
-        Login with Google
-      </Icon.Button>
-    </View>
-  </View>
+const LoginButton = (props) => (
+  <TouchableOpacity
+    style={{
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: 250,
+      height: 50,
+      borderWidth: 2,
+      borderRadius: 6,
+      borderColor: 'rgb(230, 230, 230)',
+      backgroundColor: 'rgb(30, 30, 30)',
+    }}
+    onPress={props.onPress}
+  >
+    <Text style={{
+      fontSize: 18,
+      color: 'rgb(230, 230, 230)',
+    }}>
+      Login with Google
+    </Text>
+  </TouchableOpacity>
 );
 
-const iconStyles = {
-  borderRadius: 10,
-  iconStyle: { paddingVertical: 5 },
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFF',
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: 20,
-  },
-  header: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  text: {
-    textAlign: 'center',
-    color: '#333',
-    marginBottom: 5,
-  },
-  buttons: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    margin: 20,
-    marginBottom: 30,
-  },
-});
+class LoginView extends Component {
+  render() {
+    return (
+      <View style={{ flex: 1, backgroundColor: 'rgb(50, 50, 50)' }}>
+        <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
+          <Text style={{ color: 'white', fontSize: 36, fontWeight: 'bold' }}>
+            Cumulus
+          </Text>
+          <Text style={{ color: 'white', fontSize: 36, fontWeight: 'bold' }}>
+            Music
+          </Text>
+        </View>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <LoginButton onPress={this.props.loginWithGoogle}/>
+        </View>
+      </View>
+    );
+  }
+}
 
 LoginView.propTypes = {
   loginWithGoogle: PropTypes.func.isRequired,
