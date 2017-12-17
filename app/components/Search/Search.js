@@ -13,6 +13,7 @@ import {
 import { downloadVideoToServer } from '../../lib/serverRequest';
 import { downloadSong } from '../../lib/songManagement';
 import Player from '../../lib/Player';
+import PlaylistsDB from '../../db/PlaylistsDB';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import SearchView from './SearchView';
@@ -47,7 +48,23 @@ class Search extends Component {
           .then(() => console.log('done writing to db!'))
           .catch((err) => console.log('an error happened', err));
       } else if (index == 2) {
-        console.log('you want to add this to a playlist hmmm');
+        const playlists = PlaylistsDB.getAll();
+        const playlistTitles = playlists.map((playlist) => playlist.title);
+        ActionSheetIOS.showActionSheetWithOptions({
+          options: [...playlistTitles, 'Cancel'],
+          cancelButtonIndex: playlistTitles.length,
+          title: 'Add to playlist',
+          tintColor: 'black',
+        }, (index) => {
+          if (index < playlistTitles.length) {
+            downloadSong(videoId, title, thumbnail)
+              .then(() => {
+                const playlistId = playlists[index].playlistId;
+                PlaylistsDB.addSong(playlistId, videoId);
+              })
+              .catch((err) => console.log('an error happened', err));
+          }
+        });
       }
     });
   }
