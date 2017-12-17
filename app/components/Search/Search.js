@@ -59,6 +59,7 @@ class Search extends Component {
           if (index < playlistTitles.length) {
             downloadSong(videoId, title, thumbnail)
               .then(() => {
+                console.log('done writing to db!');
                 const playlistId = playlists[index].playlistId;
                 PlaylistsDB.addSong(playlistId, videoId);
               })

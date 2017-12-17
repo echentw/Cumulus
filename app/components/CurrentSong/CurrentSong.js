@@ -7,6 +7,7 @@ import { ActionSheetIOS } from 'react-native';
 
 import { downloadSong } from '../../lib/songManagement';
 import { progressToDisplay } from '../../lib/utils';
+import SongsDB from '../../db/SongsDB';
 import PlaylistsDB from '../../db/PlaylistsDB';
 
 import CurrentSongView from './CurrentSongView';
@@ -55,20 +56,62 @@ class CurrentSong extends Component {
 
   _onPressMoreInfo = () => {
     const { videoId, songTitle, songThumbnail } = this.props.currentlyPlaying;
-    ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Download', 'Add to Playlist'],
-      cancelButtonIndex: 0,
-      title: songTitle,
-      tintColor: 'black',
-    }, (index) => {
-      if (index == 1) {
-        downloadSong(videoId, songTitle, songThumbnail)
-          .then(() => console.log('done writing to db!'))
-          .catch((err) => console.log('an error happened', err));
-      } else if (index == 2) {
-        console.log('you want to add this to a playlist hmmm');
-      }
-    });
+
+    if (SongsDB.exists(videoId)) {
+      ActionSheetIOS.showActionSheetWithOptions({
+        options: ['Cancel', 'Add to Playlist'],
+        cancelButtonIndex: 0,
+        title: songTitle,
+        tintColor: 'black',
+      }, (index) => {
+        if (index == 1) {
+          const playlists = PlaylistsDB.getAll();
+          const playlistTitles = playlists.map((playlist) => playlist.title);
+          ActionSheetIOS.showActionSheetWithOptions({
+            options: [...playlistTitles, 'Cancel'],
+            cancelButtonIndex: playlistTitles.length,
+            title: 'Add to playlist',
+            tintColor: 'black',
+          }, (index) => {
+            if (index < playlistTitles.length) {
+              const playlistId = playlists[index].playlistId;
+              PlaylistsDB.addSong(playlistId, videoId);
+            }
+          });
+        }
+      });
+    } else {
+      ActionSheetIOS.showActionSheetWithOptions({
+        options: ['Cancel', 'Download', 'Add to Playlist'],
+        cancelButtonIndex: 0,
+        title: songTitle,
+        tintColor: 'black',
+      }, (index) => {
+        if (index == 1) {
+          downloadSong(videoId, songTitle, songThumbnail)
+            .then(() => console.log('done writing to db!'))
+            .catch((err) => console.log('an error happened when trying to download song', err));
+        } else if (index == 2) {
+          const playlists = PlaylistsDB.getAll();
+          const playlistTitles = playlists.map((playlist) => playlist.title);
+          ActionSheetIOS.showActionSheetWithOptions({
+            options: [...playlistTitles, 'Cancel'],
+            cancelButtonIndex: playlistTitles.length,
+            title: 'Add to playlist',
+            tintColor: 'black',
+          }, (index) => {
+            if (index < playlistTitles.length) {
+              downloadSong(videoId, songTitle, songThumbnail)
+                .then(() => {
+                  const playlistId = playlists[index].playlistId;
+                  PlaylistsDB.addSong(playlistId, videoId);
+                })
+                .catch((err) => console.log('an error happened when trying to download song', err));
+            }
+          });
+        }
+      });
+    }
   }
 
   _onPressPlayPause = () => {
