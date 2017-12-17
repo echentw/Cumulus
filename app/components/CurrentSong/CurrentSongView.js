@@ -39,7 +39,7 @@ class CurrentSongView extends Component {
           { this._buttonView(rewindElement, this.props.onPressReplayFiveSec) }
           { this._buttonView(playPauseElement, this.props.onPressPlayPause) }
           { this._buttonView(ffElement, this.props.onPressForwardFiveSec) }
-          { this._buttonView(nextElement, () => console.log('next')) }
+          { this._buttonView(nextElement, this.props.onPressNextSong) }
         </View>
       );
     } else {
@@ -151,6 +151,7 @@ CurrentSongView.propTypes = {
 
   onPressReplayFiveSec: PropTypes.func.isRequired,
   onPressForwardFiveSec: PropTypes.func.isRequired,
+  onPressNextSong: PropTypes.func.isRequired,
 };
 
 export default CurrentSongView;
