@@ -23,6 +23,7 @@ function startApp() {
         icon: require('./img/search16x16.png'),
         navigatorStyle: {
           navBarTextColor: 'white',
+          navBarButtonColor: 'white',
           navBarBackgroundColor: 'rgb(50, 50, 50)',
           navBarCustomView: 'Cumulus.SearchBar',
         },
@@ -35,6 +36,7 @@ function startApp() {
         title: 'Saved Songs',
         navigatorStyle: {
           navBarTextColor: 'white',
+          navBarButtonColor: 'white',
           navBarBackgroundColor: 'rgb(50, 50, 50)',
         },
       },
@@ -45,6 +47,7 @@ function startApp() {
         title: 'Playlists',
         navigatorStyle: {
           navBarTextColor: 'white',
+          navBarButtonColor: 'white',
           navBarBackgroundColor: 'rgb(50, 50, 50)',
         },
       },
