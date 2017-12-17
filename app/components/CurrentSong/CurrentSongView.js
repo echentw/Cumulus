@@ -10,16 +10,16 @@ import PropTypes from 'prop-types';
 
 import Icon from 'react-native-vector-icons/Foundation';
 import EIcon from 'react-native-vector-icons/Entypo';
+import MIcon from 'react-native-vector-icons/MaterialIcons';
 
 class CurrentSongView extends Component {
-  _buttonView = (element, onPressFunction) => {
+  _buttonView = (element, onPressFunction, asdf) => {
     return (
-      <TouchableOpacity
-        style={{ margin: 20 }}
-        onPress={ onPressFunction }
-      >
-        { element }
-      </TouchableOpacity>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <TouchableOpacity onPress={onPressFunction}>
+          {element}
+        </TouchableOpacity>
+      </View>
     );
   }
 
@@ -36,6 +36,11 @@ class CurrentSongView extends Component {
         </View>
       );
     }
+
+    const rewindElement = <MIcon size={36} name='replay-5'/>;
+    const ffElement = <MIcon size={36} name='forward-5'/>;
+    const previousElement = <Icon size={48} name='previous'/>;
+    const nextElement = <Icon size={48} name='next'/>;
 
     const loopElement = (
       <Icon size={64} name='loop' style={ this.props.isLooping ? { color: 'lightblue' } : { color: 'black' } }/>
@@ -64,9 +69,18 @@ class CurrentSongView extends Component {
           />
         </View>
         <View style={styles.bottom}>
-          { this._buttonView(loopElement, this.props.onPressLoop) }
-          { this._buttonView(playPauseElement, this.props.onPressPlayPause) }
-          { this._buttonView(moreOptionsElement, () => this.props.onPressMoreInfo(videoId, title, thumbnail)) }
+          <View style={styles.bottomTop}>
+            { this._buttonView(previousElement, () => console.log('previous')) }
+            { this._buttonView(rewindElement, () => console.log('rewind')) }
+            { this._buttonView(playPauseElement, this.props.onPressPlayPause) }
+            { this._buttonView(ffElement, () => console.log('ff')) }
+            { this._buttonView(nextElement, () => console.log('next')) }
+          </View>
+          <View style={styles.bottomBottom}>
+            { this._buttonView(loopElement, this.props.onPressLoop) }
+            { this._buttonView(moreOptionsElement, () => this.props.onPressMoreInfo(videoId, title, thumbnail)) }
+          </View>
+          <View style={styles.bottomPadding}/>
         </View>
       </View>
     );
@@ -86,9 +100,19 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flex: 1,
+    flexDirection: 'column',
+  },
+  bottomTop: {
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+  },
+  bottomBottom: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  bottomPadding: {
+    flex: 2,
   },
 });
 
