@@ -5,6 +5,7 @@ sudo apt install nginx
 sudo apt install ffmpeg
 sudo apt install npm
 sudo apt install nodejs
+sudo apt install redis-server
 ln -s /usr/bin/nodejs /usr/bin/node
 
 sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
