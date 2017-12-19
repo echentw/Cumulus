@@ -13,10 +13,6 @@ import PlaylistsDB from '../../db/PlaylistsDB';
 import CurrentSongView from './CurrentSongView';
 
 class CurrentSong extends Component {
-  static navigatorStyle = {
-    disabledBackGesture: true,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
