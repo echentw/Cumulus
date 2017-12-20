@@ -53,17 +53,23 @@ class Playlist extends Component {
   }
 
   _onPlayEnd = () => {
-    const index = this.state.songs.findIndex((song) => song.videoId == this.props.currentlyPlaying.videoId);
-    const nextIndex = (index + 1) % this.state.songs.length;
-    const nextSong = this.state.songs[nextIndex];
+    const { playlistId, videoId } = this.props.currentlyPlaying;
+    if (playlistId == null) {
+      return;
+    }
+
+    const playlist = PlaylistsDB.getPlaylist(playlistId);
+    const songs = playlist.songs.sorted('title');
+    const index = songs.findIndex((song) => song.videoId == videoId);
+    const nextIndex = (index + 1) % songs.length;
+    const nextSong = songs[nextIndex];
 
     this.props.setCurrentlyPlaying({
-      playlistId: this.props.playlistId,
+      playlistId: playlistId,
       videoId: nextSong.videoId,
       songTitle: nextSong.title,
       songThumbnail: nextSong.thumbnail,
     });
-
     this.props.player.loadLocal(nextSong.videoId)
       .then(() => this.props.player.play(this._onPlayEnd))
       .catch((error) => console.log(error));
