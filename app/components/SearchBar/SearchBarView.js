@@ -22,28 +22,36 @@ class SearchBarView extends Component {
   }
 
   _onFocus = () => {
-    Animated.timing(this.state.cancelButtonWidth, {
-      toValue: 66,
-      duration: 250,
-    }).start();
-    setTimeout(() => {
-      Animated.timing(this.state.cancelButtonOpacity, {
-        toValue: 1.0,
-        duration: 100,
-      }).start();
-    }, 200);
+    Animated.parallel([
+      Animated.timing(this.state.cancelButtonWidth, {
+        toValue: 66,
+        duration: 250,
+      }),
+      Animated.sequence([
+        Animated.timing(this.state.cancelButtonOpacity, {
+          toValue: 0.0,
+          duration: 200,
+        }),
+        Animated.timing(this.state.cancelButtonOpacity, {
+          toValue: 1.0,
+          duration: 100,
+        }),
+      ]),
+    ]).start();
     this.props.onFocus();
   }
 
   _onBlur = () => {
-    Animated.timing(this.state.cancelButtonWidth, {
-      toValue: 0,
-      duration: 250,
-    }).start();
-    Animated.timing(this.state.cancelButtonOpacity, {
-      toValue: 0.0,
-      duration: 50,
-    }).start();
+    Animated.parallel([
+      Animated.timing(this.state.cancelButtonWidth, {
+        toValue: 0,
+        duration: 250,
+      }),
+      Animated.timing(this.state.cancelButtonOpacity, {
+        toValue: 0.0,
+        duration: 50,
+      }),
+    ]).start();
     Keyboard.dismiss();
     this.props.onBlur();
   }
