@@ -116,7 +116,7 @@ class CurrentSong extends Component {
       this.props.player.pause();
     } else {
       this.props.playerPlay();
-      this.props.player.play(() => this.props.playerPause());
+      this.props.player.play();
     }
   }
 
@@ -177,7 +177,7 @@ class CurrentSong extends Component {
     });
 
     this.props.player.loadLocal(nextSong.videoId)
-      .then(() => this.props.player.play(this._onPressNextSong))
+      .then(() => this.props.player.play())
       .catch((error) => console.log(error));
   }
 
@@ -201,7 +201,7 @@ class CurrentSong extends Component {
     });
 
     this.props.player.loadLocal(nextSong.videoId)
-      .then(() => this.props.player.play(this._onPressNextSong))
+      .then(() => this.props.player.play())
       .catch((error) => console.log(error));
   }
 

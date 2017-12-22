@@ -8,7 +8,8 @@ import { getAudioUrl } from './serverRequest';
 export default class Player {
   constructor() {
     this.videoId = null; // string
-    this.player = null; // RNSound or RNAudioStreaming
+    this.player = null; // RNSound
+    this.onCompleteCallback = () => {};
   }
 
   _init = (videoId) => {
@@ -54,10 +55,14 @@ export default class Player {
     });
   }
 
-  play = (onEnd) => {
+  setOnCompleteCallback = (callback) => {
+    this.onCompleteCallback = callback;
+  }
+
+  play = () => {
     this.player.play((success) => {
       if (success) {
-        onEnd();
+        this.onCompleteCallback();
       } else {
         console.log('playback failed due to audio decoding errors');
       }

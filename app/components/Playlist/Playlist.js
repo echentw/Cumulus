@@ -52,29 +52,6 @@ class Playlist extends Component {
     });
   }
 
-  _onPlayEnd = () => {
-    const { playlistId, videoId } = this.props.currentlyPlaying;
-    if (playlistId == null) {
-      return;
-    }
-
-    const playlist = PlaylistsDB.getPlaylist(playlistId);
-    const songs = playlist.songs.sorted('title');
-    const index = songs.findIndex((song) => song.videoId == videoId);
-    const nextIndex = (index + 1) % songs.length;
-    const nextSong = songs[nextIndex];
-
-    this.props.setCurrentlyPlaying({
-      playlistId: playlistId,
-      videoId: nextSong.videoId,
-      songTitle: nextSong.title,
-      songThumbnail: nextSong.thumbnail,
-    });
-    this.props.player.loadLocal(nextSong.videoId)
-      .then(() => this.props.player.play(this._onPlayEnd))
-      .catch((error) => console.log(error));
-  }
-
   _onPressPlay = (videoId, songTitle, songThumbnail) => {
     this.props.setCurrentlyPlaying({
       playlistId: this.props.playlistId,
@@ -89,7 +66,7 @@ class Playlist extends Component {
         this.props.player.pause();
       } else {
         this.props.playerPlay();
-        this.props.player.play(this._onPlayEnd);
+        this.props.player.play();
       }
       return;
     }
@@ -97,7 +74,7 @@ class Playlist extends Component {
     this.props.player.loadLocal(videoId)
       .then(() => {
         this.props.playerPlay();
-        this.props.player.play(this._onPlayEnd);
+        this.props.player.play();
       })
       .catch((error) => console.log(error));
   }

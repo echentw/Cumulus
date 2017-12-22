@@ -84,7 +84,7 @@ class Search extends Component {
         this.props.player.pause();
       } else {
         this.props.playerPlay();
-        this.props.player.play(() => this.props.playerPause());
+        this.props.player.play();
       }
       return;
     }
@@ -95,7 +95,7 @@ class Search extends Component {
         return this.props.player.loadRemote(videoId)
       })
       .then(() => {
-        this.props.player.play(() => this.props.playerPause());
+        this.props.player.play();
         this.props.playerPlay();
       })
       .catch((error) => console.log(error));

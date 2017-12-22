@@ -11,6 +11,7 @@ import Player from '../../lib/Player';
 import { removeSong } from '../../lib/songManagement';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
+import PlaybackCompletion from '../PlaybackCompletion/PlaybackCompletion';
 import SavedSongsView from './SavedSongsView';
 
 class SavedSongs extends Component {
@@ -82,7 +83,7 @@ class SavedSongs extends Component {
         this.props.player.pause();
       } else {
         this.props.playerPlay();
-        this.props.player.play(() => this.props.playerPause());
+        this.props.player.play();
       }
       return;
     }
@@ -90,7 +91,7 @@ class SavedSongs extends Component {
     this.props.player.loadLocal(videoId)
       .then(() => {
         this.props.playerPlay();
-        this.props.player.play(() => this.props.playerPause());
+        this.props.player.play();
       })
       .catch((error) => console.log(error));
   }
@@ -117,6 +118,7 @@ class SavedSongs extends Component {
           videoIdPlaying={this.props.currentlyPlaying.videoId}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
+        <PlaybackCompletion/>
       </View>
     );
   }
