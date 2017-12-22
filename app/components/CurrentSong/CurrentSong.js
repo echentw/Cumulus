@@ -164,9 +164,10 @@ class CurrentSong extends Component {
     }
 
     const playlist = PlaylistsDB.getPlaylist(playlistId);
-    const index = playlist.songs.findIndex((song) => song.videoId == videoId);
-    const nextIndex = (index - 1 + playlist.songs.length) % playlist.songs.length;
-    const nextSong = playlist.songs[nextIndex];
+    const songs = playlist.songs.sorted('title');
+    const index = songs.findIndex((song) => song.videoId == videoId);
+    const nextIndex = (index - 1 + songs.length) % songs.length;
+    const nextSong = songs[nextIndex];
 
     this.props.setCurrentlyPlaying({
       playlistId: playlistId,
