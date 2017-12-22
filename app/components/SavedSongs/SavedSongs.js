@@ -41,8 +41,9 @@ class SavedSongs extends Component {
 
   _onPressMoreInfo = (videoId, title, thumbnail) => {
     ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Add to Playlist', 'Remove'],
+      options: ['Cancel', 'Add to Playlist', 'Delete'],
       cancelButtonIndex: 0,
+      destructiveButtonIndex: 2,
       title: title,
       tintColor: 'black',
     }, (index) => {
