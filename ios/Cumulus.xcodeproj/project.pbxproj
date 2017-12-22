@@ -38,7 +38,6 @@
 		2DCD954D1E0B4F2C00145EB5 /* CumulusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CumulusTests.m */; };
 		38E2FFAC1E884A128768379A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 013F9D0B8D904FE381923913 /* libc++.tbd */; };
 		3A41AB363A47432783FAC68D /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF4840B56EFB4A06A6DB7B4A /* libRealmReact.a */; };
-		40AE3EF81F9435C90050193F /* snow-halation.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 40AE3EF71F9435C90050193F /* snow-halation.mp3 */; };
 		514791BAAD6B44ABB845A5FD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C959949DC73E433B86530284 /* libz.tbd */; };
 		53ACB41B242E40A18996F8E6 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E5B9A1F3DE04BDE99D59A27 /* Foundation.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
@@ -400,7 +399,6 @@
 		2F7E8154AA5C4D82A77355D5 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		35FD462BB9944D6CB8CD301F /* libRNSound.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSound.a; sourceTree = "<group>"; };
 		400176C31F94403F000AF1DC /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
-		40AE3EF71F9435C90050193F /* snow-halation.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "snow-halation.mp3"; path = "../mp3/snow-halation.mp3"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6049B66508834E0FBD139AAB /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		7466C49CC6A24BCCB812CD49 /* RNSound.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
@@ -587,7 +585,6 @@
 		13B07FAE1A68108700A75B9A /* Cumulus */ = {
 			isa = PBXGroup;
 			children = (
-				40AE3EF71F9435C90050193F /* snow-halation.mp3 */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1298,7 +1295,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				40AE3EF81F9435C90050193F /* snow-halation.mp3 in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				D039E693412C413398B2C26F /* Entypo.ttf in Resources */,
 				BA4127A3D4E746338E2F4A53 /* EvilIcons.ttf in Resources */,
