@@ -12,6 +12,35 @@ import Icon from 'react-native-vector-icons/Foundation';
 import EIcon from 'react-native-vector-icons/Entypo';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 
+function Titles({ title, playingPlaylist, playlistTitle }) {
+  const styles = {
+    container: {
+      marginBottom: 10,
+    },
+    text: {
+      fontSize: 14,
+    },
+  };
+
+  if (playingPlaylist) {
+    return (
+      <View style={styles.container}>
+        <View style={{ alignItems: 'center', marginBottom: 40 }}>
+          <Text style={{ ...styles.text, fontWeight: 'bold' }}>Playlist</Text>
+          <Text style={styles.text}>{playlistTitle}</Text>
+        </View>
+        <Text style={styles.text}>{title}</Text>
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>{title}</Text>
+      </View>
+    );
+  }
+}
+
 class CurrentSongView extends Component {
   _buttonView = (element, onPressFunction) => {
     return (
@@ -80,7 +109,11 @@ class CurrentSongView extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.top}>
-          <Text>{this.props.title}</Text>
+          <Titles
+            title={title}
+            playingPlaylist={this.props.playingPlaylist}
+            playlistTitle={this.props.playlistTitle}
+          />
           <Text>{this.props.songProgress}</Text>
           <Slider
             style={{ width: 300 }}
@@ -136,6 +169,7 @@ const styles = StyleSheet.create({
 CurrentSongView.propTypes = {
   title: PropTypes.string,
   playingPlaylist: PropTypes.bool.isRequired,
+  playlistTitle: PropTypes.string,
   playingStatus: PropTypes.bool.isRequired,
   isLooping: PropTypes.bool.isRequired,
 

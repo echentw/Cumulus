@@ -26,7 +26,15 @@ class CurrentSong extends Component {
 
       // Used for updating the slider as the music progresses.
       interval: null,
+
+      playlistTitle: null,
     };
+
+    if (props.currentlyPlaying.playlistId != null) {
+      this.state.playlistTitle = PlaylistsDB.getPlaylist(props.currentlyPlaying.playlistId).title;
+    } else {
+      this.state.playlistTitle = null;
+    }
   }
 
   componentDidMount() {
@@ -48,6 +56,15 @@ class CurrentSong extends Component {
 
   componentWillUnmount() {
     clearInterval(this.state.interval);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    const currentPlaylistId = this.props.currentlyPlaying.playlistId;
+    const nextPlaylistId = nextProps.currentlyPlaying.playlistId;
+    if (currentPlaylistId != nextPlaylistId) {
+      const playlistTitle = (nextPlaylistId != null) ? PlaylistsDB.getPlaylist(nextPlaylistId).title : null;
+      this.setState({ playlistTitle: playlistTitle });
+    }
   }
 
   _onPressMoreInfo = () => {
@@ -210,6 +227,7 @@ class CurrentSong extends Component {
       <CurrentSongView
         title={this.props.currentlyPlaying.songTitle}
         playingPlaylist={this.props.currentlyPlaying.playlistId != null}
+        playlistTitle={this.state.playlistTitle}
         playingStatus={this.props.playingStatus}
         isLooping={this.state.isLooping}
         sliderValue={this.state.sliderValue}
