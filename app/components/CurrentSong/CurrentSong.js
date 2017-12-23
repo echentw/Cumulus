@@ -200,7 +200,11 @@ class CurrentSong extends Component {
     });
 
     this.props.player.loadLocal(nextSong.videoId)
-      .then(() => this.props.player.play())
+      .then(() => {
+        if (this.props.playingStatus) {
+          this.props.player.play()
+        }
+      })
       .catch((error) => console.log(error));
   }
 
@@ -230,7 +234,11 @@ class CurrentSong extends Component {
     });
 
     this.props.player.loadLocal(nextSong.videoId)
-      .then(() => this.props.player.play())
+      .then(() => {
+        if (this.props.playingStatus) {
+          this.props.player.play();
+        }
+      })
       .catch((error) => console.log(error));
   }
 
