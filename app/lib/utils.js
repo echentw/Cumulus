@@ -19,3 +19,18 @@ export function progressToDisplay(currentTime, duration) {
 
   return `${minutes}:${seconds} / ${durationMinutes}:${durationSeconds}`;
 }
+
+// Returns a new array with the elements permuted randomly.
+export function randomPermutation(array) {
+  const newArray = new Array(array.length);
+  for (let i = 0; i < newArray.length; ++i) {
+    newArray[i] = array[i];
+  }
+  for (let i = 0; i < newArray.length; ++i) {
+    const j = i + Math.floor(Math.random() * (newArray.length - i));
+    const temp = newArray[i];
+    newArray[i] = newArray[j];
+    newArray[j] = temp;
+  }
+  return newArray;
+}

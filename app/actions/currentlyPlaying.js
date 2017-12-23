@@ -16,3 +16,10 @@ export function setLoopStatus(loopStatus) {
     loopStatus: loopStatus,
   };
 }
+
+export function togglePlaylistShuffle(songs) {
+  return {
+    type: types.TOGGLE_PLAYLIST_SHUFFLE,
+    songs: songs,
+  };
+}

@@ -34,6 +34,7 @@ const store = configureStore({
     songTitle: null,
     songThumbnail: { url: null },
     loopStatus: LoopStatus.LOOP_SONG,
+    shuffleOrder: null,
   },
   searchQuery: '',
   searchResults: [],

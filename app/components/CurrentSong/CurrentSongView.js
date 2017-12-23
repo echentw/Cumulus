@@ -84,6 +84,35 @@ class CurrentSongView extends Component {
     }
   }
 
+  _bottomButtons = (playingPlaylist) => {
+    const loopElement = (
+      <Icon size={64} name='loop' style={ this.props.isLooping ? { color: 'lightblue' } : { color: 'black' } }/>
+    );
+    const moreOptionsElement = (
+      <EIcon size={36} name='dots-three-vertical' style={{ paddingTop: 13, paddingBottom: 13 }}/>
+    );
+    const shuffleElement = (
+      <Icon size={64} name='shuffle' style={ this.props.playlistIsShuffling ? { color: 'lightblue' } : { color: 'black' } }/>
+    );
+
+    if (playingPlaylist) {
+      return (
+        <View style={styles.bottomBottom}>
+          { this._buttonView(loopElement, this.props.onPressLoop) }
+          { this._buttonView(shuffleElement, this.props.onPressShufflePlaylist) }
+          { this._buttonView(moreOptionsElement, () => this.props.onPressMoreInfo(videoId, title, thumbnail)) }
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.bottomBottom}>
+          { this._buttonView(loopElement, this.props.onPressLoop) }
+          { this._buttonView(moreOptionsElement, () => this.props.onPressMoreInfo(videoId, title, thumbnail)) }
+        </View>
+      );
+    }
+  }
+
   render() {
     if (!this.props.title) {
       return (
@@ -97,12 +126,6 @@ class CurrentSongView extends Component {
         </View>
       );
     }
-    const loopElement = (
-      <Icon size={64} name='loop' style={ this.props.isLooping ? { color: 'lightblue' } : { color: 'black' } }/>
-    );
-    const moreOptionsElement = (
-      <EIcon size={36} name='dots-three-vertical' style={{ paddingTop: 13, paddingBottom: 13 }}/>
-    );
 
     const { videoId, title, thumbnail } = this.props;
 
@@ -126,10 +149,7 @@ class CurrentSongView extends Component {
         </View>
         <View style={styles.bottom}>
           { this._topButtons(this.props.playingPlaylist) }
-          <View style={styles.bottomBottom}>
-            { this._buttonView(loopElement, this.props.onPressLoop) }
-            { this._buttonView(moreOptionsElement, () => this.props.onPressMoreInfo(videoId, title, thumbnail)) }
-          </View>
+          { this._bottomButtons(this.props.playingPlaylist) }
           <View style={styles.bottomPadding}/>
         </View>
       </View>
@@ -169,6 +189,7 @@ const styles = StyleSheet.create({
 CurrentSongView.propTypes = {
   title: PropTypes.string,
   playingPlaylist: PropTypes.bool.isRequired,
+  playlistIsShuffling: PropTypes.bool.isRequired,
   playlistTitle: PropTypes.string,
   playingStatus: PropTypes.bool.isRequired,
   isLooping: PropTypes.bool.isRequired,
@@ -187,6 +208,7 @@ CurrentSongView.propTypes = {
   onPressForwardFiveSec: PropTypes.func.isRequired,
   onPressPreviousSong: PropTypes.func.isRequired,
   onPressNextSong: PropTypes.func.isRequired,
+  onPressShufflePlaylist: PropTypes.func.isRequired,
 };
 
 export default CurrentSongView;

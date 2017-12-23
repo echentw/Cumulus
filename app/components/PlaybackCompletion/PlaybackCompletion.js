@@ -27,9 +27,17 @@ class PlaybackCompletion extends Component {
 
     const playlist = PlaylistsDB.getPlaylist(playlistId);
     const songs = playlist.songs.sorted('title');
-    const index = songs.findIndex((song) => song.videoId == videoId);
-    const nextIndex = (index + 1) % songs.length;
-    const nextSong = songs[nextIndex];
+    let nextSong;
+    if (this.props.currentlyPlaying.shuffleOrder == null) {
+      const index = songs.findIndex((song) => song.videoId == videoId);
+      const nextIndex = (index + 1) % songs.length;
+      nextSong = songs[nextIndex];
+    } else {
+      const { shuffleOrder } = this.props.currentlyPlaying;
+      const index = shuffleOrder.findIndex((song) => song.videoId == videoId);
+      const nextIndex = (index + 1) % shuffleOrder.length;
+      nextSong = shuffleOrder[nextIndex];
+    }
 
     this.props.setCurrentlyPlaying({
       playlistId: playlistId,

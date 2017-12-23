@@ -176,15 +176,21 @@ class CurrentSong extends Component {
 
   _onPressPreviousSong = () => {
     const { playlistId, videoId } = this.props.currentlyPlaying;
-    if (playlistId == null) {
-      return;
-    }
+    if (playlistId == null) return;
 
     const playlist = PlaylistsDB.getPlaylist(playlistId);
     const songs = playlist.songs.sorted('title');
-    const index = songs.findIndex((song) => song.videoId == videoId);
-    const nextIndex = (index - 1 + songs.length) % songs.length;
-    const nextSong = songs[nextIndex];
+    let nextSong;
+    if (this.props.currentlyPlaying.shuffleOrder == null) {
+      const index = songs.findIndex((song) => song.videoId == videoId);
+      const nextIndex = (index - 1 + songs.length) % songs.length;
+      nextSong = songs[nextIndex];
+    } else {
+      const { shuffleOrder } = this.props.currentlyPlaying;
+      const index = shuffleOrder.findIndex((song) => song.videoId == videoId);
+      const nextIndex = (index - 1 + shuffleOrder.length) % shuffleOrder.length;
+      nextSong = shuffleOrder[nextIndex];
+    }
 
     this.props.setCurrentlyPlaying({
       playlistId: playlistId,
@@ -200,15 +206,21 @@ class CurrentSong extends Component {
 
   _onPressNextSong = () => {
     const { playlistId, videoId } = this.props.currentlyPlaying;
-    if (playlistId == null) {
-      return;
-    }
+    if (playlistId == null) return;
 
     const playlist = PlaylistsDB.getPlaylist(playlistId);
     const songs = playlist.songs.sorted('title');
-    const index = songs.findIndex((song) => song.videoId == videoId);
-    const nextIndex = (index + 1) % songs.length;
-    const nextSong = songs[nextIndex];
+    let nextSong;
+    if (this.props.currentlyPlaying.shuffleOrder == null) {
+      const index = songs.findIndex((song) => song.videoId == videoId);
+      const nextIndex = (index + 1) % songs.length;
+      nextSong = songs[nextIndex];
+    } else {
+      const { shuffleOrder } = this.props.currentlyPlaying;
+      const index = shuffleOrder.findIndex((song) => song.videoId == videoId);
+      const nextIndex = (index + 1) % shuffleOrder.length;
+      nextSong = shuffleOrder[nextIndex];
+    }
 
     this.props.setCurrentlyPlaying({
       playlistId: playlistId,
@@ -222,11 +234,20 @@ class CurrentSong extends Component {
       .catch((error) => console.log(error));
   }
 
+  _shufflePlaylist = () => {
+    const { playlistId } = this.props.currentlyPlaying;
+    if (playlistId == null) return;
+
+    const playlist = PlaylistsDB.getPlaylist(playlistId);
+    this.props.togglePlaylistShuffle(playlist.songs);
+  }
+
   render() {
     return (
       <CurrentSongView
         title={this.props.currentlyPlaying.songTitle}
         playingPlaylist={this.props.currentlyPlaying.playlistId != null}
+        playlistIsShuffling={this.props.currentlyPlaying.shuffleOrder != null}
         playlistTitle={this.state.playlistTitle}
         playingStatus={this.props.playingStatus}
         isLooping={this.state.isLooping}
@@ -242,6 +263,7 @@ class CurrentSong extends Component {
         onPressMoreInfo={this._onPressMoreInfo}
         onPressPreviousSong={this._onPressPreviousSong}
         onPressNextSong={this._onPressNextSong}
+        onPressShufflePlaylist={this._shufflePlaylist}
       />
     );
   }
