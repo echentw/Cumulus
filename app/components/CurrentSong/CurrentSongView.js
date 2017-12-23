@@ -15,7 +15,12 @@ import MIcon from 'react-native-vector-icons/MaterialIcons';
 function Titles({ title, playingPlaylist, playlistTitle }) {
   const styles = {
     container: {
+      flex: 1,
       marginBottom: 10,
+    },
+    textContainer: {
+      justifyContent: 'flex-end',
+      alignItems: 'center',
     },
     text: {
       fontSize: 14,
@@ -25,11 +30,13 @@ function Titles({ title, playingPlaylist, playlistTitle }) {
   if (playingPlaylist) {
     return (
       <View style={styles.container}>
-        <View style={{ alignItems: 'center', marginBottom: 40 }}>
+        <View style={{ ...styles.textContainer, flex: 2 }}>
           <Text style={{ ...styles.text, fontWeight: 'bold' }}>Playlist</Text>
           <Text style={styles.text}>{playlistTitle}</Text>
         </View>
-        <Text style={styles.text}>{title}</Text>
+        <View style={{ ...styles.textContainer, flex: 1 }}>
+          <Text style={styles.text}>{title}</Text>
+        </View>
       </View>
     );
   } else {
