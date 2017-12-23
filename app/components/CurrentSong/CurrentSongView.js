@@ -42,7 +42,9 @@ function Titles({ title, playingPlaylist, playlistTitle }) {
   } else {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>{title}</Text>
+        <View style={{ ...styles.textContainer, flex: 1 }}>
+          <Text style={styles.text}>{title}</Text>
+        </View>
       </View>
     );
   }
