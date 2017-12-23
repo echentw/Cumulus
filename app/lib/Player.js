@@ -33,7 +33,7 @@ export default class Player {
         if (error) {
           reject(error);
         } else {
-          this.player.setNumberOfLoops(-1);
+          this.setLoop(true);
           resolve();
         }
       });
@@ -42,6 +42,7 @@ export default class Player {
 
   loadLocal = (videoId) => {
     this._init(videoId);
+    const isLooping = this.player ? this.isLooping() : false;
     const dir = RNFS.DocumentDirectoryPath + '/songs';
     const audioFile = 'song_' + videoId + '.mp3';
     return new Promise((resolve, reject) => {
@@ -49,6 +50,7 @@ export default class Player {
         if (error) {
           reject(error);
         } else {
+          this.setLoop(isLooping);
           resolve();
         }
       });
