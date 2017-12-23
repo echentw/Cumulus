@@ -53,6 +53,15 @@ class Playlist extends Component {
   }
 
   _onPressPlay = (videoId, songTitle, songThumbnail) => {
+    if (this.props.currentlyPlaying.playlistId != this.props.playlistId) {
+      // Holy smokes this is a horrible hack.
+      // Basically we need to make sure that the songs in the shuffle order
+      // are updated to be songs of this playlist.
+      const playlist = PlaylistsDB.getPlaylist(this.props.playlistId);
+      this.props.togglePlaylistShuffle(playlist.songs);
+      this.props.togglePlaylistShuffle(playlist.songs);
+    }
+
     this.props.setCurrentlyPlaying({
       playlistId: this.props.playlistId,
       videoId: videoId,
