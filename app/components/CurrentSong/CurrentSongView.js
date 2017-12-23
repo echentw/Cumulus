@@ -85,16 +85,23 @@ class CurrentSongView extends Component {
   }
 
   _bottomButtons = (playingPlaylist) => {
+    const bottomButtonsStyles = {
+      loop: { color: this.props.isLooping ? 'blue' : 'grey' },
+      moreOptions: { paddingTop: 13, paddingBottom: 13 },
+      shuffle: { color: this.props.playlistIsShuffling ? 'blue' : 'grey' },
+    };
+
     const loopElement = (
-      <Icon size={64} name='loop' style={ this.props.isLooping ? { color: 'lightblue' } : { color: 'black' } }/>
+      <Icon size={48} name='loop' style={bottomButtonsStyles.loop}/>
     );
     const moreOptionsElement = (
-      <EIcon size={36} name='dots-three-vertical' style={{ paddingTop: 13, paddingBottom: 13 }}/>
+      <EIcon size={32} name='dots-three-vertical' style={bottomButtonsStyles.moreOptions}/>
     );
     const shuffleElement = (
-      <Icon size={64} name='shuffle' style={ this.props.playlistIsShuffling ? { color: 'lightblue' } : { color: 'black' } }/>
+      <Icon size={48} name='shuffle' style={bottomButtonsStyles.shuffle}/>
     );
 
+    const { videoId, title, thumbnail } = this.props;
     if (playingPlaylist) {
       return (
         <View style={styles.bottomBottom}>
@@ -128,7 +135,6 @@ class CurrentSongView extends Component {
     }
 
     const { videoId, title, thumbnail } = this.props;
-
     return (
       <View style={styles.container}>
         <View style={styles.top}>
