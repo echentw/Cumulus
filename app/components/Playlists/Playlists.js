@@ -78,13 +78,25 @@ class Playlists extends Component {
 
   _onPressOptions = (playlistId, title) => {
     ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Delete'],
+      options: ['Cancel', 'Rename', 'Delete'],
       cancelButtonIndex: 0,
-      destructiveButtonIndex: 1,
+      destructiveButtonIndex: 2,
       title: title,
       tintColor: 'black',
     }, (index) => {
       if (index == 1) {
+        AlertIOS.prompt(
+          'Rename playlist',
+          title,
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Rename', onPress: (playlistName) => PlaylistsDB.editTitle(playlistId, playlistName) },
+          ],
+          'plain-text', // text input type
+          '', // default text in text input
+          'default', // keyboard type
+        );
+      } else if (index == 2) {
         PlaylistsDB.delete(playlistId);
       }
     });

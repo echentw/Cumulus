@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
 
-import { ActionSheetIOS } from 'react-native';
+import { ActionSheetIOS, AlertIOS } from 'react-native';
 
 import { downloadSong } from '../../lib/songManagement';
 import { progressToDisplay } from '../../lib/utils';
@@ -72,7 +72,7 @@ class CurrentSong extends Component {
 
     if (SongsDB.exists(videoId)) {
       ActionSheetIOS.showActionSheetWithOptions({
-        options: ['Cancel', 'Add to Playlist'],
+        options: ['Cancel', 'Add to Playlist', 'Rename'],
         cancelButtonIndex: 0,
         title: songTitle,
         tintColor: 'black',
@@ -81,16 +81,46 @@ class CurrentSong extends Component {
           const playlists = PlaylistsDB.getAll();
           const playlistTitles = playlists.map((playlist) => playlist.title);
           ActionSheetIOS.showActionSheetWithOptions({
-            options: [...playlistTitles, 'Cancel'],
-            cancelButtonIndex: playlistTitles.length,
-            title: 'Add to playlist',
+            options: ['+ Create Playlist', ...playlistTitles, 'Cancel'],
+            cancelButtonIndex: playlistTitles.length + 1,
             tintColor: 'black',
           }, (index) => {
-            if (index < playlistTitles.length) {
-              const playlistId = playlists[index].playlistId;
+            if (index == 0) {
+              // create new playlist
+              AlertIOS.prompt(
+                'New playlist',
+                'Give it a name!',
+                [
+                  { text: 'Cancel', style: 'cancel' },
+                  { text: 'Create', onPress: (playlistName) => (function(playlistName) {
+                        PlaylistsDB.create(playlistName); 
+                        const playlists = PlaylistsDB.getAll();
+                        const playlistId = playlists[playlists.length - 1].playlistId;
+                        PlaylistsDB.addSong(playlistId, videoId);
+                      })(playlistName)
+                  },
+                ],
+                'plain-text', // text input type
+                '', // default text in text input
+                'default', // keyboard type
+              );
+            } else if (index < playlistTitles.length) {
+              const playlistId = playlists[index - 1].playlistId;
               PlaylistsDB.addSong(playlistId, videoId);
             }
           });
+        } else if (index == 2) {
+          AlertIOS.prompt(
+            'Rename song',
+            songTitle,
+            [
+              { text: 'Cancel', style: 'cancel' },
+              { text: 'Rename', onPress: (songName) => SongsDB.editTitle(videoId, songName) },
+            ],
+            'plain-text', // text input type
+            '', // default text in text input
+            'default', // keyboard type
+          );
         }
       });
     } else {
@@ -108,15 +138,37 @@ class CurrentSong extends Component {
           const playlists = PlaylistsDB.getAll();
           const playlistTitles = playlists.map((playlist) => playlist.title);
           ActionSheetIOS.showActionSheetWithOptions({
-            options: [...playlistTitles, 'Cancel'],
-            cancelButtonIndex: playlistTitles.length,
-            title: 'Add to playlist',
+            options: ['+ Create Playlist', ...playlistTitles, 'Cancel'],
+            cancelButtonIndex: playlistTitles.length + 1,
             tintColor: 'black',
           }, (index) => {
-            if (index < playlistTitles.length) {
+            if (index == 0) {
+              // create new playlist
+              AlertIOS.prompt(
+                'New playlist',
+                'Give it a name!',
+                [
+                  { text: 'Cancel', style: 'cancel' },
+                  { text: 'Create', onPress: (playlistName) => (function(playlistName) {
+                      PlaylistsDB.create(playlistName);
+                      downloadSong(videoId, songTitle, songThumbnail)
+                        .then(() => {
+                          const playlists = PlaylistsDB.getAll();
+                          const playlistId = playlists[playlists.length - 1].playlistId;
+                          PlaylistsDB.addSong(playlistId, videoId);
+                        })
+                        .catch((err) => console.log('an error happened when trying to download song', err));
+                      })(playlistName)
+                  },
+                ],
+                'plain-text', // text input type
+                '', // default text in text input
+                'default', // keyboard type
+              );
+            } else if (index < playlistTitles.length) {
               downloadSong(videoId, songTitle, songThumbnail)
                 .then(() => {
-                  const playlistId = playlists[index].playlistId;
+                  const playlistId = playlists[index - 1].playlistId;
                   PlaylistsDB.addSong(playlistId, videoId);
                 })
                 .catch((err) => console.log('an error happened when trying to download song', err));

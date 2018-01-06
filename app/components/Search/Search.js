@@ -7,6 +7,7 @@ import {
   View,
   Text,
   ActionSheetIOS,
+  AlertIOS,
   Animated,
 } from 'react-native';
 
@@ -36,31 +37,53 @@ class Search extends Component {
     );
   }
 
-  _onPressMoreInfo = (videoId, title, thumbnail) => {
+  _onPressMoreInfo = (videoId, songTitle, thumbnail) => {
     ActionSheetIOS.showActionSheetWithOptions({
       options: ['Cancel', 'Download', 'Add to Playlist'],
       cancelButtonIndex: 0,
-      title: title,
+      title: songTitle,
       tintColor: 'black',
     }, (index) => {
       if (index == 1) {
-        downloadSong(videoId, title, thumbnail)
+        downloadSong(videoId, songTitle, thumbnail)
           .then(() => console.log('done writing to db!'))
           .catch((err) => console.log('an error happened', err));
       } else if (index == 2) {
         const playlists = PlaylistsDB.getAll();
         const playlistTitles = playlists.map((playlist) => playlist.title);
         ActionSheetIOS.showActionSheetWithOptions({
-          options: [...playlistTitles, 'Cancel'],
+          options: ['+ Create Playlist', ...playlistTitles, 'Cancel'],
           cancelButtonIndex: playlistTitles.length,
-          title: 'Add to playlist',
           tintColor: 'black',
         }, (index) => {
-          if (index < playlistTitles.length) {
+          if (index == 0) {
+            // create new playlist
+            AlertIOS.prompt(
+              'New playlist',
+              'Give it a name!',
+              [
+                { text: 'Cancel', style: 'cancel' },
+                { text: 'Create', onPress: (playlistName) => (function(playlistName) {
+                    PlaylistsDB.create(playlistName);
+                    downloadSong(videoId, songTitle, songThumbnail)
+                      .then(() => {
+                        const playlists = PlaylistsDB.getAll();
+                        const playlistId = playlists[playlists.length - 1].playlistId;
+                        PlaylistsDB.addSong(playlistId, videoId);
+                      })
+                      .catch((err) => console.log('an error happened when trying to download song', err));
+                    })(playlistName)
+                },
+              ],
+              'plain-text', // text input type
+              '', // default text in text input
+              'default', // keyboard type
+            );
+          } else if (index < playlistTitles.length) {
             downloadSong(videoId, title, thumbnail)
               .then(() => {
                 console.log('done writing to db!');
-                const playlistId = playlists[index].playlistId;
+                const playlistId = playlists[index - 1].playlistId;
                 PlaylistsDB.addSong(playlistId, videoId);
               })
               .catch((err) => console.log('an error happened', err));

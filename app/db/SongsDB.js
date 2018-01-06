@@ -32,6 +32,17 @@ export default class SongsDB {
     }
   }
 
+  static editTitle(videoId, title) {
+    const song = this._getSong(videoId);
+    try {
+      realm.write(() => song.title = title);
+      return true;
+    } catch (e) {
+      console.log(`Error editing the title of song with id ${videoId}: ${e}`);
+      return false;
+    }
+  };
+
   static delete(videoId) {
     const song = this._getSong(videoId);
     try {
