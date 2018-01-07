@@ -63,12 +63,12 @@ class SavedSongs extends Component {
               'Give it a name!',
               [
                 { text: 'Cancel', style: 'cancel' },
-                { text: 'Create', onPress: (playlistName) => (function(playlistName) {
+                { text: 'Create', onPress: (playlistName) => {
                       PlaylistsDB.create(playlistName); 
                       const playlists = PlaylistsDB.getAll();
                       const playlistId = playlists[playlists.length - 1].playlistId;
                       PlaylistsDB.addSong(playlistId, videoId);
-                    })(playlistName)
+                    }
                 },
               ],
               'plain-text', // text input type
@@ -92,7 +92,7 @@ class SavedSongs extends Component {
           '', // default text in text input
           'default', // keyboard type
         );
-      } else {
+      } else if (index == 3) {
         removeSong(videoId)
           .then(() => console.log('song successfully deleted!'));
       }

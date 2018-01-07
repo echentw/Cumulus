@@ -5,7 +5,7 @@ import realm from './realm';
 
 export default class SongsDB {
   static _getSong(videoId) {
-    return realm.objects(Song.schema.name).filtered(`videoId = "${videoId}"`);
+    return realm.objects(Song.schema.name).filtered(`videoId = "${videoId}"`)[0];
   }
 
   static getAll() {

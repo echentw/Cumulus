@@ -63,7 +63,7 @@ class Search extends Component {
               'Give it a name!',
               [
                 { text: 'Cancel', style: 'cancel' },
-                { text: 'Create', onPress: (playlistName) => (function(playlistName) {
+                { text: 'Create', onPress: (playlistName) => {
                     PlaylistsDB.create(playlistName);
                     downloadSong(videoId, songTitle, songThumbnail)
                       .then(() => {
@@ -72,7 +72,7 @@ class Search extends Component {
                         PlaylistsDB.addSong(playlistId, videoId);
                       })
                       .catch((err) => console.log('an error happened when trying to download song', err));
-                    })(playlistName)
+                    }
                 },
               ],
               'plain-text', // text input type

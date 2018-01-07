@@ -62,12 +62,12 @@ class Playlist extends Component {
               'Give it a name!',
               [
                 { text: 'Cancel', style: 'cancel' },
-                { text: 'Create', onPress: (playlistName) => (function(playlistName) {
+                { text: 'Create', onPress: (playlistName) => {
                       PlaylistsDB.create(playlistName); 
                       const playlists = PlaylistsDB.getAll();
                       const playlistId = playlists[playlists.length - 1].playlistId;
                       PlaylistsDB.addSong(playlistId, videoId);
-                    })(playlistName)
+                    }
                 },
               ],
               'plain-text', // text input type
