@@ -53,7 +53,7 @@ class Search extends Component {
         const playlistTitles = playlists.map((playlist) => playlist.title);
         ActionSheetIOS.showActionSheetWithOptions({
           options: ['+ Create Playlist', ...playlistTitles, 'Cancel'],
-          cancelButtonIndex: playlistTitles.length,
+          cancelButtonIndex: playlistTitles.length + 1,
           tintColor: 'black',
         }, (index) => {
           if (index == 0) {
