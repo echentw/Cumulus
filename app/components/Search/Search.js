@@ -12,9 +12,8 @@ import {
 } from 'react-native';
 
 import { downloadVideoToServer } from '../../lib/serverRequest';
-import { downloadSong } from '../../lib/songManagement';
 import Player from '../../lib/Player';
-import PlaylistsDB from '../../db/PlaylistsDB';
+import ActionSheet from '../../lib/actionsheets';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import SearchView from './SearchView';
@@ -37,60 +36,8 @@ class Search extends Component {
     );
   }
 
-  _onPressMoreInfo = (videoId, songTitle, thumbnail) => {
-    ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Download', 'Add to Playlist'],
-      cancelButtonIndex: 0,
-      title: songTitle,
-      tintColor: 'black',
-    }, (index) => {
-      if (index == 1) {
-        downloadSong(videoId, songTitle, thumbnail)
-          .then(() => console.log('done writing to db!'))
-          .catch((err) => console.log('an error happened', err));
-      } else if (index == 2) {
-        const playlists = PlaylistsDB.getAll();
-        const playlistTitles = playlists.map((playlist) => playlist.title);
-        ActionSheetIOS.showActionSheetWithOptions({
-          options: ['+ Create Playlist', ...playlistTitles, 'Cancel'],
-          cancelButtonIndex: playlistTitles.length + 1,
-          tintColor: 'black',
-        }, (index) => {
-          if (index == 0) {
-            // create new playlist
-            AlertIOS.prompt(
-              'New playlist',
-              'Give it a name!',
-              [
-                { text: 'Cancel', style: 'cancel' },
-                { text: 'Create', onPress: (playlistName) => {
-                    PlaylistsDB.create(playlistName);
-                    downloadSong(videoId, songTitle, songThumbnail)
-                      .then(() => {
-                        const playlists = PlaylistsDB.getAll();
-                        const playlistId = playlists[playlists.length - 1].playlistId;
-                        PlaylistsDB.addSong(playlistId, videoId);
-                      })
-                      .catch((err) => console.log('an error happened when trying to download song', err));
-                    }
-                },
-              ],
-              'plain-text', // text input type
-              '', // default text in text input
-              'default', // keyboard type
-            );
-          } else if (index < playlistTitles.length) {
-            downloadSong(videoId, title, thumbnail)
-              .then(() => {
-                console.log('done writing to db!');
-                const playlistId = playlists[index - 1].playlistId;
-                PlaylistsDB.addSong(playlistId, videoId);
-              })
-              .catch((err) => console.log('an error happened', err));
-          }
-        });
-      }
-    });
+  _onPressMoreInfo = (videoId, songTitle, songThumbnail) => {
+    ActionSheet.searchResultOptions(videoId, songTitle, songThumbnail);
   }
 
   _onPressPlay = (videoId, songTitle, songThumbnail) => {
