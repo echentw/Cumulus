@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
-import { View, ActionSheetIOS } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
+import ActionSheet from '../../lib/actionsheets';
 import PlaylistsDB from '../../db/PlaylistsDB';
+import SongsDB from '../../db/SongsDB';
 import { LoopStatus } from '../../constants';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
@@ -27,29 +29,8 @@ class Playlist extends Component {
     this.state = { songs: songs };
   }
 
-  _onPressMoreInfo = (videoId, title, thumbnail) => {
-    ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Add to playlist', 'Remove from this playlist'],
-      cancelButtonIndex: 0,
-      title: title,
-      tintColor: 'black',
-    }, (index) => {
-      if (index == 1) {
-        const playlists = PlaylistsDB.getAll();
-        const playlistTitles = playlists.map((playlist) => playlist.title);
-        ActionSheetIOS.showActionSheetWithOptions({
-          options: [...playlistTitles, 'Cancel'],
-          cancelButtonIndex: playlistTitles.length,
-          title: 'Add to playlist',
-          tintColor: 'black',
-        }, (index) => {
-          const playlistId = playlists[index].playlistId;
-          PlaylistsDB.addSong(playlistId, videoId);
-        });
-      } else if (index == 2) {
-        PlaylistsDB.removeSong(this.props.playlistId, videoId);
-      }
-    });
+  _onPressMoreInfo = (videoId, songTitle, songThumbnail) => {
+    ActionSheet.playlistSongOptions(this.props.playlistId, videoId, songTitle, songThumbnail);
   }
 
   _onPressPlay = (videoId, songTitle, songThumbnail) => {

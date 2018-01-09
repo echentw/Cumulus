@@ -4,6 +4,7 @@ import uuid from 'uuid';
 import { Song, Playlist } from './schemas';
 import realm from './realm';
 
+// TODO: change API to sometimes return the id, like in `create()`
 export default class PlaylistsDB {
   static _getSong(videoId) {
     return realm.objects(Song.schema.name).filtered(`videoId = "${videoId}"`)[0];
@@ -27,7 +28,7 @@ export default class PlaylistsDB {
           songs: [],
         });
       });
-      return true;
+      return playlistId;
     } catch (e) {
       console.log(`Error creating playlist with title ${title}: ${e}`);
       return false;

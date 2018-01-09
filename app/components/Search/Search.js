@@ -6,14 +6,12 @@ import { ActionCreators } from '../../actions';
 import {
   View,
   Text,
-  ActionSheetIOS,
   Animated,
 } from 'react-native';
 
 import { downloadVideoToServer } from '../../lib/serverRequest';
-import { downloadSong } from '../../lib/songManagement';
 import Player from '../../lib/Player';
-import PlaylistsDB from '../../db/PlaylistsDB';
+import ActionSheet from '../../lib/actionsheets';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
 import SearchView from './SearchView';
@@ -36,38 +34,8 @@ class Search extends Component {
     );
   }
 
-  _onPressMoreInfo = (videoId, title, thumbnail) => {
-    ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Download', 'Add to Playlist'],
-      cancelButtonIndex: 0,
-      title: title,
-      tintColor: 'black',
-    }, (index) => {
-      if (index == 1) {
-        downloadSong(videoId, title, thumbnail)
-          .then(() => console.log('done writing to db!'))
-          .catch((err) => console.log('an error happened', err));
-      } else if (index == 2) {
-        const playlists = PlaylistsDB.getAll();
-        const playlistTitles = playlists.map((playlist) => playlist.title);
-        ActionSheetIOS.showActionSheetWithOptions({
-          options: [...playlistTitles, 'Cancel'],
-          cancelButtonIndex: playlistTitles.length,
-          title: 'Add to playlist',
-          tintColor: 'black',
-        }, (index) => {
-          if (index < playlistTitles.length) {
-            downloadSong(videoId, title, thumbnail)
-              .then(() => {
-                console.log('done writing to db!');
-                const playlistId = playlists[index].playlistId;
-                PlaylistsDB.addSong(playlistId, videoId);
-              })
-              .catch((err) => console.log('an error happened', err));
-          }
-        });
-      }
-    });
+  _onPressMoreInfo = (videoId, songTitle, songThumbnail) => {
+    ActionSheet.searchResultOptions(videoId, songTitle, songThumbnail);
   }
 
   _onPressPlay = (videoId, songTitle, songThumbnail) => {
