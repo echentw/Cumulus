@@ -109,6 +109,19 @@ export default class ActionSheet {
     });
   }
 
+  static savedSongMinimalOptions(videoId, songTitle, songThumbnail) {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Cancel', 'Add to Playlist'],
+      cancelButtonIndex: 0,
+      title: songTitle,
+      tintColor: 'black',
+    }, (index) => {
+      if (index == 1) {
+        this._addSongToPlaylist(videoId, songTitle, songThumbnail);
+      }
+    });
+  }
+
   static _renamePlaylist(playlistId, playlistTitle) {
     AlertIOS.prompt(
       'Rename playlist',
