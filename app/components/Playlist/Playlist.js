@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
-import { View, ActionSheetIOS, AlertIOS } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
+import ActionSheet from '../../lib/actionsheets';
 import PlaylistsDB from '../../db/PlaylistsDB';
 import SongsDB from '../../db/SongsDB';
 import { LoopStatus } from '../../constants';
@@ -28,61 +29,8 @@ class Playlist extends Component {
     this.state = { songs: songs };
   }
 
-  _onPressMoreInfo = (videoId, songTitle, thumbnail) => {
-    ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Rename', 'Add to playlist', 'Remove from this playlist'],
-      cancelButtonIndex: 0,
-      title: songTitle,
-      tintColor: 'black',
-    }, (index) => {
-      if (index == 1) {
-        AlertIOS.prompt(
-          'Rename song',
-          songTitle,
-          [
-            { text: 'Cancel', style: 'cancel' },
-            { text: 'Rename', onPress: (songName) => SongsDB.editTitle(videoId, songName) },
-          ],
-          'plain-text', // text input type
-          '', // default text in text input
-          'default', // keyboard type
-        );
-      } else if (index == 2) {
-        const playlists = PlaylistsDB.getAll();
-        const playlistTitles = playlists.map((playlist) => playlist.title);
-        ActionSheetIOS.showActionSheetWithOptions({
-          options: ['+ Create Playlist', ...playlistTitles, 'Cancel'],
-          cancelButtonIndex: playlistTitles.length + 1,
-          tintColor: 'black',
-        }, (index) => {
-          if (index == 0) {
-            // create new playlist
-            AlertIOS.prompt(
-              'New playlist',
-              'Give it a name!',
-              [
-                { text: 'Cancel', style: 'cancel' },
-                { text: 'Create', onPress: (playlistName) => {
-                      PlaylistsDB.create(playlistName); 
-                      const playlists = PlaylistsDB.getAll();
-                      const playlistId = playlists[playlists.length - 1].playlistId;
-                      PlaylistsDB.addSong(playlistId, videoId);
-                    }
-                },
-              ],
-              'plain-text', // text input type
-              '', // default text in text input
-              'default', // keyboard type
-            );
-          } else if (index < playlistTitles.length) {
-            const playlistId = playlists[index - 1].playlistId;
-            PlaylistsDB.addSong(playlistId, videoId);
-          }
-        });
-      } else if (index == 3) {
-        PlaylistsDB.removeSong(this.props.playlistId, videoId);
-      }
-    });
+  _onPressMoreInfo = (videoId, songTitle, songThumbnail) => {
+    ActionSheet.playlistSongOptions(this.props.playlistId, videoId, songTitle, songThumbnail);
   }
 
   _onPressPlay = (videoId, songTitle, songThumbnail) => {

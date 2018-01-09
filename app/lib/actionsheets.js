@@ -138,4 +138,21 @@ export default class ActionSheet {
       }
     });
   }
+
+  static playlistSongOptions(playlistId, videoId, songTitle, songThumbnail) {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Cancel', 'Rename', 'Add to playlist', 'Remove from this playlist'],
+      cancelButtonIndex: 0,
+      title: songTitle,
+      tintColor: 'black',
+    }, (index) => {
+      if (index == 1) {
+        this._renameSong(videoId, songTitle);
+      } else if (index == 2) {
+        this._addSongToPlaylist(videoId, songTitle, songThumbnail);
+      } else if (index == 3) {
+        PlaylistsDB.removeSong(playlistId, videoId);
+      }
+    });
+  }
 }
