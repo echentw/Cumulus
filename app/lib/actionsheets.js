@@ -3,7 +3,10 @@ import {
   AlertIOS,
 } from 'react-native';
 
-import { ensureDownloaded } from './songManagement';
+import {
+  ensureDownloaded,
+  removeSong,
+} from './songManagement';
 
 import PlaylistsDB from '../db/PlaylistsDB';
 import SongsDB from '../db/SongsDB';
@@ -26,7 +29,7 @@ export default class ActionSheet {
     );
   }
 
-  static addSongToPlaylist(videoId, songTitle, songThumbnail) {
+  static _addSongToPlaylist(videoId, songTitle, songThumbnail) {
     const playlists = PlaylistsDB.getAll();
     const playlistTitles = playlists.map((playlist) => playlist.title);
     ActionSheetIOS.showActionSheetWithOptions({
@@ -63,7 +66,40 @@ export default class ActionSheet {
           .then(() => console.log('success!'))
           .catch((err) => console.log('an error happened', err));
       } else if (index == 2) {
-        this.addSongToPlaylist(videoId, songTitle, songThumbnail);
+        this._addSongToPlaylist(videoId, songTitle, songThumbnail);
+      }
+    });
+  }
+
+  static _renameSong(videoId, songTitle) {
+    AlertIOS.prompt(
+      'Rename song',
+      songTitle,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Rename', onPress: (newTitle) => SongsDB.editTitle(videoId, newTitle) },
+      ],
+      'plain-text', // text input type
+      '', // default text in text input
+      'default', // keyboard type
+    );
+  }
+
+  static savedSongOptions(videoId, songTitle, songThumbnail) {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Cancel', 'Add to Playlist', 'Rename', 'Delete'],
+      cancelButtonIndex: 0,
+      destructiveButtonIndex: 3,
+      title: songTitle,
+      tintColor: 'black',
+    }, (index) => {
+      if (index == 1) {
+        this._addSongToPlaylist(videoId, songTitle, songThumbnail);
+      } else if (index == 2) {
+        this._renameSong(videoId, songTitle);
+      } else if (index == 3) {
+        removeSong(videoId)
+          .then(() => console.log('song successfully deleted!'));
       }
     });
   }

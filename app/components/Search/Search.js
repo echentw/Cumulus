@@ -6,8 +6,6 @@ import { ActionCreators } from '../../actions';
 import {
   View,
   Text,
-  ActionSheetIOS,
-  AlertIOS,
   Animated,
 } from 'react-native';
 
