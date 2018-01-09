@@ -78,14 +78,14 @@ export default class ActionSheet {
 
   static _renameSong(videoId, songTitle) {
     AlertIOS.prompt(
-      'Rename song',
+      'Rename Song',
       songTitle,
       [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Rename', onPress: (newTitle) => SongsDB.editTitle(videoId, newTitle) },
       ],
       'plain-text', // text input type
-      '', // default text in text input
+      songTitle, // default text in text input
       'default', // keyboard type
     );
   }
@@ -124,14 +124,14 @@ export default class ActionSheet {
 
   static _renamePlaylist(playlistId, playlistTitle) {
     AlertIOS.prompt(
-      'Rename playlist',
+      'Rename Playlist',
       playlistTitle,
       [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Rename', onPress: (newTitle) => PlaylistsDB.editTitle(playlistId, newTitle) },
       ],
       'plain-text', // text input type
-      '', // default text in text input
+      playlistTitle, // default text in text input
       'default', // keyboard type
     );
   }
