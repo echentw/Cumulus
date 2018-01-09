@@ -39,8 +39,8 @@ class CurrentSong extends Component {
 
   componentDidMount() {
     const { player } = this.props;
-    if (player.isReady()) {
-      const interval = setInterval(() => {
+    const interval = setInterval(() => {
+      if (player.isReady()) {
         player.getCurrentTime().then((seconds) => {
           if (!this.state.isSliding) {
             this.setState({
@@ -49,9 +49,9 @@ class CurrentSong extends Component {
             });
           }
         });
-      }, 250);
-      this.setState({ interval: interval });
-    }
+      }
+    }, 250);
+    this.setState({ interval: interval });
   }
 
   componentWillUnmount() {
@@ -180,6 +180,9 @@ class CurrentSong extends Component {
   }
 
   _onPressPlayPause = () => {
+    if (!this.props.player.isReady()) {
+      return;
+    }
     if (this.props.playingStatus) {
       this.props.playerPause();
       this.props.player.pause();
@@ -190,6 +193,9 @@ class CurrentSong extends Component {
   }
 
   _onSeeking = (value) => {
+    if (!this.props.player.isReady()) {
+      return;
+    }
     this.setState({
       isSliding: true,
       songProgress: progressToDisplay(value, this.props.player.getDuration()),
@@ -199,11 +205,17 @@ class CurrentSong extends Component {
   // This callback is called after the last _onSeeking(), so there should
   // be no race conditions involving isSliding here.
   _onSeekEnd = (seconds) => {
+    if (!this.props.player.isReady()) {
+      return;
+    }
     this.props.player.setCurrentTime(seconds);
     this.setState({ isSliding: false });
   }
 
   _onPressLoop = () => {
+    if (!this.props.player.isReady()) {
+      return;
+    }
     const shouldLoop = !this.props.player.isLooping();
     this.props.player.setLoop(shouldLoop);
     this.setState({ isLooping: shouldLoop });
