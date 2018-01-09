@@ -13,15 +13,21 @@ import SongsDB from '../db/SongsDB';
 
 export default class ActionSheet {
 
-  // `afterCreateCallback` is a function that takes in the
-  // new created playlist title as its only argument.
+  // `afterCreateCallback` (optional) is a function that takes in the
+  // newly created playlist id as its only argument.
   static newPlaylist(afterCreateCallback) {
     AlertIOS.prompt(
       'New playlist',
       'Give it a name!',
       [
         { text: 'Cancel', style: 'cancel' },
-        { text: 'Create', onPress: afterCreateCallback },
+        { text: 'Create', onPress: (playlistTitle) => {
+            const playlistId = PlaylistsDB.create(playlistTitle);
+            if (afterCreateCallback) {
+              afterCreateCallback(playlistId);
+            }
+          }
+        },
       ],
       'plain-text', // text input type
       '', // default text in text input
@@ -39,8 +45,7 @@ export default class ActionSheet {
       tintColor: 'black',
     }, (index) => {
       if (index == 0) {
-        this.newPlaylist((playlistName) => {
-          const playlistId = PlaylistsDB.create(playlistName);
+        this.newPlaylist((playlistId) => {
           ensureDownloaded(videoId, songTitle, songThumbnail)
             .then(() => PlaylistsDB.addSong(playlistId, videoId))
             .catch((err) => console.log('an error happened when trying to download song', err));
@@ -100,6 +105,36 @@ export default class ActionSheet {
       } else if (index == 3) {
         removeSong(videoId)
           .then(() => console.log('song successfully deleted!'));
+      }
+    });
+  }
+
+  static _renamePlaylist(playlistId, playlistTitle) {
+    AlertIOS.prompt(
+      'Rename playlist',
+      playlistTitle,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Rename', onPress: (newTitle) => PlaylistsDB.editTitle(playlistId, newTitle) },
+      ],
+      'plain-text', // text input type
+      '', // default text in text input
+      'default', // keyboard type
+    );
+  }
+
+  static playlistOptions(playlistId, playlistTitle) {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: ['Cancel', 'Rename', 'Delete'],
+      cancelButtonIndex: 0,
+      destructiveButtonIndex: 2,
+      title: playlistTitle,
+      tintColor: 'black',
+    }, (index) => {
+      if (index == 1) {
+        this._renamePlaylist(playlistId, playlistTitle);
+      } else if (index == 2) {
+        PlaylistsDB.delete(playlistId);
       }
     });
   }

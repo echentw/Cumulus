@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ActionCreators } from '../../actions';
-import { View, ActionSheetIOS, AlertIOS } from 'react-native';
+import { View } from 'react-native';
 
+import ActionSheet from '../../lib/actionsheets';
 import PlaylistsDB from '../../db/PlaylistsDB';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
@@ -23,20 +24,8 @@ class Playlists extends Component {
   }
 
   onNavigatorEvent(event) {
-    if (event.type == 'NavBarButtonPress') {
-      if (event.id == 'add-playlist') {
-        AlertIOS.prompt(
-          'New playlist',
-          'Give it a name!',
-          [
-            { text: 'Cancel', style: 'cancel' },
-            { text: 'Create', onPress: (title) => PlaylistsDB.create(title) },
-          ],
-          'plain-text', // text input type
-          '', // default text in text input
-          'default', // keyboard type
-        );
-      }
+    if (event.type == 'NavBarButtonPress' && event.id == 'add-playlist') {
+      ActionSheet.newPlaylist();
     }
   }
 
@@ -76,30 +65,8 @@ class Playlists extends Component {
     });
   }
 
-  _onPressOptions = (playlistId, title) => {
-    ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Rename', 'Delete'],
-      cancelButtonIndex: 0,
-      destructiveButtonIndex: 2,
-      title: title,
-      tintColor: 'black',
-    }, (index) => {
-      if (index == 1) {
-        AlertIOS.prompt(
-          'Rename playlist',
-          title,
-          [
-            { text: 'Cancel', style: 'cancel' },
-            { text: 'Rename', onPress: (playlistName) => PlaylistsDB.editTitle(playlistId, playlistName) },
-          ],
-          'plain-text', // text input type
-          '', // default text in text input
-          'default', // keyboard type
-        );
-      } else if (index == 2) {
-        PlaylistsDB.delete(playlistId);
-      }
-    });
+  _onPressOptions = (playlistId, playlistTitle) => {
+    ActionSheet.playlistOptions(playlistId, playlistTitle);
   }
 
   render() {
