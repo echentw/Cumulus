@@ -15,11 +15,7 @@ export function ensureDownloaded(videoId, title, thumbnail) {
   if (SongsDB.exists(videoId)) {
     return new Promise((resolve, reject) => resolve());
   }
-  return downloadSong(videoId, title, thumbnail);
-}
 
-// TODO: don't export this
-export function downloadSong(videoId, title, thumbnail) {
   return Promise.all([
     downloadVideoToServer(videoId),
     RNFS.mkdir(RNFS.DocumentDirectoryPath + '/songs'),
