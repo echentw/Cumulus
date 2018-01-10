@@ -2,7 +2,7 @@ import { AsyncStorage } from 'react-native';
 
 import { refreshAccessToken } from './serverRequest';
 
-const MAX_RESULTS = 10;
+const MAX_RESULTS = 15;
 
 function hitYoutubeSearchEndpoint(searchQuery, accessToken) {
   const url = [
