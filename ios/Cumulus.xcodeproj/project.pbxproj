@@ -38,6 +38,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* CumulusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CumulusTests.m */; };
 		38E2FFAC1E884A128768379A /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 013F9D0B8D904FE381923913 /* libc++.tbd */; };
 		3A41AB363A47432783FAC68D /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF4840B56EFB4A06A6DB7B4A /* libRealmReact.a */; };
+		401570172007334F00FDC6CC /* AudioRouteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 401570162007334F00FDC6CC /* AudioRouteManager.m */; };
 		514791BAAD6B44ABB845A5FD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C959949DC73E433B86530284 /* libz.tbd */; };
 		53ACB41B242E40A18996F8E6 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E5B9A1F3DE04BDE99D59A27 /* Foundation.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
@@ -399,6 +400,8 @@
 		2F7E8154AA5C4D82A77355D5 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		35FD462BB9944D6CB8CD301F /* libRNSound.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSound.a; sourceTree = "<group>"; };
 		400176C31F94403F000AF1DC /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		401570162007334F00FDC6CC /* AudioRouteManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioRouteManager.m; sourceTree = "<group>"; };
+		401570182007335A00FDC6CC /* AudioRouteManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioRouteManager.h; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6049B66508834E0FBD139AAB /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		7466C49CC6A24BCCB812CD49 /* RNSound.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
@@ -592,6 +595,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				401570162007334F00FDC6CC /* AudioRouteManager.m */,
+				401570182007335A00FDC6CC /* AudioRouteManager.h */,
 			);
 			name = Cumulus;
 			sourceTree = "<group>";
@@ -1372,6 +1377,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				401570172007334F00FDC6CC /* AudioRouteManager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

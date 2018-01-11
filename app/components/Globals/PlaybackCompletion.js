@@ -6,7 +6,6 @@ import { View } from 'react-native';
 
 import PlaylistsDB from '../../db/PlaylistsDB';
 
-// This is a component that is mounted forever and doesn't render anything to the UI.
 // The purpose is to maintain a global state of which playlist is playing,
 // and to properly play the next song in the playlist when the current song is finished
 // playing.

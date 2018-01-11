@@ -9,7 +9,8 @@ import Player from '../../lib/Player';
 import ActionSheet from '../../lib/actionsheets';
 
 import CurrentSongFooter from '../CurrentSongFooter/CurrentSongFooter';
-import PlaybackCompletion from '../PlaybackCompletion/PlaybackCompletion';
+import Globals from '../Globals/Globals';
+
 import SavedSongsView from './SavedSongsView';
 
 class SavedSongs extends Component {
@@ -91,7 +92,7 @@ class SavedSongs extends Component {
           videoIdPlaying={this.props.currentlyPlaying.videoId}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
-        <PlaybackCompletion/>
+        <Globals/>
       </View>
     );
   }
