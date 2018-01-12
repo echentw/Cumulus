@@ -11,6 +11,7 @@
 
 #import <React/RCTBridge.h>
 #import <React/RCTEventDispatcher.h>
+#import <React/RCTLog.h>
 
 #import "AudioRouteManager.h"
 
@@ -19,8 +20,7 @@
 - (instancetype)init
 {
   if ((self = [super init])) {
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAudioRouteChange:) name:@"AVAudioSessionRouteChangeNotification" object: nil];
   }
   return self;
 }
@@ -31,29 +31,19 @@
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-  return @[@"proximityStateDidChange"];
+  return @[@"audioDeviceDisconnected"];
 }
 
-- (void)sensorStateChange:(NSNotificationCenter *)notification
+- (void)handleAudioRouteChange:(NSNotification *)notification
 {
-  BOOL proximityState = [[UIDevice currentDevice] proximityState];
-  [self sendEventWithName:@"proximityStateDidChange" body:@{@"proximity": @(proximityState)}];
+  NSDictionary* userInfo = [notification userInfo];
+  NSInteger reason = [userInfo[AVAudioSessionRouteChangeReasonKey] integerValue];
+  if (reason == AVAudioSessionRouteChangeReasonOldDeviceUnavailable)
+  {
+    [self sendEventWithName:@"audioDeviceDisconnected" body:nil];
+  }
 }
 
 RCT_EXPORT_MODULE();
 
 @end
-
-
-//RCT_EXPORT_MODULE();
-//
-//- (NSArray<NSString *> *)supportedEvents {
-//  return @[@"sayHello"];
-//}
-//
-//- (void)tellJS {
-//  [self sendEventWithName:@"sayHello" body:@"Hello"];
-//}
-//
-//@end
-

@@ -17,13 +17,10 @@ class AudioRoute extends Component {
   }
 
   componentDidMount() {
-    this.subscription = emitter.addListener('proximityStateDidChange', ({ proximity }) => {
+    this.subscription = emitter.addListener('audioDeviceDisconnected', () => {
       if (this.props.player.isReady() && this.props.playingStatus) {
         this.props.playerPause();
         this.props.player.pause();
-        console.log('pausing the player');
-      } else {
-        console.log('nothing is playing right now');
       }
     });
   }
@@ -39,7 +36,6 @@ class AudioRoute extends Component {
 
 function mapStateToProps(state) {
   return {
-    currentlyPlaying: state.currentlyPlaying,
     player: state.player,
     playingStatus: state.playingStatus,
   };
