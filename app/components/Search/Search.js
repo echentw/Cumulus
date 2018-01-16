@@ -39,14 +39,14 @@ class Search extends Component {
   }
 
   _onPressPlay = (videoId, songTitle, songThumbnail) => {
-    this.props.setCurrentlyPlaying({
-      playlistId: null,
-      videoId: videoId,
-      songTitle: songTitle,
-      songThumbnail: songThumbnail,
-    });
-
     if (videoId == this.props.player.videoId) {
+      this.props.setCurrentlyPlaying({
+        playlistId: null,
+        videoId: videoId,
+        songTitle: songTitle,
+        songThumbnail: songThumbnail,
+      });
+
       if (this.props.playingStatus) {
         this.props.playerPause();
         this.props.player.pause();
@@ -63,6 +63,12 @@ class Search extends Component {
         return this.props.player.loadRemote(videoId)
       })
       .then(() => {
+        this.props.setCurrentlyPlaying({
+          playlistId: null,
+          videoId: videoId,
+          songTitle: songTitle,
+          songThumbnail: songThumbnail,
+        });
         this.props.player.play();
         this.props.playerPlay();
       })
