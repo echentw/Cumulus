@@ -36,6 +36,11 @@ const store = configureStore({
     loopStatus: LoopStatus.LOOP_SONG,
     shuffleOrder: null,
   },
+  currentlyDownloading: {
+    videoId: null,
+    songTitle: null,
+    songThumbnail: { url: null },
+  },
   searchQuery: '',
   searchResults: [],
   searchBarFocused: false,

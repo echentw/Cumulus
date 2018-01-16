@@ -14,16 +14,18 @@ class SearchView extends Component {
         onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
         onPressEllipsis={() => this.props.onPressMoreInfo(item.videoId, item.title, item.thumbnail)}
         isPlaying={this.props.videoIdPlaying == item.videoId}
+        isDownloading={this.props.videoIdDownloading == item.videoId}
       />
     );
   }
 
   render() {
+    const { videoIdPlaying, videoIdDownloading } = this.props;
     return (
       <FlatList
         data={this.props.searchResults}
         renderItem={this._renderItem}
-        extraData={{...this.state, videoIdPlaying: this.props.videoIdPlaying}}
+        extraData={{...this.state, videoIdPlaying, videoIdDownloading}}
       />
     );
   }
@@ -34,6 +36,7 @@ SearchView.propTypes = {
   onPressPlay: PropTypes.func.isRequired,
   onPressMoreInfo: PropTypes.func.isRequired,
   videoIdPlaying: PropTypes.string,
+  videoIdDownloading: PropTypes.string,
 };
 
 export default SearchView;

@@ -29,6 +29,7 @@ class Search extends Component {
     return (
       this.props.player != nextProps.player ||
       this.props.currentlyPlaying != nextProps.currentlyPlaying ||
+      this.props.currentlyDownloading != nextProps.currentlyDownloading ||
       this.props.searchResults != nextProps.searchResults ||
       this.props.searchBarFocused != nextProps.searchBarFocused
     );
@@ -39,6 +40,12 @@ class Search extends Component {
   }
 
   _onPressPlay = (videoId, songTitle, songThumbnail) => {
+    this.props.setCurrentlyDownloading({
+      videoId: videoId,
+      songTitle: songTitle,
+      songThumbnail: songThumbnail,
+    });
+
     if (videoId == this.props.player.videoId) {
       this.props.setCurrentlyPlaying({
         playlistId: null,
@@ -101,6 +108,7 @@ class Search extends Component {
           onPressPlay={this._onPressPlay}
           onPressMoreInfo={this._onPressMoreInfo}
           videoIdPlaying={this.props.currentlyPlaying.videoId}
+          videoIdDownloading={this.props.currentlyDownloading.videoId}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
         <Animated.View
@@ -128,6 +136,7 @@ function mapStateToProps(state) {
     searchQuery: state.searchQuery,
     searchResults: state.searchResults,
     currentlyPlaying: state.currentlyPlaying,
+    currentlyDownloading: state.currentlyDownloading,
     searchBarFocused: state.searchBarFocused,
   };
 }

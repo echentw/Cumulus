@@ -11,14 +11,16 @@ import PropTypes from 'prop-types';
 
 import Icon from 'react-native-vector-icons/Entypo';
 
-function ListItem({ item, onPress, onPressEllipsis, isPlaying }) {
+import Thumbnail from './Thumbnail';
+
+function ListItem({ item, onPress, onPressEllipsis, isPlaying, isDownloading }) {
   return (
     <View style={styles.item}>
       <TouchableOpacity
         style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
         onPress={onPress}
       >
-        <Image style={styles.itemImage} source={{ uri: item.thumbnail.url }}/>
+        <Thumbnail size={40} url={item.thumbnail.url} isLoading={isDownloading}/>
         <Text
           style={ isPlaying ? styles.itemTextPlaying : styles.itemText}
           numberOfLines={1}
@@ -71,6 +73,7 @@ ListItem.propTypes = {
   onPress: PropTypes.func.isRequired,
   onPressEllipsis: PropTypes.func.isRequired,
   isPlaying: PropTypes.bool.isRequired,
+  isDownloading: PropTypes.bool,
 };
 
 export default ListItem;
