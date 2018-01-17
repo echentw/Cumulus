@@ -12,8 +12,6 @@ export default class Thumbnail extends Component {
     const { size } = this.props;
     const radius = size / 2;
 
-    const isLoading = this.props.isLoading ? true: false;
-
     const styles = {
       container: {
         width: size,
@@ -29,19 +27,27 @@ export default class Thumbnail extends Component {
       },
     };
 
-    return (
-      <View style={styles.container}>
-        <Image style={styles.image} source={{ uri: this.props.url }}/>
-        <CircleSnail
-          size={size + 10}
-          indeterminate={true}
-          duration={1200}
-          thickness={2}
-          animating={isLoading}
-          hidesWhenStopped={true}
-        />
-      </View>
-    );
+    if (this.props.isLoading) {
+      return (
+        <View style={styles.container}>
+          <Image style={styles.image} source={{ uri: this.props.url }}/>
+          <CircleSnail
+            size={size + 10}
+            indeterminate={true}
+            duration={1200}
+            thickness={2}
+            animating={true}
+            hidesWhenStopped={true}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <Image style={styles.image} source={{ uri: this.props.url }}/>
+        </View>
+      );
+    }
   }
 }
 

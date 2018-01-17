@@ -12,11 +12,10 @@ export default class Player {
     this.onCompleteCallback = () => {};
   }
 
-  _init = (videoId) => {
+  _reset = (videoId) => {
     if (this.player && this.player.videoId != videoId) {
       this.player.release();
     }
-    this.videoId = videoId;
   }
 
   isReady = () => {
@@ -25,7 +24,11 @@ export default class Player {
 
   // Returns Promise<null> when loading is done.
   loadRemote = (videoId) => {
-    this._init(videoId);
+    if (this.videoId == videoId) {
+      return new Promise((resolve, reject) => resolve());
+    }
+
+    this._reset(videoId);
 
     const url = getAudioUrl(videoId);
     return new Promise((resolve, reject) => {
@@ -33,6 +36,7 @@ export default class Player {
         if (error) {
           reject(error);
         } else {
+          this.videoId = videoId;
           this.setLoop(true);
           resolve();
         }
@@ -41,7 +45,7 @@ export default class Player {
   }
 
   loadLocal = (videoId) => {
-    this._init(videoId);
+    this._reset(videoId);
     const isLooping = this.player ? this.isLooping() : false;
     const dir = RNFS.DocumentDirectoryPath + '/songs';
     const audioFile = 'song_' + videoId + '.mp3';
@@ -50,6 +54,7 @@ export default class Player {
         if (error) {
           reject(error);
         } else {
+          this.videoId = videoId;
           this.setLoop(isLooping);
           resolve();
         }

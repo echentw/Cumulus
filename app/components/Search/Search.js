@@ -7,6 +7,7 @@ import {
   View,
   Text,
   Animated,
+  AsyncStorage,
 } from 'react-native';
 
 import { downloadVideoToServer } from '../../lib/serverRequest';
@@ -39,13 +40,7 @@ class Search extends Component {
     ActionSheet.searchResultOptions(videoId, songTitle, songThumbnail);
   }
 
-  _onPressPlay = (videoId, songTitle, songThumbnail) => {
-    this.props.setCurrentlyDownloading({
-      videoId: videoId,
-      songTitle: songTitle,
-      songThumbnail: songThumbnail,
-    });
-
+  _onPressPlay = async (videoId, songTitle, songThumbnail) => {
     if (videoId == this.props.player.videoId) {
       this.props.setCurrentlyPlaying({
         playlistId: null,
@@ -64,22 +59,35 @@ class Search extends Component {
       return;
     }
 
-    downloadVideoToServer(videoId)
-      .then((response) => {
-        // TODO: might want to figure out how to deal with error here
-        return this.props.player.loadRemote(videoId)
-      })
-      .then(() => {
-        this.props.setCurrentlyPlaying({
-          playlistId: null,
-          videoId: videoId,
-          songTitle: songTitle,
-          songThumbnail: songThumbnail,
-        });
-        this.props.player.play();
-        this.props.playerPlay();
-      })
-      .catch((error) => console.log(error));
+    await AsyncStorage.setItem('downloadingVideoId', videoId);
+    this.props.setCurrentlyDownloading({
+      videoId: videoId,
+      songTitle: songTitle,
+      songThumbnail: songThumbnail,
+    });
+
+    try {
+      await downloadVideoToServer(videoId);
+    } catch(e) {
+      console.log(`Error receiving response from server: ${e}`);
+      return;
+    }
+
+    await this.props.player.loadRemote(videoId);
+
+    const downloadingVideoId = await AsyncStorage.getItem('downloadingVideoId');
+    if (downloadingVideoId == videoId) {
+      this.props.setCurrentlyPlaying({
+        playlistId: null,
+        videoId: videoId,
+        songTitle: songTitle,
+        songThumbnail: songThumbnail,
+      });
+      this.props.player.play();
+      this.props.playerPlay();
+
+      AsyncStorage.removeItem('downloadingVideoId');
+    }
   }
 
   render() {
