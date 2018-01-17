@@ -35,6 +35,21 @@ export function refreshAccessToken() {
     });
 }
 
+export function getServerChecksum(videoId) {
+  return AsyncStorage.getItem('refreshToken')
+    .then((token) => {
+      return fetch(serverUrl + `/checksum?videoId=${videoId}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'accept': 'application/json',
+          'content-type': 'application/json',
+          'authorization': 'Bearer ' + token,
+        },
+      });
+    });
+}
+
 export function getAudioUrl(videoId) {
   return `${serverUrl}/downloads/song_${videoId}.mp3`;
 }

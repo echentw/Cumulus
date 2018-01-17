@@ -5,6 +5,9 @@ import dotenv from 'dotenv';
 import google from 'googleapis';
 import redis from 'redis';
 import { spawn } from 'child_process';
+import crypto from 'crypto';
+import fs from 'fs';
+import url from 'url';
 
 const redisClient = redis.createClient({
   host: '127.0.0.1',
@@ -115,6 +118,21 @@ app.post('/download', authenticate, (req, res) => {
   });
   child.stdout.on('data', (data) => console.log(`child stdout: ${data}`));
   child.stderr.on('data', (data) => console.error(`child stderr: ${data}`));
+});
+
+app.get('/checksum', authenticate, (req, res) => {
+  const query = url.parse(req.url, true).query;
+  const { videoId } = query;
+
+  const shasum = crypto.createHash('sha256');
+
+  const filepath = `./downloads/song_${videoId}.mp3`;
+  const stream = fs.ReadStream(filepath);
+  stream.on('data', (data) => shasum.update(data));
+  stream.on('end', () => {
+    const checksum = shasum.digest('hex');
+    res.status(200).send({ checksum: checksum });
+  });
 });
 
 const server = app.listen(3000, () => {
