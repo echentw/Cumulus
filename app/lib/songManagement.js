@@ -1,7 +1,12 @@
 import RNFS from 'react-native-fs';
 
 import SongsDB from '../db/SongsDB';
-import { downloadVideoToServer, getAudioUrl, getOAuthEntrypoint } from './serverRequest';
+import {
+  downloadVideoToServer,
+  getAudioUrl,
+  getServerChecksum,
+  getOAuthEntrypoint,
+} from './serverRequest';
 
 function mp3Path(videoId) {
   return RNFS.DocumentDirectoryPath + '/songs/song_' + videoId + '.mp3';
@@ -62,4 +67,19 @@ export function removeSong(videoId) {
     RNFS.unlink(mp3Path(videoId)),
     RNFS.unlink(thumbnailPath(videoId)),
   ]);
+}
+
+export async function validateDownload(videoId) {
+  const path = mp3Path(videoId);
+  try {
+    const results = await Promise.all([
+      RNFS.hash(path, 'sha256'),
+      getServerChecksum(videoId),
+    ]);
+    const localChecksum = results[0];
+    const serverChecksum = JSON.parse(results[1]._bodyText).checksum;
+    return localChecksum == serverChecksum;
+  } catch (err) {
+    throw err;
+  }
 }

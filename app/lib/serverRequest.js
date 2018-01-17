@@ -20,6 +20,21 @@ export function downloadVideoToServer(videoId) {
     });
 }
 
+export function checkVideoDownloadedToServer(videoId) {
+  return AsyncStorage.getItem('refreshToken')
+    .then((token) => {
+      return fetch(serverUrl + `/checkdownload?videoId=${videoId}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'accept': 'application/json',
+          'content-type': 'application/json',
+          'authorization': 'Bearer ' + token,
+        },
+      });
+    });
+}
+
 export function refreshAccessToken() {
   return AsyncStorage.getItem('refreshToken')
     .then((token) => {

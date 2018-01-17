@@ -120,6 +120,18 @@ app.post('/download', authenticate, (req, res) => {
   child.stderr.on('data', (data) => console.error(`child stderr: ${data}`));
 });
 
+app.get('/checkdownload', authenticate, (req, res) => {
+  const query = url.parse(req.url, true).query;
+  const { videoId } = query;
+  fs.access(`./downloads/song_${videoId}.mp3`, fs.constants.F_OK, (err) => {
+    if (err) {
+      res.status(200).send({ complete: false });
+    } else {
+      res.status(200).send({ complete: true });
+    }
+  });
+});
+
 app.get('/checksum', authenticate, (req, res) => {
   const query = url.parse(req.url, true).query;
   const { videoId } = query;
