@@ -18,6 +18,7 @@ def check_and_download(videoId):
 
   subprocess.call([
     'youtube-dl',
+    '-f', 'webm',
     '--extract-audio',
     '--audio-format', 'mp3',
     '--output', os.path.join(PENDING_DIR, 'song_{}.%(ext)s'.format(videoId)),
