@@ -154,8 +154,9 @@ export default class ActionSheet {
 
   static playlistSongOptions(playlistId, videoId, songTitle, songThumbnail) {
     ActionSheetIOS.showActionSheetWithOptions({
-      options: ['Cancel', 'Rename', 'Add to playlist', 'Remove from this playlist'],
+      options: ['Cancel', 'Rename', 'Add to playlist', 'Remove from this playlist', 'Delete'],
       cancelButtonIndex: 0,
+      destructiveButtonIndex: 4,
       title: songTitle,
       tintColor: 'black',
     }, (index) => {
@@ -165,6 +166,9 @@ export default class ActionSheet {
         this._addSongToPlaylist(videoId, songTitle, songThumbnail);
       } else if (index == 3) {
         PlaylistsDB.removeSong(playlistId, videoId);
+      } else if (index == 4) {
+        removeSong(videoId)
+          .then(() => console.log('song successfully deleted!'));
       }
     });
   }
