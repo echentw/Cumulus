@@ -70,6 +70,15 @@ class SavedSongs extends Component {
       .catch((error) => console.log(error));
   }
 
+  _filterSongs = (query) => {
+    const songs = SongsDB.getLike(query).map((song) => ({
+      key: song.videoId,
+      videoId: song.videoId,
+      title: song.title,
+    }));
+    this.setState({ songs: songs });
+  }
+
   render() {
     if (!this.props.player) {
       // TODO: add loading spinner
@@ -90,6 +99,7 @@ class SavedSongs extends Component {
           onPressPlay={this._onPressPlay}
           onPressMoreInfo={this._onPressMoreInfo}
           videoIdPlaying={this.props.currentlyPlaying.videoId}
+          updateFilter={this._filterSongs}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
         <Globals/>

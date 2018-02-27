@@ -12,6 +12,10 @@ export default class SongsDB {
     return realm.objects(Song.schema.name).sorted('title');
   }
 
+  static getLike(query) {
+    return realm.objects(Song.schema.name).filtered(`title CONTAINS[c] "${query}"`).sorted('title');
+  }
+
   static exists(videoId) {
     const results = realm.objects(Song.schema.name).filtered(`videoId == "${videoId}"`);
     return (results.length != 0);
