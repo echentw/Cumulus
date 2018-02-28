@@ -43,7 +43,7 @@ class FilterableList extends Component {
         // Show the filter bar.
         Animated.timing(this.state.topScrollAnim, {
           toValue: 0,
-          duration: 100,
+          duration: 200,
         }).start();
       } else if (currentY > 0 && this.state.previousY <= 0) {
         // Hide the filter bar.
