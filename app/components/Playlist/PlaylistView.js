@@ -1,30 +1,14 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  View,
   Text,
-  FlatList,
+  View,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { thumbnailPath } from '../../lib/songManagement';
-import ListItem from '../utils/ListItem';
+import FilterableList from '../utils/FilterableList';
 
 class PlaylistView extends Component {
-  _renderItem = ({ item }) => {
-    item.thumbnail = {
-      url: thumbnailPath(item.videoId),
-    };
-    return (
-      <ListItem
-        item={item}
-        onPress={() => this.props.onPressPlay(item.videoId, item.title, item.thumbnail)}
-        onPressEllipsis={() => this.props.onPressMoreInfo(item.videoId, item.title, item.thumbnail)}
-        isPlaying={this.props.videoIdPlaying == item.videoId}
-      />
-    );
-  }
-
   render() {
     if (this.props.songs.length == 0) {
       return (
@@ -35,10 +19,12 @@ class PlaylistView extends Component {
     }
 
     return (
-      <FlatList
-        data={this.props.songs}
-        renderItem={this._renderItem}
-        extraData={this.props.videoIdPlaying}
+      <FilterableList
+        songs={this.props.songs}
+        onPressPlay={this.props.onPressPlay}
+        onPressMoreInfo={this.props.onPressMoreInfo}
+        videoIdPlaying={this.props.videoIdPlaying}
+        updateFilter={this.props.updateFilter}
       />
     );
   }
@@ -58,6 +44,7 @@ PlaylistView.propTypes = {
   onPressPlay: PropTypes.func.isRequired,
   onPressMoreInfo: PropTypes.func.isRequired,
   videoIdPlaying: PropTypes.string,
+  updateFilter: PropTypes.func.isRequired,
 };
 
 export default PlaylistView;

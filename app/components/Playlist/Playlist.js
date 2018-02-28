@@ -79,6 +79,16 @@ class Playlist extends Component {
     this.setState({ songs: songs });
   }
 
+  _filterSongs = (query) => {
+    const playlist = PlaylistsDB.getPlaylist(this.props.playlistId);
+    const songs = playlist.songs.filtered(`title CONTAINS[c] "${query}"`).sorted('title').map((song) => ({
+      key: song.videoId,
+      videoId: song.videoId,
+      title: song.title,
+    }));
+    this.setState({ songs: songs });
+  }
+
   componentDidMount() {
     PlaylistsDB.addOnChangeListener(this._songsOnChangeCallback);
   }
@@ -95,6 +105,7 @@ class Playlist extends Component {
           onPressPlay={this._onPressPlay}
           onPressMoreInfo={this._onPressMoreInfo}
           videoIdPlaying={this.props.currentlyPlaying.videoId}
+          updateFilter={this._filterSongs}
         />
         <CurrentSongFooter navigator={this.props.navigator}/>
       </View>
