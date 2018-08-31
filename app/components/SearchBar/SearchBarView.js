@@ -92,7 +92,6 @@ class SearchBarView extends Component {
             enablesReturnKeyAutomatically={true}
             placeholder='Search'
             placeholderTextColor={'rgb(150, 150, 150)'}
-            defaultValue={this.props.defaultSearchQuery}
             returnKeyType={'search'}
             clearButtonMode={'while-editing'}
             keyboardAppearance={'dark'}
