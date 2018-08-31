@@ -3,6 +3,11 @@ package com.cumulus;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.realm.react.RealmReactPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.zmxv.RNSound.RNSoundPackage;
+import com.reactnativenavigation.NavigationReactPackage;
+import com.rnfs.RNFSPackage;
 import com.reactnativenavigation.NavigationReactPackage;
 import io.realm.react.RealmReactPackage;
 import com.rnfs.RNFSPackage;
@@ -28,6 +33,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RealmReactPackage(),
+            new VectorIconsPackage(),
+            new RNSoundPackage(),
+            new NavigationReactPackage(),
+            new RNFSPackage(),
             new NavigationReactPackage(),
             new RealmReactPackage(),
             new RNFSPackage(),

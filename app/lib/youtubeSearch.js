@@ -17,7 +17,7 @@ function hitYoutubeSearchEndpoint(searchQuery, accessToken) {
     referrerPolicy: 'no-referrer-when-downgrade',
     headers: {
       'accept': '*/*',
-      'accept-encoding': 'gzip, deflate, br',
+      'accept-encoding': 'deflate',
       'accept-language': 'en-US,en;q=0.8',
       'authorization': 'Bearer ' + accessToken,
     },

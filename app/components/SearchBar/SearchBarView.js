@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  Dimensions,
   StyleSheet,
   View,
   Text,
@@ -24,7 +25,7 @@ class SearchBarView extends Component {
   _onFocus = () => {
     Animated.parallel([
       Animated.timing(this.state.cancelButtonWidth, {
-        toValue: 66,
+        toValue: 80,
         duration: 250,
       }),
       Animated.sequence([
@@ -68,7 +69,7 @@ class SearchBarView extends Component {
         >
           <Animated.Text style={{
             color: 'rgb(150, 150, 150)',
-            fontSize: 16,
+            fontSize: 14,
             opacity: this.state.cancelButtonOpacity
           }}>
             Cancel
@@ -80,22 +81,24 @@ class SearchBarView extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, flexDirection: 'row' }}>
-        <TextInput
-          style={styles.searchBar}
-          onChangeText={this.props.onChangeText}
-          onSubmitEditing={this.props.onSubmitEditing}
-          onFocus={this._onFocus}
-          onBlur={this._onBlur}
-          enablesReturnKeyAutomatically={true}
-          placeholder='Search'
-          placeholderTextColor={'rgb(150, 150, 150)'}
-          defaultValue={this.props.defaultSearchQuery}
-          returnKeyType={'search'}
-          clearButtonMode={'while-editing'}
-          keyboardAppearance={'dark'}
-        />
-        <this.CancelButton/>
+      <View style={{ width: Dimensions.get('window').width }}>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <TextInput
+            style={styles.searchBar}
+            onChangeText={this.props.onChangeText}
+            onSubmitEditing={this.props.onSubmitEditing}
+            onFocus={this._onFocus}
+            onBlur={this._onBlur}
+            enablesReturnKeyAutomatically={true}
+            placeholder='Search'
+            placeholderTextColor={'rgb(150, 150, 150)'}
+            defaultValue={this.props.defaultSearchQuery}
+            returnKeyType={'search'}
+            clearButtonMode={'while-editing'}
+            keyboardAppearance={'dark'}
+          />
+          <this.CancelButton/>
+        </View>
       </View>
     );
   }
@@ -108,7 +111,9 @@ const styles = StyleSheet.create({
     color: 'white',
     backgroundColor: 'rgb(70, 70, 70)',
     marginTop: 6,
-    margin: 6,
+    marginBottom: 6,
+    marginLeft: 0,
+    marginRight: 0,
     paddingTop: 6,
     paddingBottom: 6,
     paddingLeft: 8,
