@@ -11,7 +11,6 @@ def check_and_download(videoId):
 
   subprocess.call([
     'youtube-dl',
-    '-f', 'webm',
     '--extract-audio',
     '--audio-format', 'mp3',
     '--output', 'downloads/song_' + videoId + '.%(ext)s',
