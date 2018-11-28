@@ -13,6 +13,36 @@ import SongsDB from '../db/SongsDB';
 
 export default class ActionSheet {
 
+  // callback(true) or callback(false)
+  static alert(title, message, callback) {
+    AlertIOS.alert(title, message, [
+      {
+        text: 'Cancel',
+        onPress: () => callback(false),
+        style: 'cancel',
+      },
+      {
+        text: 'Ok',
+        onPress: () => callback(true),
+      },
+    ]);
+  }
+
+  // same as above
+  static alertYN(title, message, callback) {
+    AlertIOS.alert(title, message, [
+      {
+        text: 'No',
+        onPress: () => callback(false),
+        style: 'cancel',
+      },
+      {
+        text: 'Yes',
+        onPress: () => callback(true),
+      },
+    ]);
+  }
+
   // `afterCreateCallback` (optional) is a function that takes in the
   // newly created playlist id as its only argument.
   static newPlaylist(afterCreateCallback) {

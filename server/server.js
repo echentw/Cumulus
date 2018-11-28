@@ -9,6 +9,8 @@ import crypto from 'crypto';
 import fs from 'fs';
 import url from 'url';
 
+import mysql from 'mysql';
+
 const redisClient = redis.createClient({
   host: '127.0.0.1',
   port: 6379,
@@ -118,6 +120,73 @@ app.post('/download', authenticate, (req, res) => {
   });
   child.stdout.on('data', (data) => console.log(`child stdout: ${data}`));
   child.stderr.on('data', (data) => console.error(`child stderr: ${data}`));
+});
+
+/*
+CREATE TABLE exports (
+  phrase VARCHAR(40) NOT NULL,
+  playlist_title VARCHAR(40),
+  video_id VARCHAR(40) NOT NULL
+);
+*/
+
+app.post('/export', (req, res) => {
+  console.log(JSON.stringify(req.body));
+  const { phrase, playlists } = req.body;
+  const connection = mysql.createConnection({
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    database: 'airtube',
+  });
+
+  connection.connect();
+  connection.query(`DELETE FROM exports WHERE phrase = "${phrase}"`, (error, results, fields) => {
+    if (error) {
+      console.log('something went wrong trying to clear exports for ' + phrase);
+      res.send({ success: false });
+    } else {
+      console.log('successfully cleared exports for ' + phrase);
+
+      playlists.forEach((playlist) => {
+        const values = playlist.videoIds
+          .map((videoId) => `("${phrase}", "${playlist.title}", "${videoId}")`)
+          .join(', ');
+        const command = `INSERT INTO exports (phrase, playlist_title, video_id) VALUES ${values}`;
+        connection.query(command, (error, results, fields) => {
+          if (error) {
+            console.log('something went wrong');
+            res.send({ success: false });
+          } else {
+            console.log('yay');
+          }
+        });
+      });
+    }
+  });
+
+  res.send({ success: true });
+
+
+/***
+  {
+    playlists: [
+      {
+        name: 'Taylor Swift'
+        videoIds: [
+          'asdflkj',
+          'lkjasdf',
+        ],
+      },
+      {
+        name: 'Kpop',
+        videoIds: [
+          'qwerpoiu',
+          'poiureqw',
+        ],
+      },
+    ],
+***/
 });
 
 app.get('/checkdownload', authenticate, (req, res) => {

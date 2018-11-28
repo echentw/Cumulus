@@ -18,6 +18,17 @@ function startApp() {
   Navigation.startTabBasedApp({
     tabs: [
       {
+        label: 'EXPORT',
+        screen: 'Cumulus.Export',
+        icon: require('./img/export24x24.png'),
+        title: 'EXPORT',
+        navigatorStyle: {
+          navBarTextColor: 'white',
+          navBarButtonColor: 'white',
+          navBarBackgroundColor: 'rgb(50, 50, 50)',
+        },
+      },
+      {
         label: 'Search',
         screen: 'Cumulus.Search',
         icon: require('./img/search16x16.png'),

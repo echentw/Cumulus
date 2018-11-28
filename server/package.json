@@ -19,6 +19,7 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "googleapis": "^22.2.0",
+    "mysql": "^2.16.0",
     "nodemon": "^1.12.1",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
