@@ -43,7 +43,7 @@
 #endif
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  self.window.tintColor = [UIColor whiteColor];
+  self.window.tintColor = [UIColor grayColor];
   [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
 
   /*
